@@ -24,7 +24,12 @@ export async function* llmStreamChat(
     void TTS.kill();
   }
 
-  const { legacySlashCommandData, completionOptions, messages } = msg.data;
+  const {
+    legacySlashCommandData,
+    completionOptions,
+    messages,
+    messageOptions,
+  } = msg.data;
 
   const model = config.selectedModelByRole.chat;
 
@@ -59,6 +64,12 @@ export async function* llmStreamChat(
       },
       true,
     );
+    if (!slashCommand.run) {
+      console.error(
+        `Slash command ${command.name} (${command.source}) has no run function`,
+      );
+      throw new Error(`Slash command not found`);
+    }
 
     const gen = slashCommand.run({
       input,
@@ -111,6 +122,7 @@ export async function* llmStreamChat(
       messages,
       abortController.signal,
       completionOptions,
+      messageOptions,
     );
     let next = await gen.next();
     while (!next.done) {

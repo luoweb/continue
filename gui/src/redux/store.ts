@@ -23,11 +23,6 @@ import sessionReducer from "./slices/sessionSlice";
 import tabsReducer from "./slices/tabsSlice";
 import uiReducer from "./slices/uiSlice";
 
-export interface ChatMessage {
-  role: "system" | "user" | "assistant";
-  content: string;
-}
-
 const rootReducer = combineReducers({
   session: sessionReducer,
   ui: uiReducer,
@@ -57,7 +52,7 @@ const saveSubsetFilters = [
     "lastNonEditSessionWasEmpty",
     "codeToEdit",
   ]),
-  createFilter("config", ["defaultModelTitle"]),
+  createFilter("config", []),
   createFilter("ui", ["toolSettings", "toolGroupSettings", "ruleSettings"]),
   createFilter("indexing", []),
   createFilter("tabs", ["tabs"]),
