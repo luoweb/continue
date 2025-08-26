@@ -43,18 +43,20 @@ import { ConfigYamlDocumentLinkProvider } from "./ConfigYamlDocumentLinkProvider
 import { VsCodeMessenger } from "./VsCodeMessenger";
 
 import { getAst } from "core/autocomplete/util/ast";
+import { modelSupportsNextEdit } from "core/llm/autodetect";
+import { NEXT_EDIT_MODELS } from "core/llm/constants";
 import { DocumentHistoryTracker } from "core/nextEdit/DocumentHistoryTracker";
-import {
-  EditableRegionStrategy,
-  getNextEditableRegion,
-} from "core/nextEdit/NextEditEditableRegionCalculator";
 import { NextEditProvider } from "core/nextEdit/NextEditProvider";
-import { isModelCapableOfNextEdit } from "core/nextEdit/utils";
+import { isNextEditTest } from "core/nextEdit/utils";
 import { localPathOrUriToPath } from "core/util/pathToUri";
 import { JumpManager } from "../activation/JumpManager";
 import setupNextEditWindowManager, {
   NextEditWindowManager,
 } from "../activation/NextEditWindowManager";
+import {
+  HandlerPriority,
+  SelectionChangeManager,
+} from "../activation/SelectionChangeManager";
 import { GhostTextAcceptanceTracker } from "../autocomplete/GhostTextAcceptanceTracker";
 import { getDefinitionsFromLsp } from "../autocomplete/lsp";
 import { handleTextDocumentChange } from "../util/editLoggingUtils";
@@ -79,22 +81,13 @@ export class VsCodeExtension {
   private fileSearch: FileSearch;
   private uriHandler = new UriEventHandler();
   private completionProvider: ContinueCompletionProvider;
-  // Track whether the user is currently typing
-  private isTypingSession = false;
-  private typingTimer: NodeJS.Timeout | null = null;
-  private lastDocumentChangeTime = 0;
 
-  // Reset typing session after a delay
-  resetTypingSession = () => {
-    if (this.typingTimer) clearTimeout(this.typingTimer);
-    this.typingTimer = setTimeout(() => {
-      this.isTypingSession = false;
-    }, 2000); // Typing session considered over after 2 seconds of inactivity
-  };
+  private ARBITRARY_TYPING_DELAY = 2000;
 
   constructor(context: vscode.ExtensionContext) {
     // Register auth provider
     this.workOsAuthProvider = new WorkOsAuthProvider(context, this.uriHandler);
+
     void this.workOsAuthProvider.refreshSessions();
     context.subscriptions.push(this.workOsAuthProvider);
 
@@ -110,6 +103,55 @@ export class VsCodeExtension {
     this.ideUtils = new VsCodeIdeUtils();
     this.extensionContext = context;
     this.windowId = uuidv4();
+
+    // Check if model supports next edit to determine if we should use full file diff.
+    const getUsingFullFileDiff = async () => {
+      const { config } = await this.configHandler.loadConfig();
+      const autocompleteModel = config?.selectedModelByRole.autocomplete;
+
+      if (!autocompleteModel) {
+        return false;
+      }
+
+      if (
+        !modelSupportsNextEdit(
+          autocompleteModel.capabilities,
+          autocompleteModel.model,
+          autocompleteModel.title,
+        )
+      ) {
+        return false;
+      }
+
+      if (autocompleteModel.model.includes(NEXT_EDIT_MODELS.INSTINCT)) {
+        return false;
+      }
+
+      return true;
+    };
+
+    const usingFullFileDiff = true;
+    const selectionManager = SelectionChangeManager.getInstance();
+    selectionManager.initialize(this.ide, usingFullFileDiff);
+
+    selectionManager.registerListener(
+      "typing",
+      async (e, state) => {
+        const timeSinceLastDocChange =
+          Date.now() - state.lastDocumentChangeTime;
+        if (
+          state.isTypingSession &&
+          timeSinceLastDocChange < this.ARBITRARY_TYPING_DELAY &&
+          !NextEditWindowManager.getInstance().hasAccepted()
+        ) {
+          console.log("VsCodeExtension: typing in progress, preserving chain");
+          return true;
+        }
+
+        return false;
+      },
+      HandlerPriority.NORMAL,
+    );
 
     // Dependencies of core
     let resolveVerticalDiffManager: any = undefined;
@@ -175,7 +217,11 @@ export class VsCodeExtension {
       ),
     );
 
-    void this.configHandler.loadConfig().then(({ config }) => {
+    void this.configHandler.loadConfig().then(async ({ config }) => {
+      const shouldUseFullFileDiff = await getUsingFullFileDiff();
+      this.completionProvider.updateUsingFullFileDiff(shouldUseFullFileDiff);
+      selectionManager.updateUsingFullFileDiff(shouldUseFullFileDiff);
+
       const { verticalDiffCodeLens } = registerAllCodeLensProviders(
         context,
         this.verticalDiffManager.fileUriToCodeLens,
@@ -188,18 +234,35 @@ export class VsCodeExtension {
 
     this.configHandler.onConfigUpdate(
       async ({ config: newConfig, configLoadInterrupted }) => {
+        const shouldUseFullFileDiff = await getUsingFullFileDiff();
+        this.completionProvider.updateUsingFullFileDiff(shouldUseFullFileDiff);
+        selectionManager.updateUsingFullFileDiff(shouldUseFullFileDiff);
+
         const autocompleteModel = newConfig?.selectedModelByRole.autocomplete;
+
         if (
-          autocompleteModel &&
-          isModelCapableOfNextEdit(autocompleteModel.model)
+          (autocompleteModel &&
+            modelSupportsNextEdit(
+              autocompleteModel.capabilities,
+              autocompleteModel.model,
+              autocompleteModel.title,
+            )) ||
+          isNextEditTest()
         ) {
           // Set up next edit window manager only for Continue team members
           await setupNextEditWindowManager(context);
           this.activateNextEdit();
           await NextEditWindowManager.freeTabAndEsc();
 
-          JumpManager.getInstance();
-          GhostTextAcceptanceTracker.getInstance();
+          const jumpManager = JumpManager.getInstance();
+          jumpManager.registerSelectionChangeHandler();
+
+          const ghostTextAcceptanceTracker =
+            GhostTextAcceptanceTracker.getInstance();
+          ghostTextAcceptanceTracker.registerSelectionChangeHandler();
+
+          const nextEditWindowManager = NextEditWindowManager.getInstance();
+          nextEditWindowManager.registerSelectionChangeHandler();
         } else {
           NextEditWindowManager.clearInstance();
           this.deactivateNextEdit();
@@ -236,6 +299,7 @@ export class VsCodeExtension {
       this.configHandler,
       this.ide,
       this.sidebar.webviewProtocol,
+      usingFullFileDiff,
     );
     context.subscriptions.push(
       vscode.languages.registerInlineCompletionItemProvider(
@@ -251,6 +315,7 @@ export class VsCodeExtension {
       let orgId = queryParams.get("org_id");
 
       this.core.invoke("config/refreshProfiles", {
+        reason: "VS Code deep link",
         selectOrgId: orgId === "null" ? undefined : (orgId ?? undefined),
         selectProfileId:
           profileId === "null" ? undefined : (profileId ?? undefined),
@@ -344,9 +409,7 @@ export class VsCodeExtension {
 
     vscode.workspace.onDidChangeTextDocument(async (event) => {
       if (event.contentChanges.length > 0) {
-        this.isTypingSession = true;
-        this.lastDocumentChangeTime = Date.now();
-        this.resetTypingSession();
+        selectionManager.documentChanged();
       }
 
       const editInfo = await handleTextDocumentChange(
@@ -432,60 +495,7 @@ export class VsCodeExtension {
 
     // Listen for selection changes to hide tooltip when cursor moves.
     vscode.window.onDidChangeTextEditorSelection(async (e) => {
-      // Don't delete the chain of edits if:
-
-      // 1. A next edit window was just accepted.
-      if (
-        NextEditWindowManager.isInstantiated() &&
-        NextEditWindowManager.getInstance().hasAccepted()
-      ) {
-        return;
-      }
-
-      // 2. A jump is in progress.
-      if (
-        JumpManager.getInstance().isJumpInProgress() ||
-        JumpManager.getInstance().wasJumpJustAccepted()
-      ) {
-        return;
-      }
-
-      // 3. A ghost text was just accepted.
-      // Check if this selection change matches our expected ghost text acceptance.
-      const wasGhostTextAccepted =
-        GhostTextAcceptanceTracker.getInstance().checkGhostTextWasAccepted(
-          e.textEditor.document,
-          e.selections[0].active,
-        );
-
-      if (wasGhostTextAccepted) {
-        // Ghost text was accepted - don't delete the chain.
-        return;
-      }
-
-      // 4. The selection change is part of a typing session
-      // Check if this selection change is close enough to a document change to be considered typing.
-      const timeSinceLastDocChange = Date.now() - this.lastDocumentChangeTime;
-      const ARBITRARY_TYPING_DELAY = 500;
-      if (
-        this.isTypingSession &&
-        timeSinceLastDocChange < ARBITRARY_TYPING_DELAY
-      ) {
-        // This selection change is likely due to typing, don't delete the chain.
-        return;
-      }
-
-      // Otherwise, delete the chain (for rejection or unrelated movement).
-      console.log("deleteChain called from onDidChangeTextEditorSelection");
-      await NextEditProvider.getInstance().deleteChain();
-
-      NextEditProvider.getInstance().loadNextEditableRegionsInTheCurrentChain(
-        (await getNextEditableRegion(EditableRegionStrategy.Static, {
-          cursorPosition: e.selections[0].anchor,
-          filepath: localPathOrUriToPath(e.textEditor.document.uri.toString()),
-          ide: this.ide,
-        })) ?? [],
-      );
+      await selectionManager.handleSelectionChange(e);
     });
 
     // Refresh index when branch is changed
