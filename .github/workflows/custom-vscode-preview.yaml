@@ -1,5 +1,10 @@
 name: Custom VsCode Pre-release Extension
 
+env:
+  DOCKER_REGISTRY: registry.cn-hangzhou.aliyuncs.com
+  ALIYUN_USER: ${{ secrets.ALIYUN_USER }}
+  ALIYUN_TOKEN: ${{ secrets.ALIYUN_TOKEN }}
+
 on:
   release:
     types: [prereleased]
@@ -149,17 +154,6 @@ jobs:
           path: vsix-artifacts
           merge-multiple: true
 
-      # 1. Publish the extension to file server
-      - name: Upload file using curl
-        run: |
-          # 使用 curl 上传文件到文件服务
-          # 替换为你的文件服务 API 端点和认证信息
-          for vsixfile in *.md; do
-              curl -u ${{ secrets.BASIC_AUTH }} -X POST https://app-18000-roweb.cn42.ugdocker.link/vscode_vsix \
-              -F "file=@$vsixfile" \
-              -v
-          done
-
       # 2. Publish the extension to VS Code Marketplace
       # - name: Publish to VS Code Marketplace
       #   run: |
@@ -224,3 +218,68 @@ jobs:
       #   with:
       #     github_token: ${{ secrets.GITHUB_TOKEN }}
       #     branch: ${{ github.ref }}
+
+  docker-build-push:
+    name: Build and push Docker image to Alibaba Cloud
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 1. Download the artifacts
+      - uses: actions/download-artifact@v6
+        with:
+          pattern: "*-vsix"
+          path: vsix-artifacts
+          merge-multiple: true
+
+      - name: Debug - List downloaded Ubuntu files
+        run: ls -la vsix-artifacts/*
+
+      - name: Create Dockerfile
+        run: |
+          cat > Dockerfile << 'EOF'
+          # 使用最小的基础镜像 scratch
+          FROM scratch
+
+          # 创建目录结构
+          WORKDIR /app
+
+          # 拷贝所有平台的构建产物
+          COPY vsix-artifacts/ /app/continue-vsix-artifacts/
+          EOF
+
+      - name: Log into Alibaba Cloud registry
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ env.ALIYUN_USER }}
+          password: ${{ env.ALIYUN_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.DOCKER_REGISTRY }}/roweb/scan-erp
+          tags: |
+            type=semver,pattern={{version}},value=${{ github.ref_name }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ github.ref_name }}
+            type=sha,prefix=,suffix=,format=short
+            type=raw,value=latest
+            type=raw,value=main
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # scratch镜像没有shell，需要使用特殊的构建参数
+          platform: linux/amd64
+          provenance: false
