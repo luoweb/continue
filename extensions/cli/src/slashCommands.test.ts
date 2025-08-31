@@ -44,11 +44,30 @@ vi.mock("./commands/commands.js", () => ({
   getAllSlashCommands: vi.fn(() => []),
 }));
 
+// Mock logger to avoid file system operations
+vi.mock("./util/logger.js", () => ({
+  logger: {
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+  },
+}));
+
+// Mock env.js to avoid file operations
+vi.mock("./env.js", () => ({
+  env: {
+    continueHome: "/home/test/.continue",
+    appUrl: "https://hub.continue.dev",
+  },
+}));
+
 // Mock os and path
 vi.mock("os", () => ({
   default: {
     homedir: vi.fn(() => "/home/test"),
   },
+  homedir: vi.fn(() => "/home/test"),
 }));
 
 vi.mock("path", () => ({
@@ -77,6 +96,28 @@ describe("slashCommands", () => {
   });
 
   describe("handleSlashCommands", () => {
+    it("should handle /help command", async () => {
+      const result = await handleSlashCommands("/help", mockAssistant);
+
+      expect(result).toBeDefined();
+      expect(result?.output).toContain("Keyboard Shortcuts:");
+      expect(result?.output).toContain("Navigation:");
+      expect(result?.output).toContain("↑/↓");
+      expect(result?.output).toContain("Tab");
+      expect(result?.output).toContain("Enter");
+      expect(result?.output).toContain("Shift+Enter");
+      expect(result?.output).toContain("Controls:");
+      expect(result?.output).toContain("Ctrl+C");
+      expect(result?.output).toContain("Ctrl+D");
+      expect(result?.output).toContain("Ctrl+L");
+      expect(result?.output).toContain("Shift+Tab");
+      expect(result?.output).toContain("Esc");
+      expect(result?.output).toContain("Special Characters:");
+      expect(result?.output).toContain("@");
+      expect(result?.output).toContain("/");
+      expect(result?.exit).toBeUndefined();
+    });
+
     it("should handle /info command when not authenticated", async () => {
       const { isAuthenticated } = await import("./auth/workos.js");
       const { services } = await import("./services/index.js");

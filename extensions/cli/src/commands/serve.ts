@@ -7,7 +7,6 @@ import express, { Request, Response } from "express";
 
 import { getAssistantSlug } from "../auth/workos.js";
 import { processCommandFlags } from "../flags/flagProcessor.js";
-import { convertFromUnifiedHistory } from "../messageConversion.js";
 import { toolPermissionManager } from "../permissions/permissionManager.js";
 import {
   getService,
@@ -148,7 +147,7 @@ export async function serve(prompt?: string, options: ServeOptions = {}) {
   app.get("/state", (_req: Request, res: Response) => {
     state.lastActivity = Date.now();
     res.json({
-      chatHistory: convertFromUnifiedHistory(state.session.history), // Convert back to legacy format for API
+      session: state.session, // Return session directly instead of converting
       isProcessing: state.isProcessing,
       messageQueueLength: state.messageQueue.length,
       pendingPermission: state.pendingPermission,

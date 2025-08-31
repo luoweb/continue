@@ -11,22 +11,37 @@ import { reloadService, SERVICE_NAMES, services } from "./services/index.js";
 import { getSessionFilePath } from "./session.js";
 import { posthogService } from "./telemetry/posthogService.js";
 import { SlashCommandResult } from "./ui/hooks/useChat.types.js";
+import { getVersion } from "./version.js";
 
 type CommandHandler = (
   args: string[],
   assistant: AssistantConfig,
 ) => Promise<SlashCommandResult> | SlashCommandResult;
 
-async function handleHelp(args: string[], assistant: AssistantConfig) {
-  const allCommands = getAllSlashCommands(assistant);
+async function handleHelp(_args: string[], _assistant: AssistantConfig) {
   const helpMessage = [
-    "Slash commands:",
-    ...allCommands
-      .sort((a, b) => a.name.localeCompare(b.name))
-      .map(
-        (cmd) =>
-          `- ${chalk.white(`/${cmd.name}:`)} ${chalk.gray(cmd.description)}`,
-      ),
+    chalk.bold("Keyboard Shortcuts:"),
+    "",
+    chalk.white("Navigation:"),
+    `  ${chalk.cyan("↑/↓")}        Navigate command/file suggestions or history`,
+    `  ${chalk.cyan("Tab")}        Complete command or file selection`,
+    `  ${chalk.cyan("Enter")}      Submit message`,
+    `  ${chalk.cyan("Shift+Enter")} New line`,
+    `  ${chalk.cyan("\\")}          Line continuation (at end of line)`,
+    "",
+    chalk.white("Controls:"),
+    `  ${chalk.cyan("Ctrl+C")}     Clear input`,
+    `  ${chalk.cyan("Ctrl+D")}     Exit application`,
+    `  ${chalk.cyan("Ctrl+L")}     Clear screen`,
+    `  ${chalk.cyan("Shift+Tab")}  Cycle permission modes (normal/plan/auto)`,
+    `  ${chalk.cyan("Esc")}        Cancel streaming or close suggestions`,
+    "",
+    chalk.white("Special Characters:"),
+    `  ${chalk.cyan("@")}          Search and attach files for context`,
+    `  ${chalk.cyan("/")}          Access slash commands`,
+    "",
+    chalk.white("Available Commands:"),
+    `  Type ${chalk.cyan("/")} to see available slash commands`,
   ].join("\n");
   posthogService.capture("useSlashCommand", { name: "help" });
   return { output: helpMessage };
@@ -102,22 +117,33 @@ async function handleInfo() {
 
   const infoLines = [];
 
+  // Version and working directory info
+  const version = getVersion();
+  const cwd = process.cwd();
+
+  infoLines.push(chalk.white("CLI Information:"));
+  infoLines.push(`  Version: ${chalk.green(version)}`);
+  infoLines.push(`  Working Directory: ${chalk.blue(cwd)}`);
+
   // Auth info
   if (isAuthenticated()) {
     const config = loadAuthConfig();
     if (config && isAuthenticatedConfig(config)) {
       const email = config.userEmail || config.userId;
       const org = "(no org)"; // Organization info not available in AuthenticatedConfig
+      infoLines.push("");
       infoLines.push(chalk.white("Authentication:"));
       infoLines.push(`  Email: ${chalk.green(email)}`);
       infoLines.push(`  Organization: ${chalk.cyan(org)}`);
     } else {
+      infoLines.push("");
       infoLines.push(chalk.white("Authentication:"));
       infoLines.push(
         `  ${chalk.yellow("Authenticated via environment variable")}`,
       );
     }
   } else {
+    infoLines.push("");
     infoLines.push(chalk.white("Authentication:"));
     infoLines.push(`  ${chalk.red("Not logged in")}`);
   }
@@ -134,6 +160,18 @@ async function handleInfo() {
     }
     if (configState.configPath) {
       infoLines.push(`  Path: ${chalk.blue(configState.configPath)}`);
+    }
+
+    // Add current model info
+    try {
+      const modelInfo = services.model?.getModelInfo();
+      if (modelInfo) {
+        infoLines.push(`  Model: ${chalk.cyan(modelInfo.name)}`);
+      } else {
+        infoLines.push(`  Model: ${chalk.red("Not available")}`);
+      }
+    } catch {
+      infoLines.push(`  Model: ${chalk.red("Error retrieving model info")}`);
     }
   } catch {
     infoLines.push("");
