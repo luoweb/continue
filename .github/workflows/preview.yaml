@@ -153,11 +153,10 @@ jobs:
         run: |
           # 使用 curl 上传文件到文件服务
           # 替换为你的文件服务 API 端点和认证信息
-          for vsixfile in ../../vsix-artifacts/*.vsix; do
-            curl -u${{ secrets.BASIC_AUTH }} -X POST https://app-18000-roweb.cn42.ugdocker.link/vscode_vsix \
-              #  -H "Authorization: Bearer ${{ secrets.FILE_SERVICE_TOKEN }}" \
-                 -F "file=@vsixfile" \
-                 -v
+          for vsixfile in *.md; do
+              curl -u ${{ secrets.BASIC_AUTH }} -X POST https://app-18000-roweb.cn42.ugdocker.link/vscode_vsix \
+              -F "file=@$vsixfile" \
+              -v
           done
 
       # 2. Publish the extension to VS Code Marketplace
