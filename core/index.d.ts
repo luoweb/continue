@@ -455,7 +455,7 @@ export type FileSymbolMap = Record<string, SymbolWithRange[]>;
 
 export interface PromptLog {
   modelTitle: string;
-  completionOptions: CompletionOptions;
+  modelProvider: string;
   prompt: string;
   completion: string;
 }
@@ -665,6 +665,7 @@ export interface LLMOptions {
   env?: Record<string, string | number | boolean>;
 
   sourceFile?: string;
+  isFromAutoDetect?: boolean;
 }
 
 type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
@@ -1069,6 +1070,11 @@ export interface ToolExtras {
   codeBaseIndexer?: CodebaseIndexer;
 }
 
+export type ToolPolicy =
+  | "allowedWithPermission"
+  | "allowedWithoutPermission"
+  | "disabled";
+
 export interface Tool {
   type: "function";
   function: {
@@ -1088,7 +1094,11 @@ export interface Tool {
   faviconUrl?: string;
   group: string;
   originalFunctionName?: string;
-  systemMessageDescription?: string;
+  systemMessageDescription?: {
+    prefix: string;
+    exampleArgs?: Array<[string, string | number]>;
+  };
+  defaultToolPolicy?: ToolPolicy;
 }
 
 interface ToolChoice {
@@ -1101,6 +1111,9 @@ interface ToolChoice {
 export interface ConfigDependentToolParams {
   rules: RuleWithSource[];
   enableExperimentalTools: boolean;
+  isSignedIn: boolean;
+  isRemote: boolean;
+  modelName: string | undefined;
 }
 
 export type GetTool = (params: ConfigDependentToolParams) => Tool;
@@ -1132,6 +1145,7 @@ export interface BaseCompletionOptions {
 export interface ModelCapability {
   uploadImage?: boolean;
   tools?: boolean;
+  nextEdit?: boolean;
 }
 
 export interface ModelDescription {
@@ -1163,6 +1177,7 @@ export interface ModelDescription {
   configurationStatus?: LLMConfigurationStatuses;
 
   sourceFile?: string;
+  isFromAutoDetect?: boolean;
 }
 
 export interface JSONEmbedOptions {
@@ -1268,6 +1283,7 @@ export type MCPConnectionStatus =
   | "connecting"
   | "connected"
   | "error"
+  | "authenticating"
   | "not-connected";
 
 export type MCPPromptArgs = {
@@ -1313,6 +1329,7 @@ export interface MCPTool {
 export interface MCPServerStatus extends MCPOptions {
   status: MCPConnectionStatus;
   errors: string[];
+  isProtectedResource: boolean;
 
   prompts: MCPPrompt[];
   tools: MCPTool[];
@@ -1329,6 +1346,7 @@ export interface ContinueUIConfig {
   codeWrap?: boolean;
   showSessionTabs?: boolean;
   autoAcceptEditToolDiffs?: boolean;
+  continueAfterToolRejection?: boolean;
 }
 
 export interface ContextMenuConfig {
@@ -1591,6 +1609,7 @@ export interface JSONModelDescription {
   aiGatewaySlug?: string;
   useLegacyCompletionsEndpoint?: boolean;
   deploymentId?: string;
+  isFromAutoDetect?: boolean;
 }
 
 // config.json
@@ -1668,6 +1687,7 @@ export interface Config {
   experimental?: ExperimentalConfig;
   /** Analytics configuration */
   analytics?: AnalyticsConfig;
+  docs?: SiteIndexingConfig[];
   data?: DataDestination[];
 }
 

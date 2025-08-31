@@ -6,6 +6,7 @@ import { CustomScrollbarDiv } from ".";
 import { AuthProvider } from "../context/Auth";
 import { IdeMessengerContext } from "../context/IdeMessenger";
 import { LocalStorageProvider } from "../context/LocalStorage";
+import TelemetryProviders from "../hooks/TelemetryProviders";
 import { useWebviewListener } from "../hooks/useWebviewListener";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setCodeToEdit } from "../redux/slices/editState";
@@ -15,7 +16,6 @@ import { saveCurrentSession } from "../redux/thunks/session";
 import { fontSize, isMetaEquivalentKeyPressed } from "../util";
 import { incrementFreeTrialCount } from "../util/freeTrial";
 import { ROUTES } from "../util/navigation";
-import { FatalErrorIndicator } from "./config/FatalErrorNotice";
 import TextDialog from "./dialogs";
 import { GenerateRuleDialog } from "./GenerateRuleDialog";
 import { LumpProvider } from "./mainInput/Lump/LumpContext";
@@ -27,6 +27,7 @@ import {
 } from "./OnboardingCard";
 import OSRContextMenu from "./OSRContextMenu";
 import PostHogPageView from "./PosthogPageView";
+import { FatalErrorIndicator } from "./config/FatalErrorNotice";
 
 const LayoutTopDiv = styled(CustomScrollbarDiv)`
   height: 100%;
@@ -246,46 +247,48 @@ const Layout = () => {
   return (
     <LocalStorageProvider>
       <AuthProvider>
-        <LayoutTopDiv>
-          {showStagingIndicator && (
-            <span
-              title="Staging environment"
-              className="absolute right-0 mx-1.5 h-1.5 w-1.5 rounded-full"
-              style={{
-                backgroundColor: "var(--vscode-list-warningForeground)",
-              }}
-            />
-          )}
-          <LumpProvider>
-            <OSRContextMenu />
-            <div
-              style={{
-                scrollbarGutter: "stable both-edges",
-                minHeight: "100%",
-                display: "grid",
-                gridTemplateRows: "1fr auto",
-              }}
-            >
-              <TextDialog
-                showDialog={showDialog}
-                onEnter={() => {
-                  dispatch(setShowDialog(false));
+        <TelemetryProviders>
+          <LayoutTopDiv>
+            {showStagingIndicator && (
+              <span
+                title="Staging environment"
+                className="absolute right-0 mx-1.5 h-1.5 w-1.5 rounded-full"
+                style={{
+                  backgroundColor: "var(--vscode-list-warningForeground)",
                 }}
-                onClose={() => {
-                  dispatch(setShowDialog(false));
-                }}
-                message={dialogMessage}
               />
+            )}
+            <LumpProvider>
+              <OSRContextMenu />
+              <div
+                style={{
+                  scrollbarGutter: "stable both-edges",
+                  minHeight: "100%",
+                  display: "grid",
+                  gridTemplateRows: "1fr auto",
+                }}
+              >
+                <TextDialog
+                  showDialog={showDialog}
+                  onEnter={() => {
+                    dispatch(setShowDialog(false));
+                  }}
+                  onClose={() => {
+                    dispatch(setShowDialog(false));
+                  }}
+                  message={dialogMessage}
+                />
 
-              <GridDiv>
-                <PostHogPageView />
-                <Outlet />
-                <FatalErrorIndicator />
-              </GridDiv>
-            </div>
-            <div style={{ fontSize: fontSize(-4) }} id="tooltip-portal-div" />
-          </LumpProvider>
-        </LayoutTopDiv>
+                <GridDiv>
+                  <PostHogPageView />
+                  <Outlet />
+                  <FatalErrorIndicator />
+                </GridDiv>
+              </div>
+              <div style={{ fontSize: fontSize(-4) }} id="tooltip-portal-div" />
+            </LumpProvider>
+          </LayoutTopDiv>
+        </TelemetryProviders>
       </AuthProvider>
     </LocalStorageProvider>
   );
