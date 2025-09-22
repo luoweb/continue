@@ -5,15 +5,18 @@ import {
 } from "@heroicons/react/24/outline";
 import { LightBulbIcon as LightBulbIconSolid } from "@heroicons/react/24/solid";
 import { InputModifiers } from "core";
-import { modelSupportsImages } from "core/llm/autodetect";
-import { useContext, useRef } from "react";
+import {
+  modelSupportsImages,
+  modelSupportsReasoning,
+} from "core/llm/autodetect";
+import { memo, useContext, useRef } from "react";
 import { IdeMessengerContext } from "../../context/IdeMessenger";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectUseActiveFile } from "../../redux/selectors";
 import { selectSelectedChatModel } from "../../redux/slices/configSlice";
 import { setHasReasoningEnabled } from "../../redux/slices/sessionSlice";
 import { exitEdit } from "../../redux/thunks/edit";
-import { getAltKeyLabel, isMetaEquivalentKeyPressed } from "../../util";
+import { getMetaKeyLabel, isMetaEquivalentKeyPressed } from "../../util";
 import { ToolTip } from "../gui/Tooltip";
 import ModelSelect from "../modelSelection/ModelSelect";
 import { ModeSelect } from "../ModeSelect";
@@ -65,6 +68,8 @@ function InputToolbar(props: InputToolbarProps) {
       defaultModel.title,
       defaultModel.capabilities,
     );
+
+  const supportsReasoning = modelSupportsReasoning(defaultModel);
 
   const smallFont = useFontSize(-2);
   const tinyFont = useFontSize(-3);
@@ -130,7 +135,7 @@ function InputToolbar(props: InputToolbarProps) {
                 </HoverItem>
               </ToolTip>
             )}
-            {defaultModel?.underlyingProviderName === "anthropic" && (
+            {supportsReasoning && (
               <HoverItem
                 onClick={() =>
                   dispatch(setHasReasoningEnabled(!hasReasoningEnabled))
@@ -165,7 +170,13 @@ function InputToolbar(props: InputToolbarProps) {
           {!props.toolbarOptions?.hideUseCodebase && !isInEdit && (
             <div className="hidden transition-colors duration-200 hover:underline md:flex">
               <HoverItem
-                className={props.activeKey === "Alt" ? "underline" : ""}
+                className={
+                  props.activeKey === "Meta" ||
+                  props.activeKey === "Control" ||
+                  props.activeKey === "Alt"
+                    ? "underline"
+                    : ""
+                }
                 onClick={(e) =>
                   props.onEnter?.({
                     useCodebase: false,
@@ -175,15 +186,14 @@ function InputToolbar(props: InputToolbarProps) {
               >
                 <ToolTip
                   place="top-end"
-                  content={`
-                    ${
-                      useActiveFile
-                        ? "Send Without Active File"
-                        : "Send With Active File"
-                    } (${getAltKeyLabel()}⏎)`}
+                  content={`${
+                    useActiveFile
+                      ? "Send Without Active File"
+                      : "Send With Active File"
+                  } (${getMetaKeyLabel()}⏎)`}
                 >
                   <span>
-                    {getAltKeyLabel()}⏎{" "}
+                    {getMetaKeyLabel()}⏎{" "}
                     {useActiveFile ? "No active file" : "Active file"}
                   </span>
                 </ToolTip>
@@ -211,8 +221,10 @@ function InputToolbar(props: InputToolbarProps) {
               onClick={async (e) => {
                 if (props.onEnter) {
                   props.onEnter({
-                    useCodebase: isMetaEquivalentKeyPressed(e as any),
-                    noContext: useActiveFile ? e.altKey : !e.altKey,
+                    useCodebase: false,
+                    noContext: useActiveFile
+                      ? !(isMetaEquivalentKeyPressed(e as any) || e.altKey)
+                      : isMetaEquivalentKeyPressed(e as any) || e.altKey,
                   });
                 }
               }}
@@ -230,4 +242,24 @@ function InputToolbar(props: InputToolbarProps) {
   );
 }
 
-export default InputToolbar;
+function shallowToolbarOptionsEqual(a?: ToolbarOptions, b?: ToolbarOptions) {
+  if (a === b) return true;
+  if (!a || !b) return false;
+  return (
+    a.hideAddContext === b.hideAddContext &&
+    a.hideImageUpload === b.hideImageUpload &&
+    a.hideUseCodebase === b.hideUseCodebase &&
+    a.hideSelectModel === b.hideSelectModel &&
+    a.enterText === b.enterText
+  );
+}
+
+export default memo(
+  InputToolbar,
+  (prev, next) =>
+    prev.hidden === next.hidden &&
+    prev.disabled === next.disabled &&
+    prev.isMainInput === next.isMainInput &&
+    prev.activeKey === next.activeKey &&
+    shallowToolbarOptionsEqual(prev.toolbarOptions, next.toolbarOptions),
+);

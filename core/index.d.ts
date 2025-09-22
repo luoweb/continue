@@ -272,7 +272,7 @@ export interface Session {
   history: ChatHistoryItem[];
 }
 
-export interface SessionMetadata {
+export interface BaseSessionMetadata {
   sessionId: string;
   title: string;
   dateCreated: string;
@@ -1099,6 +1099,7 @@ export interface Tool {
     exampleArgs?: Array<[string, string | number]>;
   };
   defaultToolPolicy?: ToolPolicy;
+  toolCallIcon?: string;
   evaluateToolCallPolicy?: (
     basePolicy: ToolPolicy,
     parsedArgs: Record<string, unknown>,
@@ -1281,6 +1282,7 @@ export interface MCPOptions {
   transport: TransportOptions;
   faviconUrl?: string;
   timeout?: number;
+  requestOptions?: RequestOptions;
 }
 
 export type MCPConnectionStatus =
@@ -1333,6 +1335,7 @@ export interface MCPTool {
 export interface MCPServerStatus extends MCPOptions {
   status: MCPConnectionStatus;
   errors: string[];
+  infos: string[];
   isProtectedResource: boolean;
 
   prompts: MCPPrompt[];
@@ -1387,9 +1390,12 @@ export interface ApplyState {
   fileContent?: string;
   originalFileContent?: string;
   toolCallId?: string;
+  autoFormattingDiff?: string;
 }
 
-export interface StreamDiffLinesPayload {
+export type StreamDiffLinesType = "edit" | "apply";
+interface StreamDiffLinesOptionsBase {
+  type: StreamDiffLinesType;
   prefix: string;
   highlighted: string;
   suffix: string;
@@ -1399,6 +1405,19 @@ export interface StreamDiffLinesPayload {
   includeRulesInSystemMessage: boolean;
   fileUri?: string;
 }
+
+interface StreamDiffLinesOptionsEdit extends StreamDiffLinesOptionsBase {
+  type: "edit";
+}
+
+interface StreamDiffLinesOptionsApply extends StreamDiffLinesOptionsBase {
+  type: "apply";
+  newCode: string;
+}
+
+type StreamDiffLinesPayload =
+  | StreamDiffLinesOptionsApply
+  | StreamDiffLinesOptionsEdit;
 
 export interface HighlightedCodePayload {
   rangeInFileWithContents: RangeInFileWithContents;
@@ -1807,6 +1826,7 @@ export interface RuleWithSource {
   description?: string;
   ruleFile?: string;
   alwaysApply?: boolean;
+  invokable?: boolean;
 }
 export interface CompleteOnboardingPayload {
   mode: OnboardingModes;
