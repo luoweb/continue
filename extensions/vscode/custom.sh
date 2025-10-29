@@ -18,6 +18,7 @@ fi
 $xsed 's#"name": "continue",#"name": "aicoder",#g' ../../extensions/vscode/package.json
 $xsed 's#Continue Dev#BlockAI Dev#g' ../../extensions/vscode/package.json
 $xsed 's#"homepage": "https://continue.dev"#"homepage": "https://aicoder.dev"#g' ../../extensions/vscode/package.json
+$xsed 's#https://hub.continue.dev/#https://hub.continue.dev/#g' ../../extensions/vscode/package.json
 $xsed 's#https://github.com/continuedev/continue#https://github.com/blockai/aicoder#g' ../../extensions/vscode/package.json
 # $xsed "s#continue#aicoder#g" ../../extensions/vscode/package.json
 # $xsed "s#continue#aicoder#g" ../../extensions/vscode/package.json
@@ -31,7 +32,7 @@ $xsed 's#"name": "Continue#"name": "AiCoder#g' ../../extensions/vscode/package.j
 
 
 # $xsed "s#logo-monochrome-white.svg#logo-monochrome-white-llmapp.svg#g" ../web/app/components/base/logo/logo-site.tsx
-# find ../web -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" | grep -v node_modules | xargs $xsed "s#logo.svg#logo-llmapp.svg#g"
+find ../../ -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mdx" | grep -v node_modules | xargs $xsed 's#https://hub.continue.dev/#https://hub.aicoder.dev/#g'
 # find ../web -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" | grep -v node_modules | xargs $xsed "s#logo-monochrome-white.svg#logo-monochrome-white-llmapp.svg#g"
 # find ../web -type f -name "*.ts" -o -name "*.tsx" | xargs grep -E "[ '>\"]Dify[ '<\"\$\`]" | grep -vE "default as Dify |Dify.json|embedded-chatbot/index.tsx"
 # find ../web -type f -name "*.ts" -o -name "*.tsx" | xargs grep -E "[ '>\"]Dify[ '<\"\$\`]" | grep -vE "default as Dify |Dify.json|embedded-chatbot/index.tsx" | awk -F ':' '{print $1}' | xargs -I@ sh -c "sed -i.bak 's#Dify#LLMAI#g' '@'"
