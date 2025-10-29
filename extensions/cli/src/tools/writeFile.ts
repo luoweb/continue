@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 
+import { ContinueError, ContinueErrorReason } from "core/util/errors.js";
 import { createTwoFilesPatch } from "diff";
 
 import { telemetryService } from "../telemetry/telemetryService.js";
@@ -32,15 +33,17 @@ export const writeFileTool: Tool = {
   displayName: "Write",
   description: "Write content to a file at the specified path",
   parameters: {
-    filepath: {
-      type: "string",
-      description: "The path to the file to write",
-      required: true,
-    },
-    content: {
-      type: "string",
-      description: "The content to write to the file",
-      required: true,
+    type: "object",
+    required: ["filepath", "content"],
+    properties: {
+      filepath: {
+        type: "string",
+        description: "The path to the file to write",
+      },
+      content: {
+        type: "string",
+        description: "The content to write to the file",
+      },
     },
   },
   readonly: false,
@@ -157,10 +160,15 @@ export const writeFileTool: Tool = {
         return `Successfully created file: ${args.filepath}`;
       }
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-
-      return `Error writing to file: ${errorMessage}`;
+      if (error instanceof ContinueError) {
+        throw error;
+      }
+      throw new ContinueError(
+        ContinueErrorReason.FileWriteError,
+        `Error writing to file: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
     }
   },
 };

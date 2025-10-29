@@ -56,16 +56,9 @@ export const MemoizedMessage = memo<MemoizedMessageProps>(
 
     // Handle system messages
     if (isSystem) {
-      // TODO: Properly separate LLM system messages from UI informational messages
-      // using discriminated union types. For now, skip displaying the first system
-      // message which is typically the LLM's system prompt.
-      if (index === 0) {
-        return null;
-      }
-
       return (
         <Box key={index} marginBottom={1}>
-          <Text color="gray" italic>
+          <Text color="dim" italic>
             {message.content}
           </Text>
         </Box>
@@ -170,7 +163,7 @@ export const MemoizedMessage = memo<MemoizedMessageProps>(
         <Text color={isUser ? "blue" : "white"}>{hideBullet ? " " : "●"}</Text>
         <Text> </Text>
         {isUser ? (
-          <Text color="gray">
+          <Text color="dim">
             {formatMessageContentForDisplay(message.content)}
           </Text>
         ) : (
@@ -178,7 +171,7 @@ export const MemoizedMessage = memo<MemoizedMessageProps>(
             content={formatMessageContentForDisplay(message.content)}
           />
         )}
-        {isStreaming && <Text color="gray">▋</Text>}
+        {isStreaming && <Text color="dim">▋</Text>}
       </Box>
     );
   },
