@@ -92,6 +92,7 @@ intellijPlatform {
             create("IC", "2024.3")
             create("IC", "2024.2")
             create("IC", "2024.1")
+            create("IC", "2023.1")
         }
     }
 }
