@@ -726,8 +726,8 @@
     "vscode-extension-tester": "^8.14.1"
   },
   "dependencies": {
-    "@aicoderdev/config-types": "file:../../packages/config-types",
-    "@aicoderdev/fetch": "file:../../packages/fetch",
+    "@continuedev/config-types": "file:../../packages/config-types",
+    "@continuedev/fetch": "file:../../packages/fetch",
     "@electron/rebuild": "^3.2.10",
     "@reduxjs/toolkit": "^1.9.3",
     "@vscode/ripgrep": "^1.15.9",
