@@ -93,7 +93,7 @@ export function constructLlmApi(config: LLMConfig): BaseLlmApi | undefined {
       return new VertexAIApi(config);
     case "llamastack":
       return new LlamastackApi(config);
-    case "continue-proxy":
+    case "aicoder-proxy":
       return new ContinueProxyApi(config);
     case "xAI":
       return openAICompatible("https://api.x.ai/v1/", config);

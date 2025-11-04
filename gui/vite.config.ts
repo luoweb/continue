@@ -10,7 +10,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     sentryVitePlugin({
-      org: "continue-xd",
+      org: "aicoder-xd",
       project: "continue",
     }),
   ],

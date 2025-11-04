@@ -2849,7 +2849,7 @@
                 "ollama",
                 "openai",
                 "cohere",
-                "continue-proxy",
+                "aicoder-proxy",
                 "gemini",
                 "voyage",
                 "nvidia",

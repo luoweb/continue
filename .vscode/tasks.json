@@ -280,7 +280,7 @@
       }
     },
     {
-      "label": "continue-packages:build",
+      "label": "aicoder-packages:build",
       "type": "shell",
       "command": "node ./scripts/build-packages.js",
       "problemMatcher": [],
@@ -294,7 +294,7 @@
     },
     {
       "label": "vscode-extension:build-with-packages",
-      "dependsOn": ["continue-packages:build", "vscode-extension:build"],
+      "dependsOn": ["aicoder-packages:build", "vscode-extension:build"],
       "type": "shell",
       "command": "echo",
       "args": ["Build with packages completed"],

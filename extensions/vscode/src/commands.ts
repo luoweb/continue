@@ -55,7 +55,7 @@ let fullScreenPanel: vscode.WebviewPanel | undefined;
 function getFullScreenTab() {
   const tabs = vscode.window.tabGroups.all.flatMap((tabGroup) => tabGroup.tabs);
   return tabs.find((tab) =>
-    (tab.input as any)?.viewType?.endsWith("continue.continueGUIView"),
+    (tab.input as any)?.viewType?.endsWith("aicoder.continueGUIView"),
   );
 }
 
@@ -78,7 +78,7 @@ function focusGUI() {
     fullScreenPanel?.reveal();
   } else {
     // focus sidebar
-    vscode.commands.executeCommand("continue.continueGUIView.focus");
+    vscode.commands.executeCommand("aicoder.continueGUIView.focus");
     // vscode.commands.executeCommand("workbench.action.focusAuxiliaryBar");
   }
 }
@@ -183,7 +183,7 @@ const getCommandsMap: (
   }
 
   return {
-    "continue.acceptDiff": async (newFileUri?: string, streamId?: string) => {
+    "aicoder.acceptDiff": async (newFileUri?: string, streamId?: string) => {
       captureCommandTelemetry("acceptDiff");
       void processDiff(
         "accept",
@@ -196,7 +196,7 @@ const getCommandsMap: (
       );
     },
 
-    "continue.rejectDiff": async (newFileUri?: string, streamId?: string) => {
+    "aicoder.rejectDiff": async (newFileUri?: string, streamId?: string) => {
       captureCommandTelemetry("rejectDiff");
       void processDiff(
         "reject",
@@ -208,15 +208,15 @@ const getCommandsMap: (
         streamId,
       );
     },
-    "continue.acceptVerticalDiffBlock": (fileUri?: string, index?: number) => {
+    "aicoder.acceptVerticalDiffBlock": (fileUri?: string, index?: number) => {
       captureCommandTelemetry("acceptVerticalDiffBlock");
       verticalDiffManager.acceptRejectVerticalDiffBlock(true, fileUri, index);
     },
-    "continue.rejectVerticalDiffBlock": (fileUri?: string, index?: number) => {
+    "aicoder.rejectVerticalDiffBlock": (fileUri?: string, index?: number) => {
       captureCommandTelemetry("rejectVerticalDiffBlock");
       verticalDiffManager.acceptRejectVerticalDiffBlock(false, fileUri, index);
     },
-    "continue.quickFix": async (
+    "aicoder.quickFix": async (
       range: vscode.Range,
       diagnosticMessage: string,
     ) => {
@@ -226,14 +226,14 @@ const getCommandsMap: (
 
       addCodeToContextFromRange(range, sidebar.webviewProtocol, prompt);
 
-      vscode.commands.executeCommand("continue.continueGUIView.focus");
+      vscode.commands.executeCommand("aicoder.continueGUIView.focus");
     },
     // Passthrough for telemetry purposes
-    "continue.defaultQuickAction": async (args: QuickEditShowParams) => {
+    "aicoder.defaultQuickAction": async (args: QuickEditShowParams) => {
       captureCommandTelemetry("defaultQuickAction");
-      vscode.commands.executeCommand("continue.focusEdit", args);
+      vscode.commands.executeCommand("aicoder.focusEdit", args);
     },
-    "continue.customQuickActionSendToChat": async (
+    "aicoder.customQuickActionSendToChat": async (
       prompt: string,
       range: vscode.Range,
     ) => {
@@ -241,9 +241,9 @@ const getCommandsMap: (
 
       addCodeToContextFromRange(range, sidebar.webviewProtocol, prompt);
 
-      vscode.commands.executeCommand("continue.continueGUIView.focus");
+      vscode.commands.executeCommand("aicoder.continueGUIView.focus");
     },
-    "continue.customQuickActionStreamInlineEdit": async (
+    "aicoder.customQuickActionStreamInlineEdit": async (
       prompt: string,
       range: vscode.Range,
     ) => {
@@ -251,19 +251,19 @@ const getCommandsMap: (
 
       streamInlineEdit("docstring", prompt, range);
     },
-    "continue.codebaseForceReIndex": async () => {
+    "aicoder.codebaseForceReIndex": async () => {
       core.invoke("index/forceReIndex", undefined);
     },
-    "continue.rebuildCodebaseIndex": async () => {
+    "aicoder.rebuildCodebaseIndex": async () => {
       core.invoke("index/forceReIndex", { shouldClearIndexes: true });
     },
-    "continue.docsIndex": async () => {
+    "aicoder.docsIndex": async () => {
       core.invoke("context/indexDocs", { reIndex: false });
     },
-    "continue.docsReIndex": async () => {
+    "aicoder.docsReIndex": async () => {
       core.invoke("context/indexDocs", { reIndex: true });
     },
-    "continue.focusContinueInput": async () => {
+    "aicoder.focusContinueInput": async () => {
       const isContinueInputFocused = await sidebar.webviewProtocol.request(
         "isContinueInputFocused",
         undefined,
@@ -307,7 +307,7 @@ const getCommandsMap: (
         void addHighlightedCodeToContext(sidebar.webviewProtocol);
       }
     },
-    "continue.focusContinueInputWithoutClear": async () => {
+    "aicoder.focusContinueInputWithoutClear": async () => {
       const isContinueInputFocused = await sidebar.webviewProtocol.request(
         "isContinueInputFocused",
         undefined,
@@ -340,22 +340,22 @@ const getCommandsMap: (
     },
     // QuickEditShowParams are passed from CodeLens, temp fix
     // until we update to new params specific to Edit
-    "continue.focusEdit": async (args?: QuickEditShowParams) => {
+    "aicoder.focusEdit": async (args?: QuickEditShowParams) => {
       captureCommandTelemetry("focusEdit");
       focusGUI();
       sidebar.webviewProtocol?.request("focusEdit", undefined);
     },
-    "continue.exitEditMode": async () => {
+    "aicoder.exitEditMode": async () => {
       captureCommandTelemetry("exitEditMode");
       editDecorationManager.clear();
       void sidebar.webviewProtocol?.request("exitEditMode", undefined);
     },
-    "continue.generateRule": async () => {
+    "aicoder.generateRule": async () => {
       captureCommandTelemetry("generateRule");
       focusGUI();
       void sidebar.webviewProtocol?.request("generateRule", undefined);
     },
-    "continue.writeCommentsForCode": async () => {
+    "aicoder.writeCommentsForCode": async () => {
       captureCommandTelemetry("writeCommentsForCode");
 
       streamInlineEdit(
@@ -363,7 +363,7 @@ const getCommandsMap: (
         "Write comments for this code. Do not change anything about the code itself.",
       );
     },
-    "continue.writeDocstringForCode": async () => {
+    "aicoder.writeDocstringForCode": async () => {
       captureCommandTelemetry("writeDocstringForCode");
 
       void streamInlineEdit(
@@ -371,7 +371,7 @@ const getCommandsMap: (
         "Write a docstring for this code. Do not change anything about the code itself.",
       );
     },
-    "continue.fixCode": async () => {
+    "aicoder.fixCode": async () => {
       captureCommandTelemetry("fixCode");
 
       streamInlineEdit(
@@ -379,53 +379,53 @@ const getCommandsMap: (
         "Fix this code. If it is already 100% correct, simply rewrite the code.",
       );
     },
-    "continue.optimizeCode": async () => {
+    "aicoder.optimizeCode": async () => {
       captureCommandTelemetry("optimizeCode");
       streamInlineEdit("optimize", "Optimize this code");
     },
-    "continue.fixGrammar": async () => {
+    "aicoder.fixGrammar": async () => {
       captureCommandTelemetry("fixGrammar");
       streamInlineEdit(
         "fixGrammar",
         "If there are any grammar or spelling mistakes in this writing, fix them. Do not make other large changes to the writing.",
       );
     },
-    "continue.clearConsole": async () => {
+    "aicoder.clearConsole": async () => {
       consoleView.clearLog();
     },
-    "continue.viewLogs": async () => {
+    "aicoder.viewLogs": async () => {
       captureCommandTelemetry("viewLogs");
       vscode.commands.executeCommand("workbench.action.toggleDevTools");
     },
-    "continue.debugTerminal": async () => {
+    "aicoder.debugTerminal": async () => {
       captureCommandTelemetry("debugTerminal");
 
       const terminalContents = await ide.getTerminalContents();
 
-      vscode.commands.executeCommand("continue.continueGUIView.focus");
+      vscode.commands.executeCommand("aicoder.continueGUIView.focus");
 
       sidebar.webviewProtocol?.request("userInput", {
         input: `I got the following error, can you please help explain how to fix it?\n\n${terminalContents.trim()}`,
       });
     },
-    "continue.hideInlineTip": () => {
+    "aicoder.hideInlineTip": () => {
       vscode.workspace
         .getConfiguration(EXTENSION_NAME)
         .update("showInlineTip", false, vscode.ConfigurationTarget.Global);
     },
 
     // Commands without keyboard shortcuts
-    "continue.addModel": () => {
+    "aicoder.addModel": () => {
       captureCommandTelemetry("addModel");
 
-      vscode.commands.executeCommand("continue.continueGUIView.focus");
+      vscode.commands.executeCommand("aicoder.continueGUIView.focus");
       sidebar.webviewProtocol?.request("addModel", undefined);
     },
-    "continue.newSession": () => {
+    "aicoder.newSession": () => {
       sidebar.webviewProtocol?.request("newSession", undefined);
     },
 
-    "continue.shareSession": async (sessionId: string | undefined) => {
+    "aicoder.shareSession": async (sessionId: string | undefined) => {
       if (!sessionId) {
         sessionId = await sidebar.webviewProtocol?.request(
           "getCurrentSessionId",
@@ -461,10 +461,10 @@ const getCommandsMap: (
         void vscode.window.showErrorMessage(errorMessage);
       }
     },
-    "continue.viewHistory": () => {
-      vscode.commands.executeCommand("continue.navigateTo", "/history", true);
+    "aicoder.viewHistory": () => {
+      vscode.commands.executeCommand("aicoder.navigateTo", "/history", true);
     },
-    "continue.focusContinueSessionId": async (
+    "aicoder.focusContinueSessionId": async (
       sessionId: string | undefined,
     ) => {
       if (!sessionId) {
@@ -476,13 +476,13 @@ const getCommandsMap: (
         sessionId,
       });
     },
-    "continue.applyCodeFromChat": () => {
+    "aicoder.applyCodeFromChat": () => {
       void sidebar.webviewProtocol.request("applyCodeFromChat", undefined);
     },
-    "continue.openConfigPage": () => {
-      vscode.commands.executeCommand("continue.navigateTo", "/config", false);
+    "aicoder.openConfigPage": () => {
+      vscode.commands.executeCommand("aicoder.navigateTo", "/config", false);
     },
-    "continue.selectFilesAsContext": async (
+    "aicoder.selectFilesAsContext": async (
       firstUri: vscode.Uri,
       uris: vscode.Uri[],
     ) => {
@@ -490,7 +490,7 @@ const getCommandsMap: (
         throw new Error("No files were selected");
       }
 
-      vscode.commands.executeCommand("continue.continueGUIView.focus");
+      vscode.commands.executeCommand("aicoder.continueGUIView.focus");
 
       for (const uri of uris) {
         // If it's a folder, add the entire folder contents recursively by using walkDir (to ignore ignored files)
@@ -516,25 +516,25 @@ const getCommandsMap: (
         }
       }
     },
-    "continue.logAutocompleteOutcome": (
+    "aicoder.logAutocompleteOutcome": (
       completionId: string,
       completionProvider: CompletionProvider,
     ) => {
       completionProvider.accept(completionId);
     },
-    "continue.logNextEditOutcomeAccept": (
+    "aicoder.logNextEditOutcomeAccept": (
       completionId: string,
       nextEditLoggingService: NextEditLoggingService,
     ) => {
       nextEditLoggingService.accept(completionId);
     },
-    "continue.logNextEditOutcomeReject": (
+    "aicoder.logNextEditOutcomeReject": (
       completionId: string,
       nextEditLoggingService: NextEditLoggingService,
     ) => {
       nextEditLoggingService.reject(completionId);
     },
-    "continue.toggleTabAutocompleteEnabled": () => {
+    "aicoder.toggleTabAutocompleteEnabled": () => {
       captureCommandTelemetry("toggleTabAutocompleteEnabled");
 
       const config = vscode.workspace.getConfiguration(EXTENSION_NAME);
@@ -570,7 +570,7 @@ const getCommandsMap: (
         }
       }
     },
-    "continue.forceAutocomplete": async () => {
+    "aicoder.forceAutocomplete": async () => {
       captureCommandTelemetry("forceAutocomplete");
 
       // 1. Explicitly hide any existing suggestion. This clears VS Code's cache for the current position.
@@ -582,7 +582,7 @@ const getCommandsMap: (
       );
     },
 
-    "continue.openTabAutocompleteConfigMenu": async () => {
+    "aicoder.openTabAutocompleteConfigMenu": async () => {
       captureCommandTelemetry("openTabAutocompleteConfigMenu");
 
       const config = vscode.workspace.getConfiguration(EXTENSION_NAME);
@@ -673,28 +673,28 @@ const getCommandsMap: (
             });
           }
         } else if (selectedOption === "$(comment) Open chat") {
-          vscode.commands.executeCommand("continue.focusContinueInput");
+          vscode.commands.executeCommand("aicoder.focusContinueInput");
         } else if (selectedOption === "$(screen-full) Open full screen chat") {
-          vscode.commands.executeCommand("continue.openInNewWindow");
+          vscode.commands.executeCommand("aicoder.openInNewWindow");
         } else if (selectedOption === "$(gear) Open settings") {
-          vscode.commands.executeCommand("continue.navigateTo", "/config");
+          vscode.commands.executeCommand("aicoder.navigateTo", "/config");
         }
 
         quickPick.dispose();
       });
       quickPick.show();
     },
-    "continue.navigateTo": (path: string, toggle: boolean) => {
+    "aicoder.navigateTo": (path: string, toggle: boolean) => {
       sidebar.webviewProtocol?.request("navigateTo", { path, toggle });
       focusGUI();
     },
-    "continue.startLocalOllama": () => {
+    "aicoder.startLocalOllama": () => {
       startLocalOllama(ide);
     },
-    "continue.startLocalLemonade": () => {
+    "aicoder.startLocalLemonade": () => {
       startLocalLemonade(ide);
     },
-    "continue.installModel": async (
+    "aicoder.installModel": async (
       modelName: string,
       llmProvider: ILLM | undefined,
     ) => {
@@ -713,7 +713,7 @@ const getCommandsMap: (
         );
       }
     },
-    "continue.convertConfigJsonToConfigYaml": async () => {
+    "aicoder.convertConfigJsonToConfigYaml": async () => {
       const configJson = fs.readFileSync(getConfigJsonPath(), "utf-8");
       const parsed = JSON.parse(configJson);
       const configYaml = convertJsonToYamlConfig(parsed);
@@ -743,7 +743,7 @@ const getCommandsMap: (
           }
         });
     },
-    "continue.enterEnterpriseLicenseKey": async () => {
+    "aicoder.enterEnterpriseLicenseKey": async () => {
       captureCommandTelemetry("enterEnterpriseLicenseKey");
 
       const licenseKey = await vscode.window.showInputBox({
@@ -779,7 +779,7 @@ const getCommandsMap: (
         );
       }
     },
-    "continue.toggleNextEditEnabled": async () => {
+    "aicoder.toggleNextEditEnabled": async () => {
       captureCommandTelemetry("toggleNextEditEnabled");
 
       const config = vscode.workspace.getConfiguration(EXTENSION_NAME);
@@ -803,7 +803,7 @@ const getCommandsMap: (
         vscode.ConfigurationTarget.Global,
       );
     },
-    "continue.openInNewWindow": async () => {
+    "aicoder.openInNewWindow": async () => {
       focusGUI();
 
       const sessionId = await sidebar.webviewProtocol.request(
@@ -820,14 +820,14 @@ const getCommandsMap: (
       }
 
       // Clear the sidebar to prevent overwriting changes made in fullscreen
-      vscode.commands.executeCommand("continue.newSession");
+      vscode.commands.executeCommand("aicoder.newSession");
 
       // Full screen not open - open it
       captureCommandTelemetry("openInNewWindow");
 
       // Create the full screen panel
       let panel = vscode.window.createWebviewPanel(
-        "continue.continueGUIView",
+        "aicoder.continueGUIView",
         "Continue",
         vscode.ViewColumn.One,
         {
@@ -847,10 +847,10 @@ const getCommandsMap: (
       );
 
       const sessionLoader = panel.onDidChangeViewState(() => {
-        vscode.commands.executeCommand("continue.newSession");
+        vscode.commands.executeCommand("aicoder.newSession");
         if (sessionId) {
           vscode.commands.executeCommand(
-            "continue.focusContinueSessionId",
+            "aicoder.focusContinueSessionId",
             sessionId,
           );
         }
@@ -862,7 +862,7 @@ const getCommandsMap: (
       panel.onDidDispose(
         () => {
           sidebar.resetWebviewProtocolWebview();
-          vscode.commands.executeCommand("continue.focusContinueInput");
+          vscode.commands.executeCommand("aicoder.focusContinueInput");
         },
         null,
         extensionContext.subscriptions,
@@ -871,7 +871,7 @@ const getCommandsMap: (
       vscode.commands.executeCommand("workbench.action.copyEditorToNewWindow");
       vscode.commands.executeCommand("workbench.action.closeAuxiliaryBar");
     },
-    "continue.forceNextEdit": async () => {
+    "aicoder.forceNextEdit": async () => {
       captureCommandTelemetry("forceNextEdit");
 
       // This is basically the same logic as forceAutocomplete.

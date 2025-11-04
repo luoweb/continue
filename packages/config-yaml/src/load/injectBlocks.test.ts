@@ -426,7 +426,7 @@ rules:
     const configStr = JSON.stringify(result.config);
     expect(configStr).not.toContain("inputs.userSetting");
     expect(configStr).toContain("secrets.apiKey");
-    expect(configStr).toContain("continue.workspaceRoot");
+    expect(configStr).toContain("aicoder.workspaceRoot");
   });
 
   it("adds source file information to injected blocks", async () => {

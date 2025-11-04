@@ -55,7 +55,7 @@
 
     <actions>
         <action class="com.github.continuedev.continueintellijextension.editor.InlineEditAction"
-                id="continue.inlineEdit"
+                id="aicoder.inlineEdit"
                 description="Inline Edit"
                 text="Inline Edit">
             <keyboard-shortcut keymap="$default"
@@ -65,7 +65,7 @@
             <override-text place="GoToAction" text="Continue: Edit Code"/>
         </action>
 
-        <action id="continue.acceptDiff"
+        <action id="aicoder.acceptDiff"
                 class="com.github.continuedev.continueintellijextension.actions.AcceptDiffAction"
                 text="Accept Diff" description="Accept Diff">
             <keyboard-shortcut keymap="$default"
@@ -75,14 +75,14 @@
             <override-text place="GoToAction" text="Continue: Accept Diff"/>
         </action>
 
-        <action id="continue.restartProcess"
+        <action id="aicoder.restartProcess"
                 class="com.github.continuedev.continueintellijextension.actions.RestartContinueProcess"
                 text="Restart Process"
                 description="Restart Process">
             <override-text place="GoToAction" text="Continue: Restart Process"/>
         </action>
 
-        <action id="continue.rejectDiff"
+        <action id="aicoder.rejectDiff"
                 class="com.github.continuedev.continueintellijextension.actions.RejectDiffAction"
                 text="Reject Diff" description="Reject Diff">
             <keyboard-shortcut keymap="$default"
@@ -92,7 +92,7 @@
             <override-text place="GoToAction" text="Continue: Reject Diff"/>
         </action>
 
-        <action id="continue.acceptVerticalDiffBlock"
+        <action id="aicoder.acceptVerticalDiffBlock"
                 class="com.github.continuedev.continueintellijextension.actions.AcceptDiffAction"
                 text="Accept Diff" description="Accept Vertical Diff Block">
             <keyboard-shortcut keymap="$default"
@@ -102,7 +102,7 @@
             <override-text place="GoToAction" text="Continue: Accept Vertical Diff Block"/>
         </action>
 
-        <action id="continue.rejectVerticalDiffBlock"
+        <action id="aicoder.rejectVerticalDiffBlock"
                 class="com.github.continuedev.continueintellijextension.actions.RejectDiffAction"
                 text="Reject Diff" description="Reject Vertical Diff Block">
             <keyboard-shortcut keymap="$default"
@@ -112,14 +112,14 @@
             <override-text place="GoToAction" text="Continue: Reject Vertical Diff Block"/>
         </action>
 
-        <action id="continue.addLicenseKey"
+        <action id="aicoder.addLicenseKey"
                 class="com.github.continuedev.continueintellijextension.license.AddLicenseKey"
                 text="Enter Enterprise License Key"
                 description="Enter Enterprise License Key">
             <override-text place="GoToAction" text="Continue: Enter Enterprise License Key"/>
         </action>
 
-        <action id="continue.focusContinueInputWithoutClear"
+        <action id="aicoder.focusContinueInputWithoutClear"
                 class="com.github.continuedev.continueintellijextension.actions.FocusContinueInputWithoutClearAction"
                 text="Add selected code to context"
                 description="Focus Continue Input With Edit">
@@ -130,7 +130,7 @@
             <override-text place="GoToAction" text="Continue: Add Highlighted Code to Context"/>
         </action>
 
-        <action id="continue.newContinueSession"
+        <action id="aicoder.newContinueSession"
                 icon="AllIcons.General.Add"
                 class="com.github.continuedev.continueintellijextension.actions.NewContinueSessionAction"
                 text="New Session"
@@ -139,7 +139,7 @@
             <override-text place="GoToAction" text="New Session"/>
         </action>
 
-        <action id="continue.viewHistory"
+        <action id="aicoder.viewHistory"
                 icon="AllIcons.Vcs.History"
                 class="com.github.continuedev.continueintellijextension.actions.ViewHistoryAction"
                 text="View History"
@@ -147,7 +147,7 @@
             <override-text place="GoToAction" text="View History"/>
         </action>
 
-        <action id="continue.openConfigPage"
+        <action id="aicoder.openConfigPage"
                 class="com.github.continuedev.continueintellijextension.actions.OpenConfigAction"
                 icon="AllIcons.General.GearPlain"
                 text="Settings"
@@ -155,7 +155,7 @@
             <override-text place="GoToAction" text="Settings"/>
         </action>
 
-        <action id="continue.openLogs"
+        <action id="aicoder.openLogs"
                 class="com.github.continuedev.continueintellijextension.actions.OpenLogsAction"
                 icon="AllIcons.General.ShowInfos"
                 text="Open Logs"
@@ -164,12 +164,12 @@
         </action>
 
         <group id="ContinueSidebarActionsGroup">
-            <reference ref="continue.newContinueSession"/>
-            <reference ref="continue.viewHistory"/>
-            <reference ref="continue.openConfigPage"/>
+            <reference ref="aicoder.newContinueSession"/>
+            <reference ref="aicoder.viewHistory"/>
+            <reference ref="aicoder.openConfigPage"/>
         </group>
 
-        <action id="continue.focusContinueInput"
+        <action id="aicoder.focusContinueInput"
                 class="com.github.continuedev.continueintellijextension.actions.FocusContinueInputAction"
                 text="Add selected code to context"
                 description="Focus Continue Input">
