@@ -23,7 +23,7 @@ $xsed 's#https://github.com/continuedev/continue#https://github.com/blockai/aico
 $xsed "s#continue#aicoder#g" ../../extensions/vscode/package.json
 $xsed "s#continue#aicoder#g" ../../extensions/vscode/package.json
 $xsed 's#"displayName":.*#"displayName": "分布式编码助手",#g' ../../extensions/vscode/package.json
-$xsed 's#"description":.*#"description": "编码智能体，助效能提升",#g' ../../extensions/vscode/package.json
+$xsed 's#"description":.*#"description": "编码智能体，助效能提升"#g' ../../extensions/vscode/package.json
 $xsed 's#"publisher":.*#"publisher": "roweb",#g' ../../extensions/vscode/package.json
 # $xsed 's#"title": "Continue",#"title": "分布式编码助手",#g' ../../extensions/vscode/package.json
 # $xsed 's#"title": "Continue Console",#"title": "编码助手控制台",#g' ../../extensions/vscode/package.json
