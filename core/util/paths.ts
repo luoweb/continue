@@ -159,7 +159,7 @@ export function getConfigTsPath(): string {
     fs.writeFileSync(
       packageJsonPath,
       JSON.stringify({
-        name: "continue-config",
+        name: "aicoder-config",
         version: "1.0.0",
         description: "My Continue Configuration",
         main: "config.js",

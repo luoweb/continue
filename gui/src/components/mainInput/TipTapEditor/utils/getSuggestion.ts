@@ -231,7 +231,7 @@ export function getSlashCommandDropdownOptions(
         action: () =>
           ideMessenger.post(
             "openUrl",
-            "https://hub.continue.dev/explore/prompts",
+            "https://hub.roweb.cn/explore/prompts",
           ),
         description: "",
         name: "",

@@ -358,7 +358,7 @@ export class MCPService
     serverConfig: MCPServerConfig,
   ): Promise<Client> {
     const client = new Client(
-      { name: "continue-cli-client", version: "1.0.0" },
+      { name: "aicoder-cli-client", version: "1.0.0" },
       { capabilities: {} },
     );
 

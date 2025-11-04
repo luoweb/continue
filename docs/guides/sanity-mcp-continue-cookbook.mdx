@@ -34,7 +34,7 @@ For all options, first:
   </Step>
 </Steps>
  <Warning>
-  To use agents in headless mode, you need a [Continue API key](https://hub.continue.dev/settings/api-keys) and proper environment variable configuration.
+  To use agents in headless mode, you need a [Continue API key](https://hub.roweb.cn/settings/api-keys) and proper environment variable configuration.
   </Warning>
 
 ## Getting Started with Sanity
@@ -72,14 +72,14 @@ After ensuring you meet the **Prerequisites** above, you have two paths to get s
   <Tab title="⚡ Quick Start (Recommended)">
     <Steps>
       <Step title="Load the Pre-Built Agent">
-        Visit the [Sanity Agent Config](https://hub.continue.dev/continuedev/sanity-agent-config) on Continue Hub and click **"Install Config"** or run:
+        Visit the [Sanity Agent Config](https://hub.roweb.cn/continuedev/sanity-agent-config) on Continue Hub and click **"Install Config"** or run:
         
         ```bash
         cn --config continuedev/sanity-agent-config
         ```
 
         This agent includes:
-        - **[Sanity MCP](https://hub.continue.dev/sanity/sanity-mcp)** pre-configured and ready to use
+        - **[Sanity MCP](https://hub.roweb.cn/sanity/sanity-mcp)** pre-configured and ready to use
         - **Content management rules** for best practices
         - **Schema optimization** guidelines
       </Step>
@@ -103,7 +103,7 @@ After ensuring you meet the **Prerequisites** above, you have two paths to get s
     </Steps>
 
     <Info>
-      **Why Use the Agent?** The pre-built Sanity Assistant agent provides consistent content management workflows and handles MCP configuration automatically, making it easier to get started with AI-powered CMS operations. Results are more consistent and debugging is easier thanks to the [Sanity MCP](https://hub.continue.dev/sanity/sanity-mcp) integration and pre-tested prompts.
+      **Why Use the Agent?** The pre-built Sanity Assistant agent provides consistent content management workflows and handles MCP configuration automatically, making it easier to get started with AI-powered CMS operations. Results are more consistent and debugging is easier thanks to the [Sanity MCP](https://hub.roweb.cn/sanity/sanity-mcp) integration and pre-tested prompts.
     </Info>
 
   </Tab>
@@ -111,18 +111,18 @@ After ensuring you meet the **Prerequisites** above, you have two paths to get s
   <Tab title="🛠️ Manual Setup">
 <Steps>
   <Step title="Create a New Agent via the Continue Hub">
-    Go to the [Continue Hub](https://hub.continue.dev) and [create a new agent](https://hub.continue.dev/new?type=agent).
+    Go to the [Continue Hub](https://hub.continue.dev) and [create a new agent](https://hub.roweb.cn/new?type=agent).
     </Step>
 
   <Step title="Connect Sanity MCP via Continue Hub">
-    Visit the [Sanity MCP on Continue Hub](https://hub.continue.dev/sanity/sanity-mcp) and click **"Install"** to add it to the agent you created in the step above.
+    Visit the [Sanity MCP on Continue Hub](https://hub.roweb.cn/sanity/sanity-mcp) and click **"Install"** to add it to the agent you created in the step above.
 
     This will add Sanity MCP to your agent's available tools. The Hub listing automatically configures the MCP connection.
 
     <Tip>
       **Alternative installation methods:**
       1. **Quick CLI install**: `cn --mcp sanity/sanity-mcp`
-      2. **With config**: Use [Sanity MCP Config](https://hub.continue.dev/sanity/sanity-mcp-config) for environment variable setup
+      2. **With config**: Use [Sanity MCP Config](https://hub.roweb.cn/sanity/sanity-mcp-config) for environment variable setup
       3. **Manual configuration**: Add the MCP to your agent configuration
 
       Once installed, Sanity MCP tools become available to your Continue agent for all prompts.
@@ -133,7 +133,7 @@ After ensuring you meet the **Prerequisites** above, you have two paths to get s
       - **Interactive mode**: OAuth authentication via browser (expires after 7 days)
       - **Headless/CI mode**: Uses environment variables (SANITY_API_TOKEN, SANITY_PROJECT_ID, etc.)
       
-      See [Sanity MCP Config](https://hub.continue.dev/sanity/sanity-mcp-config) for environment variable setup.
+      See [Sanity MCP Config](https://hub.roweb.cn/sanity/sanity-mcp-config) for environment variable setup.
     </Info>
 
   </Step>
@@ -392,14 +392,14 @@ cn -p "Analyze the performance of my most frequent GROQ queries and suggest opti
 
 Navigate to **Repository Settings → Secrets and variables → Actions** and add:
 
-- `CONTINUE_API_KEY`: Your Continue API key from [hub.continue.dev/settings/api-keys](https://hub.continue.dev/settings/api-keys)
+- `CONTINUE_API_KEY`: Your Continue API key from [hub.continue.dev/settings/api-keys](https://hub.roweb.cn/settings/api-keys)
 - `SANITY_PROJECT_ID`: Your Sanity project ID
 - `SANITY_DATASET`: Your Sanity dataset name (usually "production")
 - `SANITY_API_TOKEN`: Your Sanity API token with appropriate permissions
 - `MCP_USER_ROLE`: Your MCP user role (typically "admin" or "editor")
 
 <Info>
-  The workflow uses the [Sanity Agent Config](https://hub.continue.dev/continuedev/sanity-agent-config) with environment variable authentication via [Sanity MCP Config](https://hub.continue.dev/sanity/sanity-mcp-config). This enables headless mode operation without OAuth browser authentication.
+  The workflow uses the [Sanity Agent Config](https://hub.roweb.cn/continuedev/sanity-agent-config) with environment variable authentication via [Sanity MCP Config](https://hub.roweb.cn/sanity/sanity-mcp-config). This enables headless mode operation without OAuth browser authentication.
 </Info>
 
 ### Create Workflow File
@@ -485,7 +485,7 @@ jobs:
 ```
 
 <Info>
-  Environment variables enable the MCP to authenticate without OAuth browser prompts. The [Sanity MCP Config](https://hub.continue.dev/sanity/sanity-mcp-config) documentation provides detailed setup instructions for all required variables.
+  Environment variables enable the MCP to authenticate without OAuth browser prompts. The [Sanity MCP Config](https://hub.roweb.cn/sanity/sanity-mcp-config) documentation provides detailed setup instructions for all required variables.
 </Info>
 
 ## Content Management Best Practices
@@ -547,7 +547,7 @@ then provide a corrected version that achieves the intended result."
 
 <Check>
   **Verification Steps:**
-  - Sanity MCP is installed via [Continue Hub](https://hub.continue.dev/sanity/sanity-mcp)
+  - Sanity MCP is installed via [Continue Hub](https://hub.roweb.cn/sanity/sanity-mcp)
   - Project is authenticated with Sanity
   - Schema files are present and valid
   - Dataset permissions are correctly configured

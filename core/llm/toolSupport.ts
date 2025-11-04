@@ -3,10 +3,10 @@ import { ModelDescription } from "..";
 
 export const PROVIDER_TOOL_SUPPORT: Record<string, (model: string) => boolean> =
   {
-    "continue-proxy": (model) => {
+    "aicoder-proxy": (model) => {
       try {
         const { provider, model: _model } = parseProxyModelName(model);
-        if (provider && _model && provider !== "continue-proxy") {
+        if (provider && _model && provider !== "aicoder-proxy") {
           const fn = PROVIDER_TOOL_SUPPORT[provider];
           if (fn) {
             return fn(_model);

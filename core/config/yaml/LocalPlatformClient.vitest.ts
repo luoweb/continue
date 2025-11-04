@@ -135,7 +135,7 @@ describe("LocalPlatformClient", () => {
 
       const originalIdeReadFile = testIde.readFile;
       const randomValueForContinueDirDotEnv =
-        "continue-dir-" + Math.floor(Math.random() * 100);
+        "aicoder-dir-" + Math.floor(Math.random() * 100);
       const randomValueForWorkspaceDotEnv =
         "dotenv-" + Math.floor(Math.random() * 100);
 
@@ -188,7 +188,7 @@ describe("LocalPlatformClient", () => {
       );
 
       const randomValueForContinueDirDotEnv =
-        "continue-dir-" + Math.floor(Math.random() * 100);
+        "aicoder-dir-" + Math.floor(Math.random() * 100);
       const randomValueForWorkspaceDotEnv =
         "dotenv-" + Math.floor(Math.random() * 100);
 

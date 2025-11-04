@@ -504,7 +504,7 @@ export default class DocsService {
     // This particular failure will not mark as a failed config in global context
     // Since SiteIndexingConfig is likely to be valid
     try {
-      await provider.embed(["continue-test-run"]);
+      await provider.embed(["aicoder-test-run"]);
     } catch (e) {
       if (e instanceof LLMError) {
         // Report the error to the IDE

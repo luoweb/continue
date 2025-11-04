@@ -51,7 +51,7 @@ class ContinueProxy extends OpenAI {
     }
   }
 
-  static providerName = "continue-proxy";
+  static providerName = "aicoder-proxy";
   static defaultOptions: Partial<LLMOptions> = {
     useLegacyCompletionsEndpoint: false,
   };

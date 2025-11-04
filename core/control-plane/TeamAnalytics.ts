@@ -19,7 +19,7 @@ function createAnalyticsProvider(
       return new PostHogAnalyticsProvider();
     case "logstash":
       return new LogStashAnalyticsProvider();
-    case "continue-proxy":
+    case "aicoder-proxy":
       return new ContinueProxyAnalyticsProvider();
     default:
       return undefined;
@@ -58,7 +58,7 @@ export class TeamAnalytics {
       controlPlaneProxyInfo,
     );
 
-    if (config.provider === "continue-proxy") {
+    if (config.provider === "aicoder-proxy") {
       (
         TeamAnalytics.provider as ContinueProxyAnalyticsProvider
       ).controlPlaneClient = controlPlaneClient;

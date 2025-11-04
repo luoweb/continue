@@ -33,12 +33,12 @@ For all options, first:
   </Step>
 
 <Step title="Configure GitHub Token">
-  Add your `GITHUB_TOKEN` to your [Continue Hub agent's environment variables](https://hub.continue.dev/settings).
+  Add your `GITHUB_TOKEN` to your [Continue Hub agent's environment variables](https://hub.roweb.cn/settings).
   </Step>
 </Steps>
 
 <Warning>
-  To use agents in headless mode, you need a [Continue API key](https://hub.continue.dev/settings/api-keys).
+  To use agents in headless mode, you need a [Continue API key](https://hub.roweb.cn/settings/api-keys).
   For write actions (e.g., posting comments), your token must include the relevant GitHub scopes.
 </Warning>
 
@@ -54,7 +54,7 @@ After ensuring you meet the **Prerequisites** above, you have two paths to get s
   <Tab title="⚡ Quick Start (Recommended)">
     <Steps>
       <Step title="Install GitHub MCP via Continue Hub">
-        Visit the [Anthropic GitHub MCP](https://hub.continue.dev/anthropic/github-mcp) on Continue Hub and click **Install** to add it to your agent.
+        Visit the [Anthropic GitHub MCP](https://hub.roweb.cn/anthropic/github-mcp) on Continue Hub and click **Install** to add it to your agent.
 
         The listing provides a pre-configured MCP block; add your `GITHUB_TOKEN` in Hub.
       </Step>
@@ -76,7 +76,7 @@ After ensuring you meet the **Prerequisites** above, you have two paths to get s
   <Tab title="🛠️ Manual Setup">
     <Steps>
       <Step title="Create a New Agent on Continue Hub">
-        Go to the [Continue Hub](https://hub.continue.dev) and [create a new agent](https://hub.continue.dev/new?type=agent).
+        Go to the [Continue Hub](https://hub.continue.dev) and [create a new agent](https://hub.roweb.cn/new?type=agent).
       </Step>
 
       <Step title="Add GitHub MCP">
@@ -271,7 +271,7 @@ Run headless commands on a schedule or in PRs to keep teams informed.
 
 Repository Settings → Secrets and variables → Actions:
 
-- `CONTINUE_API_KEY`: From [hub.continue.dev/settings/api-keys](https://hub.continue.dev/settings/api-keys)
+- `CONTINUE_API_KEY`: From [hub.continue.dev/settings/api-keys](https://hub.roweb.cn/settings/api-keys)
 - `GITHUB_TOKEN`: A token with permissions to read issues/PRs and post comments
 
 ### Example Workflow
@@ -360,13 +360,13 @@ After completing this guide, you have a complete **AI-powered GitHub workflow sy
 ## Additional Resources
 
 <CardGroup cols={2}>
-  <Card title="GitHub MCP (Anthropic)" icon="link" href="https://hub.continue.dev/anthropic/github-mcp">
+  <Card title="GitHub MCP (Anthropic)" icon="link" href="https://hub.roweb.cn/anthropic/github-mcp">
     Anthropic GitHub MCP on Continue Hub
   </Card>
   <Card title="MCP in Continue" icon="book" href="/customize/deep-dives/mcp">
     How MCP works with Continue agents
   </Card>
-  <Card title="GitHub Manager AI Agent" icon="robot" href="https://hub.continue.dev/continuedev/github-manager-ai">
+  <Card title="GitHub Manager AI Agent" icon="robot" href="https://hub.roweb.cn/continuedev/github-manager-ai">
     Pre-configured agent on Continue Hub
   </Card>
   <Card title="GitHub MCP Server" icon="link" href="https://github.com/github/github-mcp-server/blob/main/README.md">

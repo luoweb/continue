@@ -90,7 +90,7 @@ class TelemetryService {
     try {
       // Create resource
       const resource = resourceFromAttributes({
-        [SEMRESATTRS_SERVICE_NAME]: "continue-cli",
+        [SEMRESATTRS_SERVICE_NAME]: "aicoder-cli",
         [SEMRESATTRS_SERVICE_VERSION]: getVersion(),
         [SEMRESATTRS_HOST_NAME]: os.hostname(),
         [SEMRESATTRS_DEPLOYMENT_ENVIRONMENT]:
@@ -153,7 +153,7 @@ class TelemetryService {
       });
 
       metrics.setGlobalMeterProvider(this.meterProvider);
-      this.meter = metrics.getMeter("continue-cli", getVersion());
+      this.meter = metrics.getMeter("aicoder-cli", getVersion());
 
       this.initializeMetrics();
 

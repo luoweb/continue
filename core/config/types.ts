@@ -809,7 +809,7 @@ declare global {
     | "currentFile"
     | "greptile"
     | "outline"
-    | "continue-proxy"
+    | "aicoder-proxy"
     | "highlights"
     | "file"
     | "issue"

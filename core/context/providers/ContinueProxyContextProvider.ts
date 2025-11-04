@@ -10,7 +10,7 @@ import { BaseContextProvider } from "../index.js";
 
 class ContinueProxyContextProvider extends BaseContextProvider {
   static description: ContextProviderDescription = {
-    title: "continue-proxy",
+    title: "aicoder-proxy",
     displayTitle: "Continue Proxy",
     description: "Retrieve a context item from a Continue for Teams add-on",
     type: "submenu",

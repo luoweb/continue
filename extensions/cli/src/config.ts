@@ -52,7 +52,7 @@ export function createLlmApi(
   const organizationId = getOrganizationId(authConfig);
 
   const config: LLMConfig =
-    model.provider === "continue-proxy"
+    model.provider === "aicoder-proxy"
       ? {
           provider: model.provider,
           requestOptions: mergeUserAgentIntoRequestOptions(

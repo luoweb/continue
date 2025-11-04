@@ -82,7 +82,7 @@ class MCPConnection {
 
     this.client = new Client(
       {
-        name: "continue-client",
+        name: "aicoder-client",
         version: "1.0.0",
       },
       {

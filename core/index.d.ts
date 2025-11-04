@@ -996,7 +996,7 @@ export type ContextProviderName =
   | "currentFile"
   | "greptile"
   | "outline"
-  | "continue-proxy"
+  | "aicoder-proxy"
   | "highlights"
   | "file"
   | "issue"

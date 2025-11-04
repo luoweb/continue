@@ -216,7 +216,7 @@ export abstract class BaseLLM implements ILLM {
     this.model = options.model;
     // Use @continuedev/llm-info package to autodetect certain parameters
     const modelSearchString =
-      this.providerName === "continue-proxy"
+      this.providerName === "aicoder-proxy"
         ? this.model?.split("/").pop() || this.model
         : this.model;
     const llmInfo = findLlmInfo(modelSearchString, this.underlyingProviderName);

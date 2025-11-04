@@ -58,7 +58,7 @@ For all options, first:
   **Important**: The Snyk MCP requires the Snyk CLI to be authenticated locally. Run `snyk auth` to authenticate before using the Continue agent with Snyk MCP.
 </Note>
  <Warning>
-  To use agents in headless mode, you need a [Continue API key](https://hub.continue.dev/settings/api-keys).
+  To use agents in headless mode, you need a [Continue API key](https://hub.roweb.cn/settings/api-keys).
   </Warning>
 
 ## Snyk Continuous AI Workflow Options
@@ -105,11 +105,11 @@ After ensuring you meet the **Prerequisites** above, you have two paths to get s
   <Tab title="🛠️ Manual Setup">
 <Steps>
   <Step title="Create a New Agent via the Continue Hub">
-    Go to the [Continue Hub](https://hub.continue.dev) and [create a new agent](https://hub.continue.dev/new?type=agent).
+    Go to the [Continue Hub](https://hub.continue.dev) and [create a new agent](https://hub.roweb.cn/new?type=agent).
     </Step>
 
   <Step title="Connect Snyk MCP via Continue Hub">
-    Visit the [Snyk MCP on Continue Hub](https://hub.continue.dev/snyk/snyk-mcp) and click **Install** to add it to the agent you created in the step above.
+    Visit the [Snyk MCP on Continue Hub](https://hub.roweb.cn/snyk/snyk-mcp) and click **Install** to add it to the agent you created in the step above.
 
     This will add Snyk MCP to your agent's available tools. The Hub listing automatically configures the MCP command:
     ```bash
@@ -132,7 +132,7 @@ After ensuring you meet the **Prerequisites** above, you have two paths to get s
   </Step>
 
   <Step title="Add Secure-at-Inception Rules">
-    Install the [Snyk Secure-at-Inception rules](https://hub.continue.dev/snyk/secure-at-inception) from the Hub to enable automatic security scanning.
+    Install the [Snyk Secure-at-Inception rules](https://hub.roweb.cn/snyk/secure-at-inception) from the Hub to enable automatic security scanning.
 
     **How to add rules to your agent:**
     1. Visit the rules link above and click **Install**
@@ -314,7 +314,7 @@ This example demonstrates a **Continuous AI workflow** where security scanning r
 
 Navigate to **Repository Settings → Secrets and variables → Actions** and add:
 
-- `CONTINUE_API_KEY`: Your Continue API key from [hub.continue.dev/settings/api-keys](https://hub.continue.dev/settings/api-keys)
+- `CONTINUE_API_KEY`: Your Continue API key from [hub.continue.dev/settings/api-keys](https://hub.roweb.cn/settings/api-keys)
 - `SNYK_TOKEN`: Your Snyk authentication token from [app.snyk.io/account](https://app.snyk.io/account)
 
 ### Create Workflow File
@@ -652,8 +652,8 @@ then rerun the same Snyk scan to confirm resolution."
 
 <Check>
   **Verification Steps:** - Snyk MCP is installed via [Continue
-  Hub](https://hub.continue.dev/snyk/snyk-mcp) - Secure-at-Inception rules are
-  [enabled](https://hub.continue.dev/snyk/secure-at-inception) - Authentication
+  Hub](https://hub.roweb.cn/snyk/snyk-mcp) - Secure-at-Inception rules are
+  [enabled](https://hub.roweb.cn/snyk/secure-at-inception) - Authentication
   completed successfully - Project folder has been trusted
 </Check>
 

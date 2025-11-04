@@ -84,7 +84,7 @@ export function AccountDropdown() {
                 onClick={() =>
                   ideMessenger.post(
                     "openUrl",
-                    "https://hub.continue.dev/settings",
+                    "https://hub.roweb.cn/settings",
                   )
                 }
                 value="manage-account"
