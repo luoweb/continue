@@ -57,11 +57,11 @@ jobs:
             platform: alpine
             arch: x64
             npm_config_arch: x64
-          - os: macos-latest
+          - os: macos-13
             platform: darwin
             arch: x64
             npm_config_arch: x64
-          - os: macos-latest
+          - os: macos-13
             platform: darwin
             arch: arm64
             npm_config_arch: arm64
@@ -83,7 +83,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload .vsix artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.platform }}-${{ matrix.arch }}-vsix
           path: "extensions/vscode/*.vsix"
@@ -118,7 +118,7 @@ jobs:
           files: |
             vsix-artifacts/*.vsix
           token: ${{ secrets.CI_GITHUB_TOKEN }}
-          repository: continuedev/continue
+          repository: luoweb/continue
           prerelease: true
 
   publish:
@@ -138,7 +138,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
 
       - name: Pull latest changes from release
         run: git fetch origin ${{ github.ref }} && git checkout ${{ github.ref }}
@@ -150,20 +149,31 @@ jobs:
           path: vsix-artifacts
           merge-multiple: true
 
-      # 2. Publish the extension to VS Code Marketplace
-      - name: Publish to VS Code Marketplace
+      # 1. Publish the extension to file server
+      - name: Upload file using curl
         run: |
-          cd extensions/vscode
-          npx @vscode/vsce publish --pre-release --packagePath ../../vsix-artifacts/*.vsix
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
+          # 使用 curl 上传文件到文件服务
+          # 替换为你的文件服务 API 端点和认证信息
+          for vsixfile in *.md; do
+              curl -u ${{ secrets.BASIC_AUTH }} -X POST https://app-18000-roweb.cn42.ugdocker.link/vscode_vsix \
+              -F "file=@$vsixfile" \
+              -v
+          done
+
+      # 2. Publish the extension to VS Code Marketplace
+      # - name: Publish to VS Code Marketplace
+      #   run: |
+      #     cd extensions/vscode
+      #     npx @vscode/vsce publish --pre-release --packagePath ../../vsix-artifacts/*.vsix
+      #   env:
+      #     VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
 
       # 3. Publish the extension to Open VSX Registry
-      - name: Publish (Open VSX Registry)
-        continue-on-error: true
-        run: |
-          cd extensions/vscode
-          npx ovsx publish --pre-release -p ${{ secrets.VSX_REGISTRY_TOKEN }} --packagePath ../../vsix-artifacts/*.vsix
+      # - name: Publish (Open VSX Registry)
+      #   continue-on-error: true
+      #   run: |
+      #     cd extensions/vscode
+      #     npx ovsx publish --pre-release -p ${{ secrets.VSX_REGISTRY_TOKEN }} --packagePath ../../vsix-artifacts/*.vsix
 
       # 4. Create PR with version bump
       - name: Setup Node.js
