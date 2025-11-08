@@ -187,7 +187,7 @@ jobs:
         run: |
           cd ../../extensions/
           sh -x custom.sh
-          cd ../../gui
+          cd ../gui
           npm ci
           npm run build
         env:
