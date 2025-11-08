@@ -144,7 +144,7 @@
         "aicoder.remoteConfigSyncPeriod": {
           "type": "number",
           "default": 60,
-          "description": "编码智能体，助效能提升"
+          "description": "The period of time in minutes between automatic syncs."
         }
       }
     },

@@ -1,6 +1,5 @@
 import {
   ArrowPathIcon,
-  ArrowRightStartOnRectangleIcon,
   Cog6ToothIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
@@ -249,7 +248,7 @@ export function AssistantAndOrgListbox({
                     <span className="text-2xs">Reload</span>
                   </div>
                 </Button>
-                {session ? (
+                {/* {session ? (
                   <Button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -282,6 +281,7 @@ export function AssistantAndOrgListbox({
                     </div>
                   </Button>
                 )}
+                */}
 
                 <Divider className="!mt-0" />
               </div>
