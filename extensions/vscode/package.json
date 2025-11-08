@@ -53,7 +53,7 @@
   "activationEvents": [
     "onUri",
     "onStartupFinished",
-    "onView:aicoderGUIView"
+    "onView:continueGUIView"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -84,22 +84,22 @@
       }
     ],
     "configuration": {
-      "title": "Continue",
+      "title": "分布式编码助手",
       "properties": {
         "aicoder.telemetryEnabled": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Continue collects anonymous usage data, cleaned of PII, to help us improve the product for our users. Read more  at [aicoder.dev › Telemetry](https://docs.aicoder.dev/telemetry)."
+          "markdownDescription": "AiCoder collects anonymous usage data, cleaned of PII, to help us improve the product for our users. Read more  at [aicoder.dev › Telemetry](https://docs.aicoder.dev/telemetry)."
         },
         "aicoder.showInlineTip": {
           "type": "boolean",
           "default": true,
-          "description": "编码智能体，助效能提升"
+          "description": "Show inline suggestion to use the Continue keyboard shortcuts (e.g. \"Cmd/Ctrl L to select code, Cmd/Ctrl I to edit\")."
         },
         "aicoder.disableQuickFix": {
           "type": "boolean",
           "default": false,
-          "description": "编码智能体，助效能提升"
+          "description": "Disable the quick fix feature."
         },
         "aicoder.enableQuickActions": {
           "type": "boolean",
@@ -151,234 +151,234 @@
     "commands": [
       {
         "command": "aicoder.applyCodeFromChat",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Apply code from chat",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.acceptDiff",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Accept Diff",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.rejectDiff",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Reject Diff",
-        "group": "Continue",
+        "group": "aicoder",
         "icon": "$(stop)"
       },
       {
         "command": "aicoder.acceptVerticalDiffBlock",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Accept Vertical Diff Block",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.rejectVerticalDiffBlock",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Reject Vertical Diff Block",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.focusEdit",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Add to Edit",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.focusContinueInput",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Add Highlighted Code to Context and Clear Chat",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.focusContinueInputWithoutClear",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Add to Chat",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.debugTerminal",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Debug Terminal",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.exitEditMode",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Exit Edit Mode",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.openConfigPage",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Open Settings",
         "icon": "$(gear)",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.toggleTabAutocompleteEnabled",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Toggle Autocomplete Enabled",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.forceAutocomplete",
-        "title": "Continue: Force Autocomplete",
-        "category": "Continue"
+        "title": "AiCoder: Force Autocomplete",
+        "category": "AiCoder"
       },
       {
         "command": "aicoder.selectFilesAsContext",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Select Files as Context",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.newSession",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "New Session",
         "icon": "$(add)",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.shareSession",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Share Current Chat Session as Markdown",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.viewHistory",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "View History",
         "icon": "$(history)",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.viewLogs",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "View History",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.clearConsole",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Clear Console",
         "icon": "$(clear-all)",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.navigateTo",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Navigate to a path",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.writeCommentsForCode",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Write Comments for this Code",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.writeDocstringForCode",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Write a Docstring for this Code",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.fixCode",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Fix this Code",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.optimizeCode",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Optimize this Code",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.fixGrammar",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Fix Grammar / Spelling",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.codebaseForceReIndex",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Codebase Force Re-Index",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.rebuildCodebaseIndex",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Rebuild codebase index",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.docsIndex",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Docs Index",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.docsReIndex",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Docs Force Re-Index",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.focusContinueInput",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Focus Continue Chat",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.enterEnterpriseLicenseKey",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Enter Enterprise License Key",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.toggleNextEditEnabled",
-        "title": "Continue: Toggle Next Edit"
+        "title": "AiCoder: Toggle Next Edit"
       },
       {
         "command": "aicoder.nextEditWindow.hideNextEditSuggestion",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Hide Next Edit Suggestion"
       },
       {
         "command": "aicoder.nextEditWindow.acceptNextEditSuggestion",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Accept Next Edit Suggestion"
       },
       {
         "command": "aicoder.forceNextEdit",
-        "category": "Continue",
-        "title": "Continue: Force Next Edit"
+        "category": "aicoder",
+        "title": "AiCoder: Force Next Edit"
       },
       {
         "command": "aicoder.acceptJump",
-        "category": "Continue",
-        "title": "Continue: Accept Jump Suggestion"
+        "category": "aicoder",
+        "title": "AiCoder: Accept Jump Suggestion"
       },
       {
         "command": "aicoder.rejectJump",
-        "category": "Continue",
-        "title": "Continue: Reject Jump Suggestion"
+        "category": "aicoder",
+        "title": "AiCoder: Reject Jump Suggestion"
       },
       {
         "command": "aicoder.generateRule",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Generate Rule",
-        "group": "Continue"
+        "group": "aicoder"
       },
       {
         "command": "aicoder.openInNewWindow",
-        "category": "Continue",
+        "category": "aicoder",
         "title": "Open in new window",
-        "group": "Continue"
+        "group": "aicoder"
       }
     ],
     "keybindings": [
@@ -502,7 +502,7 @@
     "submenus": [
       {
         "id": "aicoder.aicoderSubMenu",
-        "label": "Continue"
+        "label": "分布式编码助手"
       }
     ],
     "menus": {
@@ -538,18 +538,18 @@
       "editor/title/run": [
         {
           "command": "aicoder.rejectDiff",
-          "group": "Continue",
+          "group": "aicoder",
           "when": "aicoder.streamingDiff"
         }
       ],
       "aicoder.aicoderSubMenu": [
         {
           "command": "aicoder.focusContinueInputWithoutClear",
-          "group": "Continue"
+          "group": "aicoder"
         },
         {
           "command": "aicoder.focusEdit",
-          "group": "Continue",
+          "group": "aicoder",
           "when": "!editorReadonly"
         }
       ],
@@ -563,17 +563,17 @@
         {
           "command": "aicoder.newSession",
           "group": "navigation@1",
-          "when": "view == aicoder.aicoderGUIView"
+          "when": "view == aicoder.continueGUIView"
         },
         {
           "command": "aicoder.viewHistory",
           "group": "navigation@2",
-          "when": "view == aicoder.aicoderGUIView"
+          "when": "view == aicoder.continueGUIView"
         },
         {
           "command": "aicoder.openConfigPage",
           "group": "navigation@4",
-          "when": "view == aicoder.aicoderGUIView"
+          "when": "view == aicoder.continueGUIView"
         },
         {
           "command": "aicoder.clearConsole",
@@ -585,12 +585,12 @@
         {
           "command": "aicoder.newSession",
           "group": "navigation@1",
-          "when": "activeWebviewPanelId == aicoder.aicoderGUIView"
+          "when": "activeWebviewPanelId == aicoder.continueGUIView"
         },
         {
           "command": "aicoder.viewHistory",
           "group": "navigation@2",
-          "when": "activeWebviewPanelId == aicoder.aicoderGUIView"
+          "when": "activeWebviewPanelId == aicoder.continueGUIView"
         }
       ],
       "terminal/context": [
@@ -604,14 +604,14 @@
       "activitybar": [
         {
           "id": "aicoder",
-          "title": "Continue",
+          "title": "AiCoder",
           "icon": "media/sidebar-icon.png"
         }
       ],
       "panel": [
         {
           "id": "aicoderConsole",
-          "title": "Continue Console",
+          "title": "AiCoder Console",
           "icon": "$(window)"
         }
       ]
@@ -620,8 +620,8 @@
       "aicoder": [
         {
           "type": "webview",
-          "id": "aicoder.aicoderGUIView",
-          "name": "Continue",
+          "id": "aicoder.continueGUIView",
+          "name": "分布式编码助手",
           "icon": "media/sidebar-icon.png",
           "visibility": "visible"
         }
@@ -630,7 +630,7 @@
         {
           "type": "webview",
           "id": "aicoder.aicoderConsoleView",
-          "name": "Continue Console",
+          "name": "AiCoder Console",
           "icon": "$(window)",
           "visibility": "visible",
           "when": "config.aicoder.enableConsole"

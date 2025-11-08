@@ -23,8 +23,8 @@ $xsed 's#https://github.com/continuedev/continue#https://github.com/blockai/aico
 $xsed "s#continue#aicoder#g" ../../extensions/vscode/package.json
 $xsed "s#continue#aicoder#g" ../../extensions/vscode/package.json
 $xsed 's#"displayName":.*#"displayName": "分布式编码助手",#g' ../../extensions/vscode/package.json
-$xsed 's#  "description":.*,#  "description": "编码智能体，助效能提升",#g' ../../extensions/vscode/package.json
-$xsed 's#          "description":.*#          "description": "编码智能体，助效能提升"#g' ../../extensions/vscode/package.json
+$xsed 's#  "description": "The leading open-source AI code agent",#  "description": "编码智能体，助效能提升",#g' ../../extensions/vscode/package.json
+# $xsed 's#          "description":.*#          "description": "编码智能体，助效能提升"#g' ../../extensions/vscode/package.json
 $xsed 's#"publisher":.*#"publisher": "roweb",#g' ../../extensions/vscode/package.json
 # $xsed 's#"title": "Continue",#"title": "分布式编码助手",#g' ../../extensions/vscode/package.json
 # $xsed 's#"title": "Continue Console",#"title": "编码助手控制台",#g' ../../extensions/vscode/package.json
@@ -37,7 +37,8 @@ $xsed 's#"publisher":.*#"publisher": "roweb",#g' ../../extensions/vscode/package
 find ../../ -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mdx" | grep -v node_modules | grep -v Start | xargs $xsed 's#https://hub.continue.dev/#https://hub.roweb.cn/#g'
 find ../../ -type f -name "*.json" -o -name "*.xml" -o -name "*.ts" | grep -v node_modules | grep -v Start | grep -v run | xargs $xsed 's#"continue-#"aicoder-#g'
 find ../../ -type f -name "*.json" -o -name "*.xml" -o -name "*.ts" | grep -v node_modules | grep -v Start | grep -v run | xargs $xsed 's#"continue\.#"aicoder.#g'
-find ../../ -type f -name "*.md" -o -name "*.json" -o -name "*.mdx" | grep -v node_modules | grep -v Start | grep -v run | xargs $xsed 's#"Continue.continue#"Roweb.aicoder#g'
+find ../../ -type f -name "*.md" -o -name "*.json" -o -name "*.mdx" -o -name "*.ts" | grep -v node_modules | grep -v Start | grep -v run | xargs $xsed 's#"Continue.continue#"Roweb.aicoder#g'
+find ../../ -type f -name "*.md" -o -name "*.json" -o -name "*.mdx"  -o -name "*.ts" | grep -v node_modules | grep -v Start | grep -v run | xargs $xsed 's#"aicoder.continue#"aicoder.aicoder#g'
 # find ../web -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" | grep -v node_modules | xargs $xsed "s#logo-monochrome-white.svg#logo-monochrome-white-llmapp.svg#g"
 # find ../web -type f -name "*.ts" -o -name "*.tsx" | xargs grep -E "[ '>\"]Dify[ '<\"\$\`]" | grep -vE "default as Dify |Dify.json|embedded-chatbot/index.tsx"
 # find ../web -type f -name "*.ts" -o -name "*.tsx" | xargs grep -E "[ '>\"]Dify[ '<\"\$\`]" | grep -vE "default as Dify |Dify.json|embedded-chatbot/index.tsx" | awk -F ':' '{print $1}' | xargs -I@ sh -c "sed -i.bak 's#Dify#LLMAI#g' '@'"
