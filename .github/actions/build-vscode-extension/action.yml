@@ -100,7 +100,7 @@ runs:
         cd core
         npm ci
         npm i vectordb
-        cd extensions/
+        cd ../extensions/
         bash -x custom.sh
 
     - name: Build GUI
