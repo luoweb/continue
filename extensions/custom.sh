@@ -24,6 +24,7 @@ echo "ui custom"
 TARGET_FILE=${baseDir}/../gui/src/components/OnboardingCard/components/OnboardingCardLanding.tsx
 
 $xsed 's#<p className="mb-5 mt-0 w-full text-sm">#\{/*<p className="mb-5 mt-0 w-full text-sm">#g' ${TARGET_FILE}
+$xsed 's#<ContinueLogo height={75} />#{/* <ContinueLogo height={75} /> */}#g' ${TARGET_FILE}
 $xsed '/Log in to Continue Hub/ { n; s#$#*/\}#; }'  ${TARGET_FILE}
 $xsed 's#Or, configure your own models#Configure your own models#g'  ${TARGET_FILE}
 
@@ -63,6 +64,7 @@ $xsed 's#aicoderdev/fetch":#continuedev/fetch":#g' ${baseDir}/../extensions/vsco
 echo "########## spec code replace ########## "
 $xsed 's#EXTENSION_NAME = "continue"#EXTENSION_NAME = "aicoder"#g' ${baseDir}/../core/control-plane/env.ts
 $xsed 's#"Continue.continue"#"Roweb.aicoder"#g' ${baseDir}/../extensions/vscode/src/util/vscode.ts
+$xsed 's#Continue#AICODER#g' ${baseDir}/../*.md
 
 echo "########## spec code batch replace ########## "
 
