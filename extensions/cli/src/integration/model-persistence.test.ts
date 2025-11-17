@@ -19,7 +19,7 @@ describe("Model Persistence Integration", () => {
 
   beforeEach(() => {
     // Create a temporary directory for testing
-    testDir = fs.mkdtempSync(path.join(os.tmpdir(), "continue-test-"));
+    testDir = fs.mkdtempSync(path.join(os.tmpdir(), "aicoder-test-"));
     originalContinueHome = process.env.CONTINUE_GLOBAL_DIR;
     process.env.CONTINUE_GLOBAL_DIR = testDir;
 

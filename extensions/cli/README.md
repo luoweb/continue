@@ -1,8 +1,8 @@
-# Continue CLI
+# AICODER CLI
 
-The Continue CLI (`cn`) is a customizable command line coding agent.
+The AICODER CLI (`cn`) is a customizable command line coding agent.
 
-![Continue CLI Demo](./media/demo.gif)
+![AICODER CLI Demo](./media/demo.gif)
 
 ## Installation
 
@@ -46,13 +46,13 @@ cn ls --json
 
 ## Environment Variables
 
-- `CONTINUE_CLI_DISABLE_COMMIT_SIGNATURE`: Disable adding the Continue commit signature to generated commit messages
+- `CONTINUE_CLI_DISABLE_COMMIT_SIGNATURE`: Disable adding the AICODER commit signature to generated commit messages
 
 ## Commands
 
 - `cn`: Start an interactive chat session
 - `cn ls`: List recent sessions with TUI selector to choose one to resume
-- `cn login`: Authenticate with Continue
+- `cn login`: Authenticate with AICODER
 - `cn logout`: Sign out of current session
 - `cn remote`: Launch a remote instance
 - `cn serve`: Start HTTP server mode

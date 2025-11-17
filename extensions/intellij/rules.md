@@ -1,8 +1,8 @@
-# Continue JetBrains Extension
+# AICODER JetBrains Extension
 
 ## Project Purpose
 
-JetBrains/IntelliJ extension for Continue AI code agent. Provides chat, autocomplete, inline edit, and agent features within JetBrains IDEs.
+JetBrains/IntelliJ extension for AICODER AI code agent. Provides chat, autocomplete, inline edit, and agent features within JetBrains IDEs.
 
 ## Architecture
 
@@ -35,7 +35,7 @@ src/main/resources/
 - `CoreMessenger.kt`: Binary communication handler
 - `plugin.xml`: Plugin manifest and extension points
 - `build.gradle.kts`: Build configuration
-- `ContinuePluginService.kt`: Main service orchestrator
+- `AICODERPluginService.kt`: Main service orchestrator
 
 ## Message Protocol
 

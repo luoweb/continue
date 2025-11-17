@@ -15,7 +15,7 @@
     }
   ],
   "analytics": {
-    "provider": "continue-proxy"
+    "provider": "aicoder-proxy"
   },
   "tabAutocompleteModel": {
     "title": "TEST LLM",

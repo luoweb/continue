@@ -13,7 +13,7 @@ describe("onboarding config flag handling", () => {
 
   beforeEach(() => {
     // Create a temporary directory for test config files
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "continue-test-"));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "aicoder-test-"));
 
     // Create a minimal auth config for testing
     mockAuthConfig = {

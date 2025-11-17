@@ -145,7 +145,7 @@ describe("ModelService", () => {
 
     test("should handle continue-proxy provider specially", async () => {
       const proxyModel = {
-        provider: "continue-proxy",
+        provider: "aicoder-proxy",
         name: "Proxy Model",
         apiBase: "https://proxy.continue.dev",
         apiKeyLocation: "env.PROXY_KEY",

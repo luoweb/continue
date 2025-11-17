@@ -57,9 +57,7 @@ export function OnboardingCardLanding({
 
   return (
     <div className="xs:px-0 flex w-full max-w-full flex-col items-center justify-center px-4 text-center">
-      <div className="xs:flex hidden">
-        <ContinueLogo height={75} />
-      </div>
+      <div className="xs:flex hidden">{/* <ContinueLogo height={75} /> */}</div>
 
       {outOfStarterCredits ? (
         <>
@@ -82,7 +80,7 @@ export function OnboardingCardLanding({
         </>
       ) : (
         <>
-          <p className="mb-5 mt-0 w-full text-sm">
+          {/*<p className="mb-5 mt-0 w-full text-sm">
             Log in to get up and running with starter credits
           </p>
 
@@ -91,12 +89,12 @@ export function OnboardingCardLanding({
             className="mt-4 grid w-full grid-flow-col items-center gap-2"
           >
             Log in to Continue Hub
-          </Button>
+          </Button>*/}
         </>
       )}
 
       <SecondaryButton onClick={onSelectConfigure} className="w-full">
-        Or, configure your own models
+        Configure your own models
       </SecondaryButton>
     </div>
   );
