@@ -55,7 +55,7 @@ let fullScreenPanel: vscode.WebviewPanel | undefined;
 function getFullScreenTab() {
   const tabs = vscode.window.tabGroups.all.flatMap((tabGroup) => tabGroup.tabs);
   return tabs.find((tab) =>
-    (tab.input as any)?.viewType?.endsWith("aicoder.aicoderGUIView"),
+    (tab.input as any)?.viewType?.endsWith("roweb.aicoderGUIView"),
   );
 }
 
@@ -78,7 +78,7 @@ function focusGUI() {
     fullScreenPanel?.reveal();
   } else {
     // focus sidebar
-    vscode.commands.executeCommand("aicoder.aicoderGUIView.focus");
+    vscode.commands.executeCommand("roweb.aicoderGUIView.focus");
     // vscode.commands.executeCommand("workbench.action.focusAuxiliaryBar");
   }
 }
@@ -226,7 +226,7 @@ const getCommandsMap: (
 
       addCodeToContextFromRange(range, sidebar.webviewProtocol, prompt);
 
-      vscode.commands.executeCommand("aicoder.aicoderGUIView.focus");
+      vscode.commands.executeCommand("roweb.aicoderGUIView.focus");
     },
     // Passthrough for telemetry purposes
     "aicoder.defaultQuickAction": async (args: QuickEditShowParams) => {
@@ -241,7 +241,7 @@ const getCommandsMap: (
 
       addCodeToContextFromRange(range, sidebar.webviewProtocol, prompt);
 
-      vscode.commands.executeCommand("aicoder.aicoderGUIView.focus");
+      vscode.commands.executeCommand("roweb.aicoderGUIView.focus");
     },
     "aicoder.customQuickActionStreamInlineEdit": async (
       prompt: string,
@@ -402,7 +402,7 @@ const getCommandsMap: (
 
       const terminalContents = await ide.getTerminalContents();
 
-      vscode.commands.executeCommand("aicoder.aicoderGUIView.focus");
+      vscode.commands.executeCommand("roweb.aicoderGUIView.focus");
 
       sidebar.webviewProtocol?.request("userInput", {
         input: `I got the following error, can you please help explain how to fix it?\n\n${terminalContents.trim()}`,
@@ -418,7 +418,7 @@ const getCommandsMap: (
     "aicoder.addModel": () => {
       captureCommandTelemetry("addModel");
 
-      vscode.commands.executeCommand("aicoder.aicoderGUIView.focus");
+      vscode.commands.executeCommand("roweb.aicoderGUIView.focus");
       sidebar.webviewProtocol?.request("addModel", undefined);
     },
     "aicoder.newSession": () => {
@@ -488,7 +488,7 @@ const getCommandsMap: (
         throw new Error("No files were selected");
       }
 
-      vscode.commands.executeCommand("aicoder.aicoderGUIView.focus");
+      vscode.commands.executeCommand("roweb.aicoderGUIView.focus");
 
       for (const uri of uris) {
         // If it's a folder, add the entire folder contents recursively by using walkDir (to ignore ignored files)
@@ -825,7 +825,7 @@ const getCommandsMap: (
 
       // Create the full screen panel
       let panel = vscode.window.createWebviewPanel(
-        "aicoder.aicoderGUIView",
+        "roweb.aicoderGUIView",
         "Continue",
         vscode.ViewColumn.One,
         {

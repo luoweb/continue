@@ -17,7 +17,7 @@ const MAX_INTERACTIONS = 50;
 export class ContinueConsoleWebviewViewProvider
   implements vscode.WebviewViewProvider
 {
-  public static readonly viewType = "aicoder.aicoderConsoleView";
+  public static readonly viewType = "roweb.aicoderConsoleView";
 
   resolveWebviewView(
     webviewView: vscode.WebviewView,

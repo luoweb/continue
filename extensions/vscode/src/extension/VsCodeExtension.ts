@@ -261,7 +261,7 @@ export class VsCodeExtension {
     // Sidebar
     context.subscriptions.push(
       vscode.window.registerWebviewViewProvider(
-        "aicoder.aicoderGUIView",
+        "roweb.aicoderGUIView",
         this.sidebar,
         {
           webviewOptions: { retainContextWhenHidden: true },
@@ -410,7 +410,7 @@ export class VsCodeExtension {
 
     context.subscriptions.push(
       vscode.window.registerWebviewViewProvider(
-        "aicoder.aicoderConsoleView",
+        "roweb.aicoderConsoleView",
         this.consoleView,
       ),
     );

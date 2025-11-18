@@ -156,7 +156,7 @@ export function getMetaKeyName() {
 }
 
 export function getExtensionVersion(): string {
-  const extension = vscode.extensions.getExtension("aicoder.aicoder");
+  const extension = vscode.extensions.getExtension("roweb.aicoder");
   return extension?.packageJSON.version || "0.1.0";
 }
 

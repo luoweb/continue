@@ -503,7 +503,7 @@
     ],
     "submenus": [
       {
-        "id": "aicoder.aicoderSubMenu",
+        "id": "roweb.aicoderSubMenu",
         "label": "分布式编码助手"
       }
     ],
@@ -533,7 +533,7 @@
       ],
       "editor/context": [
         {
-          "submenu": "aicoder.aicoderSubMenu",
+          "submenu": "roweb.aicoderSubMenu",
           "group": "0_aaicoder"
         }
       ],
@@ -544,7 +544,7 @@
           "when": "aicoder.streamingDiff"
         }
       ],
-      "aicoder.aicoderSubMenu": [
+      "roweb.aicoderSubMenu": [
         {
           "command": "aicoder.focusContinueInputWithoutClear",
           "group": "AiCoder"
@@ -622,7 +622,7 @@
       "aicoder": [
         {
           "type": "webview",
-          "id": "aicoder.aicoderGUIView",
+          "id": "roweb.aicoderGUIView",
           "name": "AiCoder",
           "icon": "media/sidebar-icon.png",
           "visibility": "visible"
@@ -631,7 +631,7 @@
       "aicoderConsole": [
         {
           "type": "webview",
-          "id": "aicoder.aicoderConsoleView",
+          "id": "roweb.aicoderConsoleView",
           "name": "AiCoder Console",
           "icon": "$(window)",
           "visibility": "visible",
