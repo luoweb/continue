@@ -913,6 +913,20 @@ export const models: { [key: string]: ModelPackage } = {
     providerOptions: ["gemini"],
     isOpenSource: false,
   },
+  gemini3ProPreview: {
+    title: "Gemini 3 Pro",
+    description:
+      "Google's latest Pro model with up to 64k output context. Best for complex tasks involving reasoning.",
+    params: {
+      title: "Gemini 3 Pro",
+      model: "gemini-3-pro-preview",
+      contextLength: 1_048_576,
+      apiKey: "<API_KEY>",
+    },
+    icon: "gemini.png",
+    providerOptions: ["gemini"],
+    isOpenSource: false,
+  },
   c4aiAyaExpanse8B: {
     title: "C4AI Aya Expanse 8B",
     description:
@@ -1067,6 +1081,48 @@ export const models: { [key: string]: ModelPackage } = {
     icon: "cohere.png",
     isOpenSource: false,
   },
+  commandAVision072025: {
+    title: "Command A Vision 07-2025",
+    description:
+      "Command A Vision is Cohere's first model capable of processing images, excelling in enterprise use cases such as analyzing charts, graphs, and diagrams, table understanding, OCR, document Q&A, and object detection.",
+    params: {
+      model: "command-a-vision-07-2025",
+      contextLength: 128_000,
+      title: "Command A Vision 07-2025",
+      apiKey: "",
+    },
+    providerOptions: ["cohere"],
+    icon: "cohere.png",
+    isOpenSource: false,
+  },
+  commandAReasoning082025: {
+    title: "Command A Reasoning 08-2025",
+    description:
+      "Command A Reasoning is Cohere’s first reasoning model, able to ‘think’ before generating an output in a way that allows it to perform well in certain kinds of nuanced problem-solving and agent-based tasks in 23 languages.",
+    params: {
+      model: "command-a-reasoning-08-2025",
+      contextLength: 256_000,
+      title: "Command A Reasoning 08-2025",
+      apiKey: "",
+    },
+    providerOptions: ["cohere"],
+    icon: "cohere.png",
+    isOpenSource: false,
+  },
+  commandATranslate082025: {
+    title: "Command A Translate 08-2025",
+    description:
+      "Command A Translate is Cohere’s state of the art machine translation model, excelling at a variety of translation tasks on 23 languages",
+    params: {
+      model: "command-a-translate-08-2025",
+      contextLength: 8_000,
+      title: "Command A Translate 08-2025",
+      apiKey: "",
+    },
+    providerOptions: ["cohere"],
+    icon: "cohere.png",
+    isOpenSource: false,
+  },
   gpt5: {
     title: "GPT-5",
     description: "OpenAI's next-generation, high-intelligence flagship model",
@@ -1074,6 +1130,18 @@ export const models: { [key: string]: ModelPackage } = {
       model: "gpt-5",
       contextLength: 400_000,
       title: "GPT-5",
+    },
+    providerOptions: ["openai"],
+    icon: "openai.png",
+    isOpenSource: false,
+  },
+  gpt5_1: {
+    title: "GPT-5.1",
+    description: "OpenAI's GPT-5.1 model for advanced reasoning and chat",
+    params: {
+      model: "gpt-5.1",
+      contextLength: 400_000,
+      title: "GPT-5.1",
     },
     providerOptions: ["openai"],
     icon: "openai.png",
@@ -1155,17 +1223,17 @@ export const models: { [key: string]: ModelPackage } = {
       title: "Claude 4 Sonnet",
       apiKey: "",
     },
-    providerOptions: ["anthropic"],
+    providerOptions: ["anthropic", "replicate"],
     icon: "anthropic.png",
     isOpenSource: false,
   },
-  claude41Opus: {
-    title: "Claude 4.1 Opus",
-    description: "The most capable model in the Claude 4 series",
+  claude4_5Opus: {
+    title: "Claude 4.5 Opus",
+    description: "The most capable model in the Claude 4.5 series",
     params: {
-      model: "claude-opus-4-1-20250805",
+      model: "claude-opus-4-5",
       contextLength: 200_000,
-      title: "Claude 4.1 Opus",
+      title: "Claude 4.5 Opus",
       apiKey: "",
     },
     providerOptions: ["anthropic"],
@@ -1860,6 +1928,34 @@ export const models: { [key: string]: ModelPackage } = {
     params: {
       title: "Grok 4 Fast Non-Reasoning",
       model: "grok-4-fast-non-reasoning",
+      contextLength: 2_000_000,
+    },
+    icon: "xAI.png",
+    providerOptions: ["xAI"],
+    isOpenSource: false,
+  },
+  grok41FastReasoning: {
+    title: "Grok 4.1 Fast Reasoning",
+    description:
+      "xAI's upgraded reasoning model offering strong performance in complex tasks.",
+    refUrl: "https://docs.x.ai/docs/models/grok-4-1-fast-reasoning",
+    params: {
+      title: "Grok 4.1 Fast Reasoning",
+      model: "grok-4-1-fast-reasoning",
+      contextLength: 2_000_000,
+    },
+    icon: "xAI.png",
+    providerOptions: ["xAI"],
+    isOpenSource: false,
+  },
+  grok41FastNonReasoning: {
+    title: "Grok 4.1 Fast Non-Reasoning",
+    description:
+      "xAI's upgraded non-reasoning model optimized for speed and efficiency.",
+    refUrl: "https://docs.x.ai/docs/models/grok-4-1-fast-non-reasoning",
+    params: {
+      title: "Grok 4.1 Fast Non-Reasoning",
+      model: "grok-4-1-fast-non-reasoning",
       contextLength: 2_000_000,
     },
     icon: "xAI.png",

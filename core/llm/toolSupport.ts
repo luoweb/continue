@@ -100,7 +100,11 @@ export const PROVIDER_TOOL_SUPPORT: Record<string, (model: string) => boolean> =
       return false;
     },
     cohere: (model) => {
-      return model.toLowerCase().startsWith("command");
+      const lower = model.toLowerCase();
+      if (lower.startsWith("command-a-vision")) {
+        return false;
+      }
+      return lower.startsWith("command");
     },
     gemini: (model) => {
       // All gemini models support function calling
@@ -116,7 +120,7 @@ export const PROVIDER_TOOL_SUPPORT: Record<string, (model: string) => boolean> =
     },
     xAI: (model) => {
       const lowerCaseModel = model.toLowerCase();
-      return ["grok-3", "grok-4", "grok-code"].some((val) =>
+      return ["grok-3", "grok-4", "grok-4-1", "grok-code"].some((val) =>
         lowerCaseModel.includes(val),
       );
     },
@@ -387,11 +391,12 @@ export function isRecommendedAgentModel(modelName: string): boolean {
   const recs: RegExp[][] = [
     [/o[134]/],
     [/deepseek/, /r1|reasoner/],
-    [/gemini/, /2\.5/, /pro/],
-    [/gpt-5/],
+    [/gemini/, /2\.5|3/, /pro/],
+    [/gpt/, /-5|5\.1/],
     [/claude/, /sonnet/, /3\.7|3-7|-4/],
     [/claude/, /opus/, /-4/],
     [/grok-code/],
+    [/grok-4-1|grok-4\.1/],
     [/claude/, /4-5/],
   ];
   for (const combo of recs) {
