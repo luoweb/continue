@@ -1,6 +1,9 @@
 import { loadAuthConfig } from "../auth/workos.js";
 import { initializeWithOnboarding } from "../onboarding.js";
-import { setBetaUploadArtifactToolEnabled } from "../tools/toolsConfig.js";
+import {
+  setBetaSubagentToolEnabled,
+  setBetaUploadArtifactToolEnabled,
+} from "../tools/toolsConfig.js";
 import { logger } from "../util/logger.js";
 
 import { AgentFileService } from "./AgentFileService.js";
@@ -10,6 +13,7 @@ import { AuthService } from "./AuthService.js";
 import { ChatHistoryService } from "./ChatHistoryService.js";
 import { ConfigService } from "./ConfigService.js";
 import { FileIndexService } from "./FileIndexService.js";
+import { GitAiIntegrationService } from "./GitAiIntegrationService.js";
 import { MCPService } from "./MCPService.js";
 import { ModelService } from "./ModelService.js";
 import { ResourceMonitoringService } from "./ResourceMonitoringService.js";
@@ -46,6 +50,7 @@ const agentFileService = new AgentFileService();
 const toolPermissionService = new ToolPermissionService();
 const systemMessageService = new SystemMessageService();
 const artifactUploadService = new ArtifactUploadService();
+const gitAiIntegrationService = new GitAiIntegrationService();
 
 /**
  * Initialize all services and register them with the service container
@@ -59,6 +64,9 @@ export async function initializeServices(initOptions: ServiceInitOptions = {}) {
   // Configure beta tools based on command options
   if (commandOptions.betaUploadArtifactTool) {
     setBetaUploadArtifactToolEnabled(true);
+  }
+  if (commandOptions.betaSubagentTool) {
+    setBetaSubagentToolEnabled(true);
   }
   // Handle onboarding for TUI mode (headless: false) unless explicitly skipped
   if (!initOptions.headless && !initOptions.skipOnboarding) {
@@ -310,6 +318,12 @@ export async function initializeServices(initOptions: ServiceInitOptions = {}) {
     [], // No dependencies for now, but could depend on SESSION in future
   );
 
+  serviceContainer.register(
+    SERVICE_NAMES.GIT_AI_INTEGRATION,
+    () => gitAiIntegrationService.initialize(),
+    [], // No dependencies
+  );
+
   // Eagerly initialize all services to ensure they're ready when needed
   // This avoids race conditions and "service not ready" errors
   await serviceContainer.initializeAll();
@@ -372,7 +386,10 @@ export const services = {
   agentFile: agentFileService,
   toolPermissions: toolPermissionService,
   artifactUpload: artifactUploadService,
+  gitAiIntegration: gitAiIntegrationService,
 } as const;
+
+export type ServicesType = typeof services;
 
 // Export the service container for advanced usage
 export { serviceContainer };
