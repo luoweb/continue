@@ -265,7 +265,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.DOCKER_REGISTRY }}/roweb/scan-erp
+          images: ${{ env.DOCKER_REGISTRY }}/roweb/continue-vscode-ext
           tags: |
             type=semver,pattern={{version}},value=${{ github.ref_name }}
             type=semver,pattern={{major}}.{{minor}},value=${{ github.ref_name }}
