@@ -71,91 +71,13 @@ $xsed 's#Continue#AICODER#g' ${baseDir}/../*.md
 
 echo "########## spec code batch replace ########## "
 
-# 替换URL
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mdx" -o -name "*.json" -o -name "*.md" | grep -v node_modules | grep -v ".bak" | grep -v Start | xargs $xsed 's#https://hub.continue.dev/#https://hub.roweb.cn/#g'
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mdx" -o -name "*.json" -o -name "*.md" | grep -v node_modules | grep -v ".bak" | grep -v Start | xargs $xsed 's#https://continue.dev/#https://roweb.cn/#g'
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mdx" -o -name "*.json" -o -name "*.md" | grep -v node_modules | grep -v ".bak" | grep -v Start | xargs $xsed 's#https://github.com/continuedev/continue#https://github.com/blockai/aicoder#g'
-
-# 替换配置项
+find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mdx" | grep -v node_modules | grep -v ".bak" | grep -v Start | xargs $xsed 's#https://hub.continue.dev/#https://hub.roweb.cn/#g'
 find ${baseDir}/../ -type f -name "*.json" -o -name "*.xml" -o -name "*.ts" | grep -v node_modules | grep -v ".bak" | grep -v Start | grep -v run | xargs $xsed 's#"continue-#"aicoder-#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#"name": "continue"#"name": "aicoder"#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#"publisher": "Continue"#"publisher": "Roweb"#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#"displayName": "Continue#"displayName": "分布式编码助手#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#continueGUIView#aicoderGUIView#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#.continuerc.json#.aicoderc.json#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#"category": "Continue"#"category": "分布式编码助手"#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#"group": "Continue"#"group": "分布式编码助手"#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue collects#AICODER collects#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#the Continue keyboard#the AICODER keyboard#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed "s#Continue's tab#AICODER's tab#g"
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed "s#Continue's next#AICODER's next#g"
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed "s#Continue's codebase#AICODER's codebase#g"
-
-# 替换文件和路径
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#.continueignore#.aicoderignore#g'
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#.continuerc.json#.aicoderc.json#g'
-
-# 替换配置键
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#continue\.#aicoder.#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#focusContinueInput#focusAicoderInput#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#focusContinueInputWithoutClear#focusAicoderInputWithoutClear#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue: Force Autocomplete#AICODER: Force Autocomplete#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Focus Continue Chat#Focus AICODER Chat#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue: Toggle Next Edit#AICODER: Toggle Next Edit#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue: Force Next Edit#AICODER: Force Next Edit#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue: Accept Jump Suggestion#AICODER: Accept Jump Suggestion#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue: Reject Jump Suggestion#AICODER: Reject Jump Suggestion#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#continueSubMenu#aicoderSubMenu#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#0_acontinue#0_aaicoder#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#continueConsoleView#aicoderConsoleView#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#"id": "continue"#"id": "aicoder"#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#"id": "continueConsole"#"id": "aicoderConsole"#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#"title": "Continue Console"#"title": "AICODER Console"#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#"continue": \[#"aicoder": \[#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#"continueConsole": \[#"aicoderConsole": \[#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#\*\*/\.continue\*/config\.json#\*\*/\.aicoder\*/config\.json#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#./continue_rc_schema\.json#./aicoder_rc_schema\.json#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#CONTINUE_GLOBAL_DIR#AICODER_GLOBAL_DIR#g'
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#SerializedContinueConfig#SerializedAicoderConfig#g'
-
-# 替换配置文件中的描述文本
-find ${baseDir}/../ -type f -name "config_schema.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue should not use#AICODER should not use#g'
-find ${baseDir}/../ -type f -name "config_schema.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#you can start asking questions through Continue#you can start asking questions through AICODER#g'
-find ${baseDir}/../ -type f -name "config_schema.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#you can begin using Continue#you can begin using AICODER#g'
-find ${baseDir}/../ -type f -name "config_schema.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#you can start using Continue#you can start using AICODER#g'
-find ${baseDir}/../ -type f -name "config_schema.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#used in Continue#used in AICODER#g'
-find ${baseDir}/../ -type f -name "config_schema.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue will generate#AICODER will generate#g'
-find ${baseDir}/../ -type f -name "config_schema.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed "s#Continue doesn't let#AICODER doesn't let#g"
-find ${baseDir}/../ -type f -name "config_schema.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue will not index#AICODER will not index#g'
-find ${baseDir}/../ -type f -name "config_schema.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue will not make#AICODER will not make#g'
-
-# 替换URL参数
-find ${baseDir}/../ -type f -name "config_schema.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#utm_source=github_continuedev#utm_source=github_roweb#g'
-find ${baseDir}/../ -type f -name "config_schema.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#utm_source=continue#utm_source=aicoder#g'
-
-# 替换测试路径
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#test-continue#test-aicoder#g'
-
-# 替换UI文本
-find ${baseDir}/../ -type f -name "*.tsx" -o -name "*.ts" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue Dev#Roweb Dev#g'
-find ${baseDir}/../ -type f -name "*.tsx" -o -name "*.ts" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue Hub#Roweb Hub#g'
-
-# 替换代码中的变量和常量
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#continueEnabled#aicoderEnabled#g'
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#continueTestEnvironment#aicoderTestEnvironment#g'
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#continueGUIView#aicoderGUIView#g'
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#focusContinueInput#focusAicoderInput#g'
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#focusContinueInputWithoutClear#focusAicoderInputWithoutClear#g'
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#continueConsoleView#aicoderConsoleView#g'
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#SerializedContinueConfig#SerializedAicoderConfig#g'
-find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#CONTINUE_GLOBAL_DIR#AICODER_GLOBAL_DIR#g'
-
-# 替换markdown文件
-find ${baseDir}/../ -type f -name "*.md" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#Continue#AICODER#g'
-find ${baseDir}/../ -type f -name "*.md" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#continue#aicoder#g'
-
-# 替换包名引用
-find ${baseDir}/../ -type f -name "*.json" | grep -v node_modules | grep -v ".bak" | xargs $xsed 's#@continuedev/#@roweb/#g'
+# find ${baseDir}/../ -type f -name "*.json" -o -name "*.xml" -o -name "*.ts" | grep -v node_modules | grep -v ".bak" |  grep -v Start | grep -v run | xargs $xsed 's#"continue\.#"aicoder.#g'
+# find ${baseDir}/../ -type f -name "*.md" -o -name "*.json" -o -name "*.mdx" -o -name "*.ts" -o -name "oneper" | grep -v node_modules |grep -v ".bak" |  grep -v Start | grep -v run | xargs $xsed 's#Continue.continue#Roweb.aicoder#g'
+# find ${baseDir}/../ -type f -name "*.md" -o -name "*.json" -o -name "*.mdx"  -o -name "*.ts" | grep -v node_modules | grep -v ".bak" | grep -v Start | grep -v run | xargs $xsed 's#"aicoder.continue#"aicoder.aicoder#g'
+# find ${baseDir}/../ -type f -name "*.md" -o -name "*.mdx" | grep -v node_modules | grep -v ".bak" | grep -v Start | grep -v run  | xargs $xsed 's#Continue#AICODER#g'
+# find ${baseDir}/../ -type f -name "*.md" -o -name "*.json" -o -name "*.mdx" -o -name "*.ts" | grep -v node_modules |grep -v ".bak" |  grep -v Start | grep -v run | xargs $xsed 's#"aicoder.aicoder#"roweb.aicoder#g'
 
 # find ${baseDir}/../extensions -type f -name "*.md" -o -name "*.mdx" | grep -v node_modules | grep -v ".bak" | grep -v Start | grep -v run  | xargs $xsed 's#AICODER.continue#Continue.continue#g'
 # find ../web -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" | grep -v node_modules | xargs $xsed "s#logo-monochrome-white.svg#logo-monochrome-white-llmapp.svg#g"
