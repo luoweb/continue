@@ -503,7 +503,7 @@
     ],
     "submenus": [
       {
-        "id": "roweb.aicoderSubMenu",
+        "id": "continue.continueSubMenu",
         "label": "Continue"
       }
     ],
@@ -533,7 +533,7 @@
       ],
       "editor/context": [
         {
-          "submenu": "roweb.aicoderSubMenu",
+          "submenu": "continue.continueSubMenu",
           "group": "0_acontinue"
         }
       ],
@@ -544,7 +544,7 @@
           "when": "continue.streamingDiff"
         }
       ],
-      "roweb.aicoderSubMenu": [
+      "continue.continueSubMenu": [
         {
           "command": "continue.focusContinueInputWithoutClear",
           "group": "Continue"
@@ -565,34 +565,34 @@
         {
           "command": "continue.newSession",
           "group": "navigation@1",
-          "when": "view == roweb.aicoderGUIView"
+          "when": "view == continue.continueGUIView"
         },
         {
           "command": "continue.viewHistory",
           "group": "navigation@2",
-          "when": "view == roweb.aicoderGUIView"
+          "when": "view == continue.continueGUIView"
         },
         {
           "command": "continue.openConfigPage",
           "group": "navigation@4",
-          "when": "view == roweb.aicoderGUIView"
+          "when": "view == continue.continueGUIView"
         },
         {
           "command": "continue.clearConsole",
           "group": "navigation@1",
-          "when": "view == roweb.aicoderConsoleView"
+          "when": "view == continue.continueConsoleView"
         }
       ],
       "editor/title": [
         {
           "command": "continue.newSession",
           "group": "navigation@1",
-          "when": "activeWebviewPanelId == roweb.aicoderGUIView"
+          "when": "activeWebviewPanelId == continue.continueGUIView"
         },
         {
           "command": "continue.viewHistory",
           "group": "navigation@2",
-          "when": "activeWebviewPanelId == roweb.aicoderGUIView"
+          "when": "activeWebviewPanelId == continue.continueGUIView"
         }
       ],
       "terminal/context": [
@@ -622,7 +622,7 @@
       "continue": [
         {
           "type": "webview",
-          "id": "roweb.aicoderGUIView",
+          "id": "continue.continueGUIView",
           "name": "Continue",
           "icon": "media/sidebar-icon.png",
           "visibility": "visible"
@@ -631,7 +631,7 @@
       "continueConsole": [
         {
           "type": "webview",
-          "id": "roweb.aicoderConsoleView",
+          "id": "continue.continueConsoleView",
           "name": "Continue Console",
           "icon": "$(window)",
           "visibility": "visible",
