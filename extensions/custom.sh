@@ -17,6 +17,8 @@ fi
 
 echo "########## custom replace begin ########## "
 
+echo "readme custom"
+cp ${baseDir}/../extensions/vscode/README.zh.md ${baseDir}/../extensions/vscode/README.md
 
 echo "ui custom"
 
