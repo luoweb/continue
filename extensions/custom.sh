@@ -46,8 +46,8 @@ $xsed 's#https://hub.continue.dev/#https://hub.roweb.cn/#g' ${baseDir}/../extens
 $xsed 's#https://github.com/continuedev/continue#https://github.com/blockai/aicoder#g' ${baseDir}/../extensions/vscode/package.json
 # $xsed 's#"publisher":.*#"publisher": "roweb",#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#"label": "Continue"#"label": "分布式编码助手"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"name": "Continue#"name": "AiCoder#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#          "title": "Continue",#          "title": "AiCoder",#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#"name": "Continue#"name": "分布式编码助手#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#          "title": "Continue",#          "title": "分布式编码助手",#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#      "title": "Continue",#      "title": "分布式编码助手",#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#"displayName":.*#"displayName": "分布式编码助手",#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#  "description": "The leading open-source AI code agent",#  "description": "编码智能体，助效能提升",#g' ${baseDir}/../extensions/vscode/package.json
@@ -69,7 +69,7 @@ $xsed 's#aicoderdev/fetch":#continuedev/fetch":#g' ${baseDir}/../extensions/vsco
 echo "########## spec code replace ########## "
 # $xsed 's#EXTENSION_NAME = "continue"#EXTENSION_NAME = "aicoder"#g' ${baseDir}/../core/control-plane/env.ts
 # $xsed 's#"Continue.continue"#"Roweb.aicoder"#g' ${baseDir}/../extensions/vscode/src/util/vscode.ts
-$xsed 's#Continue#AICODER#g' ${baseDir}/../*.md
+$xsed 's#Continue#分布式编码助手#g' ${baseDir}/../*.md
 
 echo "########## spec code batch replace ########## "
 
