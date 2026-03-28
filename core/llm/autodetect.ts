@@ -65,8 +65,10 @@ const PROVIDER_HANDLES_TEMPLATING: string[] = [
   "nebius",
   "relace",
   "openrouter",
+  "clawrouter",
   "deepseek",
   "xAI",
+  "minimax",
   "groq",
   "gemini",
   "docker",
@@ -122,6 +124,7 @@ const PROVIDER_SUPPORTS_IMAGES: string[] = [
   "sagemaker",
   "continue-proxy",
   "openrouter",
+  "clawrouter",
   "venice",
   "sambanova",
   "vertexai",
@@ -250,6 +253,7 @@ const PARALLEL_PROVIDERS: string[] = [
   "vertexai",
   "function-network",
   "scaleway",
+  "minimax",
   "tensorix",
 ];
 
