@@ -1,0 +1,98 @@
+name: Build and Attach Offline Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to build (e.g., 1.0.0)"
+        required: true
+        type: string
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-attach:
+    name: Build and Attach Offline Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ inputs.version }}"
+          else
+            VERSION="${GITHUB_REF#refs/tags/}"
+          fi
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "tag_name=v${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build local dependencies
+        run: npm run build:local-deps
+        env:
+          npm_config_cache: ${{ runner.temp }}/.npm
+
+      - name: Build project
+        run: npm run build
+
+      - name: Create offline package (tgz)
+        run: |
+          npm pack --pack-destination ${{ runner.temp }}
+
+      - name: List created packages
+        run: |
+          ls -la ${{ runner.temp }}/*.tgz
+
+      - name: Upload to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG_NAME="v${{ steps.version.outputs.version }}"
+            RELEASE_TITLE="Offline Package v${{ steps.version.outputs.version }}"
+            RELEASE_NOTE="Offline package for @continuedev/cli v${{ steps.version.outputs.version }}"
+
+            EXISTING_RELEASE=$(gh release view "$TAG_NAME" --json id -q .id 2>/dev/null || echo "")
+
+            if [ -n "$EXISTING_RELEASE" ]; then
+              echo "Release $TAG_NAME exists, attaching artifact..."
+              gh release upload "$TAG_NAME" "${{ runner.temp }}"/*.tgz --clobber
+            else
+              echo "Creating new release $TAG_NAME..."
+              gh release create "$TAG_NAME" \
+                --title "$RELEASE_TITLE" \
+                --notes "$RELEASE_NOTE" \
+                "${{ runner.temp }}"/*.tgz
+            fi
+          else
+            gh release upload "${{ github.event.release.tag_name }}" "${{ runner.temp }}"/*.tgz --clobber
+          fi
+
+      - name: Display download instructions
+        run: |
+          echo ""
+          echo "=== Offline Package Uploaded Successfully ==="
+          echo ""
+          echo "To install from the offline package:"
+          echo ""
+          echo "  # Download the .tgz file from the release"
+          echo "  # Then install with:"
+          echo "  npm install -g ./continuedev-cli-*.tgz"
+          echo ""
+          echo "Or use a private registry:"
+          echo ""
+          echo "  npm pack @continuedev/cli --pack-destination ."
+          echo "  npm install -g ./continuedev-cli-*.tgz"
