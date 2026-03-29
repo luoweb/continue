@@ -39,7 +39,6 @@ echo "########## custom plugin ########## "
 find ../ -type f -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" | xargs -I@ bash -c "${xsed} -i.bak 's#Continue.continue#Roweb.aicoder#g' @"
 $xsed 's#"name": "continue",#"name": "aicoder",#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#"publisher": "Continue",#"publisher": "Roweb",#g' ${baseDir}/../extensions/vscode/package.json
-
 $xsed 's#Continue Dev#Roweb Dev#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#"homepage": "https://continue.dev"#"homepage": "https://roweb.cn"#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#https://hub.continue.dev/#https://hub.roweb.cn/#g' ${baseDir}/../extensions/vscode/package.json
@@ -47,10 +46,11 @@ $xsed 's#https://github.com/continuedev/continue#https://github.com/blockai/aico
 # $xsed 's#"publisher":.*#"publisher": "roweb",#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#"label": "Continue"#"label": "分布式编码助手"#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#"name": "Continue#"name": "分布式编码助手#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#Continue Console#分布式编码助手#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#          "title": "Continue",#          "title": "分布式编码助手",#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#      "title": "Continue",#      "title": "分布式编码助手",#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#"displayName":.*#"displayName": "分布式编码助手",#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#  "description": "The leading open-source AI code agent",#  "description": "编码智能体，助效能提升",#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#  "description": "The leading open-source AI code agent",#  "description": "研发智能体，助效能提升",#g' ${baseDir}/../extensions/vscode/package.json
 # $xsed 's#          "description":.*#          "description": "编码智能体，助效能提升"#g' ../extensions/vscode/package.json
 # $xsed 's#"category": "Continue"#"category": "AiCoder"#g' ${baseDir}/../extensions/vscode/package.json
 # $xsed 's#"group": "Continue"#"group": "AiCoder"#g' ${baseDir}/../extensions/vscode/package.json
