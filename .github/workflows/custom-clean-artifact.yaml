@@ -1,0 +1,92 @@
+name: Cleanup Old Artifacts
+
+# This workflow cleans up old artifacts based on the specified number of days
+
+on:
+  # schedule:
+  #   # Run once a week on Sunday at midnight
+  #   - cron: '0 0 * * 0'
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Number of days to keep artifacts'
+        type: number
+        required: true
+        default: 7
+        # min: 1
+        # max: 365
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check current artifacts
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log('Checking current artifacts...');
+            
+            const artifacts = await github.rest.actions.listArtifactsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100
+            });
+            
+            console.log(`Total artifacts found: ${artifacts.data.artifacts.length}`);
+            
+            if (artifacts.data.artifacts.length > 0) {
+              console.log('Artifact list:');
+              artifacts.data.artifacts.forEach(artifact => {
+                console.log(`- ${artifact.name} (ID: ${artifact.id}, Created: ${artifact.created_at}, Size: ${artifact.size_in_bytes} bytes)`);
+              });
+            } else {
+              console.log('No artifacts found.');
+            }
+
+      - name: Clean up old artifacts
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const days = ${{ github.event.inputs.days || 7 }};
+            const cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - days);
+            
+            console.log(`\nCleaning up artifacts older than ${days} days (before ${cutoffDate.toISOString()})`);
+            
+            const artifacts = await github.rest.actions.listArtifactsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100
+            });
+            
+            let deletedCount = 0;
+            let keptCount = 0;
+            
+            for (const artifact of artifacts.data.artifacts) {
+              const artifactDate = new Date(artifact.created_at);
+              if (artifactDate < cutoffDate) {
+                console.log(`Deleting artifact: ${artifact.name} (created: ${artifact.created_at})`);
+                await github.rest.actions.deleteArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: artifact.id
+                });
+                deletedCount++;
+                // Add a small delay to avoid rate limiting
+                await new Promise(resolve => setTimeout(resolve, 1000));
+              } else {
+                keptCount++;
+              }
+            }
+            
+            console.log(`\nCleanup completed:`);
+            console.log(`- Total artifacts: ${artifacts.data.artifacts.length}`);
+            console.log(`- Deleted artifacts: ${deletedCount}`);
+            console.log(`- Kept artifacts: ${keptCount}`);
