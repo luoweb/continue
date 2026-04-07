@@ -59,13 +59,49 @@ $xsed 's#  "description": "The leading open-source AI code agent",#  "descriptio
 $xsed 's#aicoderdev/config-types":#continuedev/config-types":#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#aicoderdev/fetch":#continuedev/fetch":#g' ${baseDir}/../extensions/vscode/package.json
 
+echo "########## custom gui ########## "
+$xsed 's#to toggle config#切换配置#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
+$xsed 's#<ArrowRightStartOnRectangleIcon className="ml-1.5 mr-2 h-3.5 w-3.5 flex-shrink-0 rotate-180" />##g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
+$xsed 's#<span className="text-2xs">Log in</span>##g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
+$xsed 's#<span className="text-2xs">Reload</span>#<span className="text-2xs">重新加载</span>#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
+
+$xsed 's#View errors#查看错误#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/AssistantOption.tsx
+$xsed 's#"Ask anything, .* to add context"#"询问任何事情，"@" 添加上下文"#g' ${baseDir}/../gui/src/components/mainInput/TipTapEditor/utils/editorConfig.ts
+
+$xsed 's#content="Select Config"#content="选择配置"#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/BlockSettingsTopToolbar.tsx
+$xsed 's#View configuration errors#查看配置错误#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/BlockSettingsTopToolbar.tsx
+$xsed 's#Configure rules#配置规则#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/BlockSettingsTopToolbar.tsx
+$xsed 's#Configure tools#配置工具#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/BlockSettingsTopToolbar.tsx
+$xsed 's#Configure models#配置模型#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/BlockSettingsTopToolbar.tsx
+
+$xsed 's#<span className="">Chat</span>#<span className="">对话</span>#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
+$xsed 's#All tools disabled#所有工具不可用#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
+$xsed 's#<span className="">Plan</span>#<span className="">规划</span>#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
+$xsed 's#Read-only/MCP tools available#只读模式/MCP工具可用#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
+$xsed 's#<span className="">Agent</span>#<span className="">智能体</span>#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
+$xsed 's#All tools available#所有工具可用#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
+$xsed 's#. for next mode#. 选择模式#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
+
+$xsed 's#content="Select Mode"#content="选择模式"#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
+$xsed 's#content="Select Model"#content="选择模型"#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
+$xsed 's#content="Attach Image"#content="添加图片"#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
+$xsed 's#content="Attach Context"#content="添加上下文"#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
+$xsed 's#Disable model reasoning#关闭推理模式#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
+$xsed 's#Enable model reasoning#开启推理模式#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
+$xsed 's#content="Send (⏎)"#content="发送 (⏎)"#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
+
+$xsed 's#to toggle model#切换模型#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
+$xsed 's#Add Chat model#添加聊天模型#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
+$xsed 's#<span className="text-description text-xs font-medium">Models</span>#<span className="text-description text-xs font-medium">模型</span>#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
+$xsed 's#Last Session#最近会话#g' ${baseDir}/../gui/src/pages/gui/Chat.tsx
+
+$xsed 's#<ConfigHeader title="User Settings" />#<ConfigHeader title="用户设置" />#g' ${baseDir}/gui/src/pages/config/sections/UserSettingsSection.tsx
 
 # $xsed 's#"title": "Continue",#"title": "分布式编码助手",#g' ../extensions/vscode/package.json
 # $xsed 's#"title": "Continue Console",#"title": "编码助手控制台",#g' ../extensions/vscode/package.json
 # $xsed 's#"Enable Continue#"Enable AiCoder#g' ../extensions/vscode/package.json
 # $xsed 's#"Pause Continue#"Pause AiCoder#g' ../extensions/vscode/package.json
 # $xsed 's#"name": "Continue#"name": "AiCoder#g' ../extensions/vscode/package.json
-
 echo "########## spec code replace ########## "
 # $xsed 's#EXTENSION_NAME = "continue"#EXTENSION_NAME = "aicoder"#g' ${baseDir}/../core/control-plane/env.ts
 # $xsed 's#"Continue.continue"#"Roweb.aicoder"#g' ${baseDir}/../extensions/vscode/src/util/vscode.ts
