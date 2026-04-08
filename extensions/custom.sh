@@ -105,6 +105,20 @@ $xsed 's#Add Chat model#添加聊天模型#g' ${baseDir}/../gui/src/components/m
 $xsed 's#<span className="text-description text-xs font-medium">Models</span>#<span className="text-description text-xs font-medium">模型</span>#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#Last Session#最近会话#g' ${baseDir}/../gui/src/pages/gui/Chat.tsx
 
+# Translate ConfigTabs
+$xsed 's#label: "Back",#label: "返回",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed 's#label: "Models",#label: "模型",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed 's#label: "Rules",#label: "规则",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed 's#label: "Tools",#label: "工具",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed 's#label: "Configs",#label: "配置",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed 's#label: "Organizations",#label: "组织",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed 's#label: "Indexing",#label: "索引",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed 's#label: "Settings",#label: "设置",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed 's#label: "Help",#label: "帮助",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed 's#label: "Settings",#label: "设置",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+
+# Translate 用户设置
+
 $xsed 's#User Settings#用户设置#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Models"#title="模型"#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
 $xsed 's#addButtonTooltip="Add model"#addButtonTooltip="添加模型"#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
@@ -184,6 +198,10 @@ $xsed 's#text="View"#text="查看"#g' ${baseDir}/../gui/src/pages/config/section
 $xsed 's#text="Edit"#text="编辑"#g' ${baseDir}/../gui/src/pages/config/sections/RulesSection.tsx
 $xsed 's#text="Delete"#text="删除"#g' ${baseDir}/../gui/src/pages/config/sections/RulesSection.tsx
 
+# Translate dropdown labels in RulesSection
+$xsed 's#label: "Current workspace"#label: "当前工作区"#g' ${baseDir}/../gui/src/pages/config/sections/RulesSection.tsx
+$xsed 's#label: "Global"#label: "全局"#g' ${baseDir}/../gui/src/pages/config/sections/RulesSection.tsx
+
 # Tools section translations
 $xsed 's#title="Tools"#title="工具"#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 $xsed 's#subtext="Manage MCP servers and tool policies"#subtext="管理 MCP 服务器和工具策略"#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
@@ -203,6 +221,18 @@ $xsed 's#Logout#登出#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSecti
 # $xsed 's#Disconnect#断开连接#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 $xsed 's#Reload#重新加载#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 
+# More Tools translations: server status tooltips and auth text
+$xsed 's#Active#已连接#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+$xsed 's#Connecting#连接中#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+$xsed 's#Inactive#未连接#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+$xsed 's#Off#已禁用#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+$xsed 's#Authenticating#正在验证#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+$xsed 's#Error#错误#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+$xsed 's#Authenticate#验证#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+$xsed 's#Remove authentication#移除验证#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+$xsed 's#Authenticating\.\.\.#正在验证...#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+$xsed 's#displayName={"Tools"}#displayName={"工具"}#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+
 # Configs section translations
 $xsed 's#title="Configs"#title="配置"#g' ${baseDir}/../gui/src/pages/config/sections/ConfigsSection.tsx
 $xsed 's#addButtonTooltip="Add config"#addButtonTooltip="添加配置"#g' ${baseDir}/../gui/src/pages/config/sections/ConfigsSection.tsx
@@ -218,10 +248,16 @@ $xsed 's#Allows indexing of your codebase for search and context understanding. 
 $xsed 's#Indexing has been deprecated#索引已被弃用#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#make your agent aware of your codebase and documentation#让您的智能体了解您的代码库和文档#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 
+# Fix remaining English phrase in indexing section
+$xsed 's#Learn how to#了解如何#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+
 # Organizations translations
 $xsed 's#title="Organizations"#title="组织"#g' ${baseDir}/../gui/src/pages/config/sections/OrganizationsSection.tsx
 $xsed 's#addButtonTooltip="Add organization"#addButtonTooltip="添加组织"#g' ${baseDir}/../gui/src/pages/config/sections/OrganizationsSection.tsx
 $xsed 's#Organizations are only available with cloud accounts. Sign in to manage organizations.#组织仅适用于云账户。登录以管理组织。#g' ${baseDir}/../gui/src/pages/config/sections/OrganizationsSection.tsx
+
+# Replace literal header text for Organizations page
+$xsed 's#<h2 className="mb-0 text-xl font-semibold">Organizations</h2>#<h2 className="mb-0 text-xl font-semibold">组织</h2>#g' ${baseDir}/../gui/src/pages/config/sections/OrganizationsSection.tsx
 
 # $xsed 's#"title": "Continue Console",#"title": "编码助手控制台",#g' ../extensions/vscode/package.json
 # $xsed 's#"Enable Continue#"Enable AiCoder#g' ../extensions/vscode/package.json
