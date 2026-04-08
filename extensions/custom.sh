@@ -60,23 +60,32 @@ $xsed 's#aicoderdev/config-types":#continuedev/config-types":#g' ${baseDir}/../e
 $xsed 's#aicoderdev/fetch":#continuedev/fetch":#g' ${baseDir}/../extensions/vscode/package.json
 
 echo "########## custom gui ########## "
+
+$xsed 's#return <OnboardingProvidersTab />;#return <OnboardingLocalTab />;#g' ${baseDir}/../gui/src/components/OnboardingCard/OnboardingCard.tsx
+$xsed 's#return <OnboardingModelsAddOnTab />;#return <OnboardingLocalTab />;#g' ${baseDir}/../gui/src/components/OnboardingCard/OnboardingCard.tsx
+
+
 $xsed 's#to toggle config#切换配置#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
 $xsed 's#<ArrowRightStartOnRectangleIcon className="ml-1.5 mr-2 h-3.5 w-3.5 flex-shrink-0 rotate-180" />##g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
 $xsed 's#<span className="text-2xs">Log in</span>##g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
 $xsed 's#<span className="text-2xs">Reload</span>#<span className="text-2xs">重新加载</span>#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
 
 $xsed 's#View errors#查看错误#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/AssistantOption.tsx
-# $xsed 's#"Ask anything, #"询问任何事情，#g' ${baseDir}/../gui/src/components/mainInput/TipTapEditor/utils/editorConfig.ts
-# $xsed 's# to add context"# 添加上下文"#g' ${baseDir}/../gui/src/components/mainInput/TipTapEditor/utils/editorConfig.ts
+$xsed 's#"Ask anything, #"询问任何事情，#g' ${baseDir}/../gui/src/components/mainInput/TipTapEditor/utils/editorConfig.ts
+$xsed 's# to add context"# 添加上下文"#g' ${baseDir}/../gui/src/components/mainInput/TipTapEditor/utils/editorConfig.ts
 
 $xsed 's#content="Select Config"#content="选择配置"#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/BlockSettingsTopToolbar.tsx
 $xsed 's#View configuration errors#查看配置错误#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/BlockSettingsTopToolbar.tsx
 $xsed 's#Configure rules#配置规则#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/BlockSettingsTopToolbar.tsx
 $xsed 's#Configure tools#配置工具#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/BlockSettingsTopToolbar.tsx
 $xsed 's#Configure models#配置模型#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/BlockSettingsTopToolbar.tsx
+$xsed 's#: "Local Config",#: "本地配置",#g' ${baseDir}/../core/config/profile/LocalProfileLoader.ts
+$xsed 's#: "Local Config",#: "本地配置",#g' ${baseDir}/../core/config/default.ts
+$xsed 's#: "Local Config",#: "本地配置",#g' ${baseDir}/../core/config/yaml/default.ts
+$xsed 's# Configs# 配置#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
 
 $xsed 's#? "Chat"#? "对话"#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
-$xsed 's#? "Plan"#? "规划"#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
+$xsed 's#: "Plan"#: "规划"#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
 $xsed 's#? "Agent"#? "智能体"#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
 $xsed 's#<span className="">Chat</span>#<span className="">对话</span>#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
 $xsed 's#All tools disabled#所有工具不可用#g' ${baseDir}/../gui/src/components/ModeSelect/ModeSelect.tsx
@@ -95,6 +104,7 @@ $xsed 's#content="Attach Context"#content="添加上下文"#g' ${baseDir}/../gui
 $xsed 's#Disable model reasoning#关闭推理模式#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
 $xsed 's#Enable model reasoning#开启推理模式#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
 $xsed 's#content="Send (⏎)"#content="发送 (⏎)"#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
+$xsed 's#?? "Enter""#?? "发送"#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
 $xsed 's#"Send With Active File"#"发送当前文件"#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
 $xsed 's#"Send Without Active File"#"不发送当前文件"#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
 $xsed 's#"Active file"#"当前文件"#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
@@ -111,12 +121,13 @@ $xsed 's#label: "Models",#label: "模型",#g' ${baseDir}/../gui/src/pages/config
 $xsed 's#label: "Rules",#label: "规则",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Tools",#label: "工具",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Configs",#label: "配置",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
-$xsed 's#label: "Organizations",#label: "组织",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+# $xsed 's#label: "Organizations",#label: "组织",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed '/{[[:space:]]*id: "organizations",/,/},/d' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Indexing",#label: "索引",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Settings",#label: "设置",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Help",#label: "帮助",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Settings",#label: "设置",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
-
+$xsed '/if (!session) {/,/^  }/d' ${baseDir}/../gui/src/pages/config/features/account/AccountDropdown.tsx
 # Translate 用户设置
 
 $xsed 's#User Settings#用户设置#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
@@ -261,6 +272,41 @@ $xsed 's#Organizations are only available with cloud accounts. Sign in to manage
 
 # Replace literal header text for Organizations page
 $xsed 's#<h2 className="mb-0 text-xl font-semibold">Organizations</h2>#<h2 className="mb-0 text-xl font-semibold">组织</h2>#g' ${baseDir}/../gui/src/pages/config/sections/OrganizationsSection.tsx
+
+# HelpSection translations (将 HelpSection 页面英文替换为中文)
+$xsed 's#title="Help Center"#title="帮助中心"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+
+# HelpSection shortcut descriptions translations
+$xsed 's#description: "Toggle Selected Model"#description: "切换所选模型"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Edit highlighted code"#description: "编辑选中代码"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "New Chat / New Chat With Selected Code / Close Continue Sidebar If Chat Already In Focus"#description: "新建聊天 / 使用所选代码新建聊天 / 若聊天已聚焦则关闭 Continue 侧边栏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Cancel response"#description: "取消响应"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Toggle inline edit focus"#description: "切换内联编辑焦点"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Focus Current Chat / Add Selected Code To Current Chat / Close Continue Sidebar If Chat Already In Focus"#description: "聚焦当前聊天 / 将选中代码添加到当前聊天 / 若聊天已聚焦则关闭 Continue 侧边栏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Debug Terminal"#description: "调试终端"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Reject Diff"#description: "拒绝差异"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Accept Diff"#description: "接受差异"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Reject Top Change in Diff"#description: "拒绝差异中顶部更改"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Accept Top Change in Diff"#description: "接受差异中顶部更改"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Toggle Autocomplete Enabled"#description: "切换自动补全"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Force an Autocomplete Trigger"#description: "强制触发自动补全"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Toggle Full Screen"#description: "切换全屏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Quick Input"#description: "快速输入"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description: "Toggle Sidebar"#description: "切换侧边栏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed '/{\/\* Resources \*\/}/,/<\/div>/d' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#title="Token usage"#title="词元(Token)使用情况"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+
+$xsed 's#<h3 className="mb-3 text-base font-medium">Resources</h3>#<h3 className="mb-3 text-base font-medium">资源</h3>#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#<h3 className="mb-3 text-base font-medium">Tools</h3>#<h3 className="mb-3 text-base font-medium">工具</h3>#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#<h3 className="mb-3 text-base font-medium">Keyboard Shortcuts</h3>#<h3 className="mb-3 text-base font-medium">键盘快捷键</h3>#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#title="Documentation"#title="文档"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#title="Have an issue\?"#title="遇到问题？"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#title="Join the community!"#title="加入社区！"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#title="Token usage"#title="令牌使用"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#title="View current session history"#title="查看当前会话历史"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#title="Quickstart"#title="快速上手"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#title="Theme Test Page"#title="主题测试页"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#title="Help Center"#title="帮助中心"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 
 # $xsed 's#"title": "Continue Console",#"title": "编码助手控制台",#g' ../extensions/vscode/package.json
 # $xsed 's#"Enable Continue#"Enable AiCoder#g' ../extensions/vscode/package.json
