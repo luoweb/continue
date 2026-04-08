@@ -129,6 +129,9 @@ $xsed 's#displayName="Autocomplete"#displayName="自动补全"#g' ${baseDir}/../
 $xsed 's#Used in inline code completions as you type#在你输入时，用于行内代码自动补全#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
 
 $xsed 's#displayName="Edit"#displayName="编辑"#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
+$xsed 's#displayName="Apply"#displayName="应用"#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
+$xsed 's#displayName="Embed"#displayName="嵌入"#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
+$xsed 's#displayName="Rerank"#displayName="重排序"#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
 $xsed 's#Used to transform a selected section of code#用于转换选定的代码段#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
 $xsed 's#Additional model roles#附加模型角色#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
 $xsed 's#Apply, Embed, Rerank#应用、嵌入、重新排序#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
@@ -225,7 +228,7 @@ $xsed 's#Reload#重新加载#g' ${baseDir}/../gui/src/pages/config/sections/Tool
 $xsed 's#Active#已连接#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 $xsed 's#Connecting#连接中#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 $xsed 's#Inactive#未连接#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
-$xsed 's#Off#已禁用#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+# $xsed 's#Off#已禁用#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 $xsed 's#Authenticating#正在验证#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 $xsed 's#Error#错误#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 $xsed 's#Authenticate#验证#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
