@@ -154,7 +154,7 @@ $xsed 's#title="Autocomplete Debounce (ms)"#title="自动补全防抖 (ms)"#g' $
 $xsed 's#Minimum time in milliseconds to trigger an autocomplete request after a change.#更改后触发自动补全请求的最小时间（毫秒）。#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Disable autocomplete in files"#title="在文件中禁用自动补全"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#List of comma-separated glob pattern to disable autocomplete in matching files.#以逗号分隔的 glob 模式列表，用于在匹配文件中禁用自动补全。#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
-$xsed 's#placeholder="**/*.(txt,md)"#placeholder="**/*.(txt,md)"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
+$xsed 's#placeholder="\*\*/\*\.\(txt,md\)"#placeholder="**/*.(txt,md)"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Experimental"#title="实验性"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Show Experimental Settings"#title="显示实验性设置"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Add Current File by Default"#title="默认添加当前文件"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
@@ -199,8 +199,8 @@ $xsed 's#title="Prompts"#title="提示"#g' ${baseDir}/../gui/src/pages/config/se
 $xsed 's#title="Resources"#title="资源"#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 $xsed 's#No .* available#无 .* 可用#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 $xsed 's#Logout#登出#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
-$xsed 's#Edit#编辑#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
-$xsed 's#Disconnect#断开连接#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+# $xsed 's#Edit#编辑#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
+# $xsed 's#Disconnect#断开连接#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 $xsed 's#Reload#重新加载#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 
 # Configs section translations
