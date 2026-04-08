@@ -66,8 +66,9 @@ $xsed 's#return <OnboardingModelsAddOnTab />;#return <OnboardingLocalTab />;#g' 
 
 
 $xsed 's#to toggle config#切换配置#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
-$xsed 's#<ArrowRightStartOnRectangleIcon className="ml-1.5 mr-2 h-3.5 w-3.5 flex-shrink-0 rotate-180" />##g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
-$xsed 's#<span className="text-2xs">Log in</span>##g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
+# $xsed 's#<span className="text-2xs">Log in</span>##g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
+# $xsed 's#<ArrowRightStartOnRectangleIcon className="ml-1.5 mr-2 h-3.5 w-3.5 flex-shrink-0 rotate-180" />##g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
+$xsed '/{session ?/,/^[[:space:]]*})/d'  ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
 $xsed 's#<span className="text-2xs">Reload</span>#<span className="text-2xs">重新加载</span>#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
 
 $xsed 's#View errors#查看错误#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/AssistantOption.tsx
