@@ -66,9 +66,11 @@ $xsed 's#return <OnboardingModelsAddOnTab />;#return <OnboardingLocalTab />;#g' 
 
 
 $xsed 's#to toggle config#切换配置#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
-# $xsed 's#<span className="text-2xs">Log in</span>##g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
-# $xsed 's#<ArrowRightStartOnRectangleIcon className="ml-1.5 mr-2 h-3.5 w-3.5 flex-shrink-0 rotate-180" />##g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
-$xsed '/{session ?/,/^[[:space:]]*})/d'  ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
+# 简化 session 按钮的文本
+$xsed 's#<span className="text-2xs">Log out</span>#<span className="text-2xs"></span>#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
+$xsed 's#<span className="text-2xs">Log in</span>#<span className="text-2xs"></span>#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
+$xsed 's#<ArrowRightStartOnRectangleIcon className="ml-1.5 mr-2 h-3.5 w-3.5 flex-shrink-0" />##g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
+$xsed 's#<ArrowRightStartOnRectangleIcon className="ml-1.5 mr-2 h-3.5 w-3.5 flex-shrink-0 rotate-180" />##g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
 $xsed 's#<span className="text-2xs">Reload</span>#<span className="text-2xs">重新加载</span>#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
 
 $xsed 's#View errors#查看错误#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/AssistantOption.tsx
@@ -294,7 +296,8 @@ $xsed 's#description: "Force an Autocomplete Trigger"#description: "强制触发
 $xsed 's#description: "Toggle Full Screen"#description: "切换全屏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#description: "Quick Input"#description: "快速输入"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#description: "Toggle Sidebar"#description: "切换侧边栏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
-$xsed '/{\/\* Resources \*\/}/,/<\/div>/d' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+# 注释掉 Resources 部分的删除命令，改为仅翻译文本
+# $xsed '/^[[:space:]]*\{\/\* Resources \*\/\}/,/^[[:space:]]*<\/div>[[:space:]]*$/d' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#title="Token usage"#title="词元(Token)使用情况"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 
 $xsed 's#<h3 className="mb-3 text-base font-medium">Resources</h3>#<h3 className="mb-3 text-base font-medium">资源</h3>#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
