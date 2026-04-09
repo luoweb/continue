@@ -329,7 +329,12 @@ $xsed 's#description: "Quick Input"#description: "快速输入"#g' ${baseDir}/..
 $xsed 's#description: "Toggle Sidebar"#description: "切换侧边栏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 # 注释掉 Resources 部分的删除命令，改为仅翻译文本
 # $xsed '/^[[:space:]]*\{\/\* Resources \*\/\}/,/^[[:space:]]*<\/div>[[:space:]]*$/d' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed  '177,216d' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#title="Token usage"#title="词元(Token)使用情况"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description="Daily token usage across models"#description="各模型的每日令牌用量统计"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description="Open the current chat session file for troubleshooting"#description="打开当前聊天会话文件以进行故障排查"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#description="Reopen the quickstart and tutorial file"#description="重新打开快速入门与教程文件"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+
 
 $xsed 's#<h3 className="mb-3 text-base font-medium">Resources</h3>#<h3 className="mb-3 text-base font-medium">资源</h3>#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#<h3 className="mb-3 text-base font-medium">Tools</h3>#<h3 className="mb-3 text-base font-medium">工具</h3>#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
@@ -342,6 +347,34 @@ $xsed 's#title="View current session history"#title="查看当前会话历史"#g
 $xsed 's#title="Quickstart"#title="快速上手"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#title="Theme Test Page"#title="主题测试页"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#title="Help Center"#title="帮助中心"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+
+
+$xsed 's#title="More"#title="更多"#g' ${baseDir}/../gui/src/pages/stats.tsx
+$xsed 's#Tokens per Day#每日Token用量#g' ${baseDir}/../gui/src/pages/stats.tsx
+$xsed 's#<Th>Day</Th>#"帮助中心"#g' ${baseDir}/../gui/src/pages/stats.tsx
+$xsed 's#<Th>Generated Tokens</Th>#<Th>生成的Token数量</Th>#g' ${baseDir}/../gui/src/pages/stats.tsx
+$xsed 's#<Th>Prompt Tokens</Th>#<Th>输入Token数量</Th>#g' ${baseDir}/../gui/src/pages/stats.tsx
+
+$xsed 's#Tokens per Model#各模型Token用量#g' ${baseDir}/../gui/src/pages/stats.tsx
+$xsed 's#<Th>Model</Th>#<Th>模型</Th>#g' ${baseDir}/../gui/src/pages/stats.tsx
+$xsed 's#<Th>Generated Tokens</Th>#<Th>生成的Token数量</Th>#g' ${baseDir}/../gui/src/pages/stats.tsx
+$xsed 's#<Th>Prompt Tokens</Th>#<Th>输入Token数量</Th>#g' ${baseDir}/../gui/src/pages/stats.tsx
+
+## 状态栏
+$xsed 's#Continue";#分布式编码助手";#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#Use Next Edit over FIM autocomplete#优先使用 NextEdit 而非 FIM 补全#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#Use FIM autocomplete over Next Edit#优先使用 FIM 补全而非 NextEdit#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#Tab autocomplete is paused#Tab 自动补全已暂停#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#Tab autocomplete is enabled#Tab 自动补全已启用#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#Next Edit is enabled#NextEdit 已启用#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#Enable autocomplete#启用自动补全#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#Disable autocomplete#禁用自动补全#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#Pause autocomplete#暂停自动补全#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+
+$xsed 's# Open settings# 打开设置#g' ${baseDir}/vscode/src/commands.ts
+$xsed 's# Open chat# 打开对话#g' ${baseDir}/vscode/src/commands.ts
+$xsed 's# OOpen full screen chat# 打开全屏对话#g' ${baseDir}/vscode/src/commands.ts
+$xsed 's#"Switch model"#"切换模型"#g' ${baseDir}/vscode/src/commands.ts
 
 # $xsed 's#"title": "Continue Console",#"title": "编码助手控制台",#g' ../extensions/vscode/package.json
 # $xsed 's#"Enable Continue#"Enable AiCoder#g' ../extensions/vscode/package.json
