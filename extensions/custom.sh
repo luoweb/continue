@@ -53,20 +53,16 @@ $xsed 's#"displayName":.*#"displayName": "分布式编码助手",#g' ${baseDir}/
 $xsed 's#  "description": "The leading open-source AI code agent",#  "description": "研发智能体，助效能提升",#g' ${baseDir}/../extensions/vscode/package.json
 
 # Translate configuration descriptions
-$xsed 's#"markdownDescription": "Continue collects anonymous usage data, cleaned of PII, to help us improve the product for our users. Read more  at \[continue.dev › Telemetry\]\(https://docs.continue.dev/telemetry\)."#"markdownDescription": "Continue 收集匿名使用数据（已清除个人身份信息），以帮助我们为用户改进产品。阅读更多：[continue.dev › 遥测](https://docs.continue.dev/telemetry)。"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"markdownDeprecationMessage": "This setting is deprecated and will be removed in a later version. Please use the _Telemetry > Allow Anonymous Telemetry_ setting in the extension'"'"'s User Settings page.",#"markdownDeprecationMessage": "此设置已弃用，将在后续版本中移除。请使用扩展用户设置页面中的 _遥测 > 允许匿名遥测_ 设置。"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"deprecationMessage": "Please use the _Telemetry > Allow Anonymous Telemetry_ setting in the extension'"'"'s User Settings page.",#"deprecationMessage": "请使用扩展用户设置页面中的 _遥测 > 允许匿名遥测_ 设置。"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"description": "Show inline suggestion to use the Continue keyboard shortcuts (e.g. \"Cmd/Ctrl L to select code, Cmd/Ctrl I to edit\")."#"description": "显示使用 Continue 键盘快捷键的内联建议（例如 \"Cmd/Ctrl L 选择代码，Cmd/Ctrl I 编辑\"）。"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"description": "Disable the quick fix feature."#"description": "禁用快速修复功能。"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"markdownDescription": "Enable the experimental Quick Actions feature. Read our walkthrough to learn about configuration and how to share feedback: \[continue.dev › Walkthrough: Quick Actions (experimental)\]\(https://docs.continue.dev/customize/deep-dives/vscode-actions#quick-actions\)"#"markdownDescription": "启用实验性快速操作功能。阅读我们的演练指南以了解配置和如何分享反馈：[continue.dev › 演练：快速操作（实验性）](https://docs.continue.dev/customize/deep-dives/vscode-actions#quick-actions)"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"markdownDescription": "Enable Continue'"'"'s tab autocomplete feature. Read our walkthrough to learn about configuration and how to share feedback: \[continue.dev › Walkthrough: Tab Autocomplete (beta)\]\(https://docs.continue.dev/features/tab-autocomplete\)"#"markdownDescription": "启用 Continue 的 Tab 自动补全功能。阅读我们的演练指南以了解配置和如何分享反馈：[continue.dev › 演练：Tab 自动补全（测试版）](https://docs.continue.dev/features/tab-autocomplete)"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"markdownDescription": "Enable Continue'"'"'s next edit feature. Read our docs to learn about configuration and how to share feedback: \[continue.dev › Features › Autocomplete › Next Edit (experimental)\]\(https://docs.continue.dev/features/autocomplete/next-edit\)"#"markdownDescription": "启用 Continue 的下一个编辑功能。阅读我们的文档以了解配置和如何分享反馈：[continue.dev › 功能 › 自动补全 › 下一个编辑（实验性）](https://docs.continue.dev/features/autocomplete/next-edit)"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"markdownDescription": "Pause Continue'"'"'s tab autocomplete feature when your battery is low."#"markdownDescription": "当电池电量低时暂停 Continue 的 Tab 自动补全功能。"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"markdownDescription": "Pause Continue'"'"'s codebase index on start."#"markdownDescription": "启动时暂停 Continue 的代码库索引。"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"markdownDescription": "Enable a console to log and explore model inputs and outputs. It can be found in the bottom panel."#"markdownDescription": "启用控制台以记录和探索模型输入和输出。可以在底部面板中找到。"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"markdownDescription": "If your team is set up to use shared configuration, enter the server URL here and your user token below to enable automatic syncing."#"markdownDescription": "如果您的团队设置了使用共享配置，请在此处输入服务器 URL 和下方的用户令牌以启用自动同步。"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"markdownDescription": "If your team is set up to use shared configuration, enter your user token here and your server URL above to enable automatic syncing."#"markdownDescription": "如果您的团队设置了使用共享配置，请在此处输入用户令牌和上方的服务器 URL 以启用自动同步。"#g' ${baseDir}/../extensions/vscode/package.json
-$xsed 's#"description": "The period of time in minutes between automatic syncs."#"description": "自动同步之间的时间间隔（分钟）。"#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#Continue collects anonymous usage data, cleaned of PII, to help us improve the product for our users.#Continue 收集匿名使用数据（已清除个人身份信息），以帮助我们为用户改进产品。#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#This setting is deprecated and will be removed in a later version.#此设置已弃用，将在后续版本中移除。#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#Please use the _Telemetry > Allow Anonymous Telemetry_ setting in the extension#请使用扩展用户设置页面中的 _遥测 > 允许匿名遥测_ 设置。#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#Show inline suggestion to use the Continue keyboard shortcuts#显示使用 Continue 键盘快捷键的内联建议#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#Disable the quick fix feature.#禁用快速修复功能。#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#Enable the experimental Quick Actions feature.#启用实验性快速操作功能。#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#Enable Continue#启用 Continue#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#Pause Continue#暂停 Continue#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#If your team is set up to use shared configuration#如果您的团队设置了使用共享配置#g' ${baseDir}/../extensions/vscode/package.json
+$xsed 's#The period of time in minutes between automatic syncs.#自动同步之间的时间间隔（分钟）。#g' ${baseDir}/../extensions/vscode/package.json
 
 # Translate commands titles
 $xsed 's#"title": "Apply code from chat"#"title": "应用聊天中的代码"#g' ${baseDir}/../extensions/vscode/package.json
