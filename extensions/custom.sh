@@ -124,13 +124,42 @@ $xsed 's#label: "Models",#label: "模型",#g' ${baseDir}/../gui/src/pages/config
 $xsed 's#label: "Rules",#label: "规则",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Tools",#label: "工具",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Configs",#label: "配置",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed '/id: "organizations\"/,/^[[:space:]]*},[[:space:]]*$/d' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed -e ':a' -e 'N' -e '$!ba' -e 's/},\n[[:space:]]*{\n[[:space:]]*\],/},\n    ],/g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 # $xsed 's#label: "Organizations",#label: "组织",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
-$xsed '/{[[:space:]]*id: "organizations",/,/},/d' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+# awk '
+# /id: "organizations"/ {
+#     # 删除前一行（即对象开始的 {）
+#     if (NR > 1) {
+#         lines[NR-1] = ""
+#     }
+#     skip = 1
+#     next
+# }
+# skip {
+#     if (/^[[:space:]]*},[[:space:]]*$/) {
+#         skip = 0
+#     }
+#     next
+# }
+# { lines[NR] = $0 }
+# END {
+#     for (i=1; i<=NR; i++) {
+#         if (lines[i] != "") {
+#             print lines[i]
+#         }
+#     }
+# }
+# ' /Users/block/code/continue/gui/src/pages/config/configTabs.tsx > /tmp/configTabs.tmp && mv /tmp/configTabs.tmp /Users/block/code/continue/gui/src/pages/config/configTabs.tsx
+
 $xsed 's#label: "Indexing",#label: "索引",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Settings",#label: "设置",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Help",#label: "帮助",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Settings",#label: "设置",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 # $xsed '/if (!session) {/,/^  }/d' ${baseDir}/../gui/src/pages/config/features/account/AccountDropdown.tsx
+$xsed sed -i '' '/const ideMessenger = useContext(IdeMessengerContext);/a\
+  // Force hide all elements\
+  return null;' gui/src/pages/config/features/account/AccountDropdown.tsx
 # Translate 用户设置
 
 $xsed 's#User Settings#用户设置#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
@@ -282,10 +311,12 @@ $xsed 's#title="Help Center"#title="帮助中心"#g' ${baseDir}/../gui/src/pages
 # HelpSection shortcut descriptions translations
 $xsed 's#description: "Toggle Selected Model"#description: "切换所选模型"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#description: "Edit highlighted code"#description: "编辑选中代码"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
-$xsed 's#description: "New Chat / New Chat With Selected Code / Close Continue Sidebar If Chat Already In Focus"#description: "新建聊天 / 使用所选代码新建聊天 / 若聊天已聚焦则关闭 Continue 侧边栏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+# $xsed 's#description: "New Chat / New Chat With Selected Code / Close Continue Sidebar If Chat Already In Focus"#description: "新建聊天 / 使用所选代码新建聊天 / 若聊天已聚焦则关闭 Continue 侧边栏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#"New Chat / New Chat With Selected Code / Close Continue Sidebar If Chat Already In Focus"#"新建对话 / 使用所选代码新建对话 / 若聊天已聚焦则关闭 插件 侧边栏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#description: "Cancel response"#description: "取消响应"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#description: "Toggle inline edit focus"#description: "切换内联编辑焦点"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
-$xsed 's#description: "Focus Current Chat / Add Selected Code To Current Chat / Close Continue Sidebar If Chat Already In Focus"#description: "聚焦当前聊天 / 将选中代码添加到当前聊天 / 若聊天已聚焦则关闭 Continue 侧边栏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+# $xsed 's#description: "Focus Current Chat / Add Selected Code To Current Chat / Close Continue Sidebar If Chat Already In Focus"#description: "聚焦当前聊天 / 将选中代码添加到当前聊天 / 若聊天已聚焦则关闭 Continue 侧边栏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#"Focus Current Chat / Add Selected Code To Current Chat / Close Continue Sidebar If Chat Already In Focus"#"聚焦当前对话 / 将选中代码添加到当前对话 / 若聊天已聚焦则关闭 插件 侧边栏"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#description: "Debug Terminal"#description: "调试终端"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#description: "Reject Diff"#description: "拒绝差异"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#description: "Accept Diff"#description: "接受差异"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
