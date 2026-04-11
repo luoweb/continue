@@ -213,9 +213,9 @@ $xsed 's#label: "Settings",#label: "设置",#g' ${baseDir}/../gui/src/pages/conf
 $xsed 's#label: "Help",#label: "帮助",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Settings",#label: "设置",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 # $xsed '/if (!session) {/,/^  }/d' ${baseDir}/../gui/src/pages/config/features/account/AccountDropdown.tsx
-$xsed sed -i '' '/const ideMessenger = useContext(IdeMessengerContext);/a\
+$xsed '/const ideMessenger = useContext(IdeMessengerContext);/a\
   // Force hide all elements\
-  return null;' gui/src/pages/config/features/account/AccountDropdown.tsx
+  return null;' ${baseDir}/../gui/src/pages/config/features/account/AccountDropdown.tsx
 # Translate 用户设置
 
 $xsed 's#User Settings#用户设置#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
@@ -346,9 +346,12 @@ $xsed 's#title="Indexing"#title="索引"#g' ${baseDir}/../gui/src/pages/config/s
 $xsed 's#@codebase index#@代码库索引#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#Indexing is disabled#索引已禁用#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#title="Enable indexing"#title="启用索引"#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
-$xsed 's#Allows indexing of your codebase for search and context understanding. Note that indexing can consume significant system resources, especially on larger codebases.#允许索引您的代码库以进行搜索和上下文理解。请注意，索引可能会消耗大量系统资源，尤其是在较大的代码库中。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+$xsed 's#Allows indexing of your codebase for search and context understanding.#允许索引您的代码库以进行搜索和上下文理解。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+$xsed 's#Note that indexing can consume significant system resources, especially on larger codebases.#请注意，索引可能会消耗大量系统资源，尤其是在较大的代码库中。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#Indexing has been deprecated#索引已被弃用#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#make your agent aware of your codebase and documentation#让您的智能体了解您的代码库和文档#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+$xsed 's#title="Documentation"#title="文档"#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+$xsed 's#No documentation sources configured. Click the + button to add your first docs.#未配置文档源。点击 + 按钮添加你的第一个文档。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 
 # Fix remaining English phrase in indexing section
 $xsed 's#Learn how to#了解如何#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
@@ -407,7 +410,7 @@ $xsed 's#title="Help Center"#title="帮助中心"#g' ${baseDir}/../gui/src/pages
 
 $xsed 's#title="More"#title="更多"#g' ${baseDir}/../gui/src/pages/stats.tsx
 $xsed 's#Tokens per Day#每日Token用量#g' ${baseDir}/../gui/src/pages/stats.tsx
-$xsed 's#<Th>Day</Th>#"帮助中心"#g' ${baseDir}/../gui/src/pages/stats.tsx
+$xsed 's#<Th>Day</Th>#<Th>日期</Th>#g' ${baseDir}/../gui/src/pages/stats.tsx
 $xsed 's#<Th>Generated Tokens</Th>#<Th>生成的Token数量</Th>#g' ${baseDir}/../gui/src/pages/stats.tsx
 $xsed 's#<Th>Prompt Tokens</Th>#<Th>输入Token数量</Th>#g' ${baseDir}/../gui/src/pages/stats.tsx
 
@@ -429,7 +432,7 @@ $xsed 's#Pause autocomplete#暂停自动补全#g' ${baseDir}/vscode/src/autocomp
 
 $xsed 's# Open settings# 打开设置#g' ${baseDir}/vscode/src/commands.ts
 $xsed 's# Open chat# 打开对话#g' ${baseDir}/vscode/src/commands.ts
-$xsed 's# OOpen full screen chat# 打开全屏对话#g' ${baseDir}/vscode/src/commands.ts
+$xsed 's# Open full screen chat# 打开全屏对话#g' ${baseDir}/vscode/src/commands.ts
 $xsed 's#"Switch model"#"切换模型"#g' ${baseDir}/vscode/src/commands.ts
 
 
