@@ -212,10 +212,12 @@ $xsed 's#label: "Indexing",#label: "索引",#g' ${baseDir}/../gui/src/pages/conf
 $xsed 's#label: "Settings",#label: "设置",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Help",#label: "帮助",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
 $xsed 's#label: "Settings",#label: "设置",#g' ${baseDir}/../gui/src/pages/config/configTabs.tsx
+$xsed 's#Log in#登录#g' ${baseDir}/../gui/src/pages/config/features/account/AccountDropdown.tsx
+$xsed 's#<span>Log out</span>#<span>退出</span>#g' ${baseDir}/../gui/src/pages/config/features/account/AccountDropdown.tsx
 # $xsed '/if (!session) {/,/^  }/d' ${baseDir}/../gui/src/pages/config/features/account/AccountDropdown.tsx
-$xsed '/const ideMessenger = useContext(IdeMessengerContext);/a\
-  // Force hide all elements\
-  return null;' ${baseDir}/../gui/src/pages/config/features/account/AccountDropdown.tsx
+# $xsed '/const ideMessenger = useContext(IdeMessengerContext);/a\
+#   // Force hide all elements\
+#   return null;' ${baseDir}/../gui/src/pages/config/features/account/AccountDropdown.tsx
 # Translate 用户设置
 
 $xsed 's#User Settings#用户设置#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
