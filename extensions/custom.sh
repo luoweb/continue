@@ -132,6 +132,7 @@ $xsed 's#<span className="text-2xs">Reload</span>#<span className="text-2xs">重
 $xsed 's#View errors#查看错误#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/AssistantOption.tsx
 $xsed 's#"Ask anything, #"询问任何事情，#g' ${baseDir}/../gui/src/components/mainInput/TipTapEditor/utils/editorConfig.ts
 $xsed 's# to add context"# 添加上下文"#g' ${baseDir}/../gui/src/components/mainInput/TipTapEditor/utils/editorConfig.ts
+$xsed 's#"Ask a follow-up"#"继续提问"#g' ${baseDir}/../gui/src/components/mainInput/TipTapEditor/utils/editorConfig.ts
 
 $xsed 's#content="Select Config"#content="选择配置"#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/BlockSettingsTopToolbar.tsx
 $xsed 's#View configuration errors#查看配置错误#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/BlockSettingsTopToolbar.tsx
