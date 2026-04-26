@@ -359,7 +359,8 @@ $xsed 's#Note that indexing can consume significant system resources, especially
 $xsed 's#Indexing has been deprecated#索引已被弃用#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#make your agent aware of your codebase and documentation#让您的智能体了解您的代码库和文档#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#title="Documentation"#title="文档"#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
-$xsed 's#No documentation sources configured. Click the + button to add your first docs.#未配置文档源。点击 + 按钮添加你的第一个文档。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+$xsed 's#No documentation sources configured.#未配置文档源。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+$xsed 's#Click the + button to add your first docs.#点击 + 按钮添加你的第一个文档。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 
 # Fix remaining English phrase in indexing section
 $xsed 's#Learn how to#了解如何#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
@@ -486,6 +487,78 @@ find ${baseDir}/../ -type f -name "*.json" -o -name "*.xml" -o -name "*.ts" | gr
 # custom api:
 # $xsed "s#Dify OpenAPI#BlockAI OpenAPI#g" ../api/controllers/service_api/index.py
 
+echo "########## custom gui translation ########## "
+
+# 翻译 InputScreen.tsx 文件
+$xsed 's/"Generate Rule"/"生成规则"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
+$xsed 's/"This will generate a new rule using the content of your chat history"/"这将使用您的聊天历史内容生成新规则"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
+$xsed 's/"Describe your rule..."/"描述您的规则..."/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
+$xsed 's/>Cancel</>取消</g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
+$xsed 's/>Generate</>生成</g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
+$xsed 's/"Or, write a rule from scratch"/"或者，从头编写规则"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
+
+# 翻译 ruleTemplates.ts 文件
+$xsed 's/"Always Applied"/"始终应用"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
+$xsed 's/"Create an always applied rule where for all files..."/"创建一个始终应用的规则，适用于所有文件..."/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
+$xsed 's/"Auto attached"/"自动附加"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
+$xsed 's/"Create an auto-attached rule where for all {FILE_EXTENSIONS} files..."/"创建一个自动附加的规则，适用于所有 {FILE_EXTENSIONS} 文件..."/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
+$xsed 's/"Agent Requested"/"代理请求"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
+$xsed 's/"Create an agent requested rule where..."/"创建一个代理请求的规则，其中..."/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
+$xsed 's/"Manual"/"手动"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
+$xsed 's/"Create a manually requested rule where..."/"创建一个手动请求的规则，其中..."/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
+
+# 翻译 ResponseActions.tsx 文件
+$xsed 's/"Summarize conversation to reduce context length"/"总结对话以减少上下文长度"/g' ${baseDir}/../gui/src/components/StepContainer/ResponseActions.tsx
+$xsed 's/"Compact conversation"/"压缩对话"/g' ${baseDir}/../gui/src/components/StepContainer/ResponseActions.tsx
+$xsed 's/  Compact conversation/  压缩对话/g' ${baseDir}/../gui/src/components/StepContainer/ResponseActions.tsx
+$xsed 's/"Generate rule"/"生成规则"/g' ${baseDir}/../gui/src/components/StepContainer/ResponseActions.tsx
+$xsed 's/"Continue generation"/"继续生成"/g' ${baseDir}/../gui/src/components/StepContainer/ResponseActions.tsx
+$xsed 's/"Delete"/"删除"/g' ${baseDir}/../gui/src/components/StepContainer/ResponseActions.tsx
+
+# 翻译 StepContainer.tsx 文件
+$xsed 's/"Continue your response exactly where you left off:"/"继续生成您的回复，从您停止的地方继续："/g' ${baseDir}/../gui/src/components/StepContainer/StepContainer.tsx
+$xsed 's/Previous Conversation Compacted/之前的对话已压缩/g' ${baseDir}/../gui/src/components/StepContainer/StepContainer.tsx
+
+# 翻译 FeedbackButtons.tsx 文件
+$xsed 's/text="Helpful"/text="有帮助"/g' ${baseDir}/../gui/src/components/FeedbackButtons.tsx
+$xsed 's/text="Unhelpful"/text="无帮助"/g' ${baseDir}/../gui/src/components/FeedbackButtons.tsx
+
+# 翻译 ToolCallStatusMessage.tsx 文件
+$xsed 's/"Agent tool use"/"代理工具使用"/g' ${baseDir}/../gui/src/pages/gui/ToolCallDiv/ToolCallStatusMessage.tsx
+$xsed 's/`use the \${defaultToolDescription}`/`使用 \${defaultToolDescription}`/g' ${baseDir}/../gui/src/pages/gui/ToolCallDiv/ToolCallStatusMessage.tsx
+$xsed 's/`used the \${defaultToolDescription}`/`已使用 \${defaultToolDescription}`/g' ${baseDir}/../gui/src/pages/gui/ToolCallDiv/ToolCallStatusMessage.tsx
+$xsed 's/`calling the \${defaultToolDescription}`/`正在调用 \${defaultToolDescription}`/g' ${baseDir}/../gui/src/pages/gui/ToolCallDiv/ToolCallStatusMessage.tsx
+$xsed 's/`Continue \${intro} \${message}`/`继续 \${intro} \${message}`/g' ${baseDir}/../gui/src/pages/gui/ToolCallDiv/ToolCallStatusMessage.tsx
+
+# 翻译 InsertButton.tsx 文件
+$xsed 's/content="Insert Code"/content="插入代码"/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/InsertButton.tsx
+
+# 翻译 CopyButton.tsx 文件
+$xsed 's/content="Copy Code"/content="复制代码"/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/CopyButton.tsx
+
+# 翻译 ApplyActions.tsx 文件
+$xsed 's/Applying/应用中/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/ApplyActions.tsx
+$xsed 's/"1 diff"/"1 个差异"/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/ApplyActions.tsx
+$xsed 's/\`diffs\`/个差异/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/ApplyActions.tsx
+$xsed 's/Reject all/拒绝全部/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/ApplyActions.tsx
+$xsed 's/Accept all/接受全部/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/ApplyActions.tsx
+$xsed 's/content="Apply Code"/content="应用代码"/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/ApplyActions.tsx
+$xsed 's/>Apply</>应用</g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/ApplyActions.tsx
+
+# 翻译 CreateFileButton.tsx 文件
+$xsed 's/content="Create File with Code"/content="使用代码创建文件"/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/CreateFileButton.tsx
+$xsed 's/Create file/创建文件/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/CreateFileButton.tsx
+
+# 翻译 RunInTerminalButton.tsx 文件
+$xsed 's/>Run</>运行</g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/RunInTerminalButton.tsx
+
+# 翻译 CollapsibleContainer.tsx 文件
+$xsed 's/Expand to show full content/展开显示完整内容/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/CollapsibleContainer.tsx
+$xsed 's/Collapse to compact view/收起为紧凑视图/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/CollapsibleContainer.tsx
+
+# 翻译 index.tsx 文件
+$xsed 's/Could not resolve filepath to apply changes/无法解析文件路径以应用更改/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/index.tsx
+$xsed 's/line pending/行待处理/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/index.tsx
 
 execEndTime=`date +%Y%m%d-%H:%M:%S`
 
