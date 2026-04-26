@@ -16,6 +16,11 @@ else
 fi
 
 echo "########## custom replace begin ########## "
+echo ".continue custom"
+$xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/env.ts
+$xsed 's#".continue"#".cowork"#g' ${baseDir}/../core/util/paths.ts
+$xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/hooks/hookConfig.ts
+find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/".continue")/".cowork")/g' {} +
 
 echo "readme custom"
 cp ${baseDir}/../extensions/vscode/README.zh.md ${baseDir}/../extensions/vscode/README.md
