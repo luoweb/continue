@@ -1,0 +1,16 @@
+extensions/custom-cli.sh
+  h_b4eb71306c2267 19-25
+extensions/custom.sh
+  h_b4eb71306c2267 19-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "0f97fd4b22c9065a0a2f5deebbc89c800664bf57",
+  "prompts": {},
+  "humans": {
+    "h_b4eb71306c2267": {
+      "author": "Robin"
+    }
+  }
+}
