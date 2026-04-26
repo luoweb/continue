@@ -354,8 +354,10 @@ $xsed 's#title="Indexing"#title="索引"#g' ${baseDir}/../gui/src/pages/config/s
 $xsed 's#@codebase index#@代码库索引#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#Indexing is disabled#索引已禁用#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#title="Enable indexing"#title="启用索引"#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
-$xsed 's#Allows indexing of your codebase for search and context understanding.#允许索引您的代码库以进行搜索和上下文理解。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
-$xsed 's#Note that indexing can consume significant system resources, especially on larger codebases.#请注意，索引可能会消耗大量系统资源，尤其是在较大的代码库中。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+$xsed 's#Allows indexing of your codebase for search and context#允许索引您的代码库以进行搜索和上下文#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+$xsed 's#    understanding.#    理解。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+$xsed 's#Note that indexing can consume significant system resources,#请注意，索引可能会消耗大量系统资源，#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+$xsed 's#especially on larger codebases.#尤其是在较大的代码库中。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#Indexing has been deprecated#索引已被弃用#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#make your agent aware of your codebase and documentation#让您的智能体了解您的代码库和文档#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#title="Documentation"#title="文档"#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
@@ -457,7 +459,7 @@ $xsed 's#Chat history is saved to#"聊天记录已保存至"#g' ${baseDir}/../gu
 $xsed 's#label: "Today"#label: "今日"#g' ${baseDir}/../gui/src/components/History/util.ts
 $xsed 's#label: "This Week"#label: "本周"#g' ${baseDir}/../gui/src/components/History/util.ts
 $xsed 's#label: "This Month"#label: "本月"#g' ${baseDir}/../gui/src/components/History/util.ts
-$xsed 's#label: "This Older"#label: "更早"#g' ${baseDir}/../gui/src/components/History/util.ts
+$xsed 's#label: "Older"#label: "更早"#g' ${baseDir}/../gui/src/components/History/util.ts
 
 # $xsed 's#"title": "Continue Console",#"title": "编码助手控制台",#g' ../extensions/vscode/package.json
 # $xsed 's#"Enable Continue#"Enable AiCoder#g' ../extensions/vscode/package.json
