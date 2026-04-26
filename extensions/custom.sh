@@ -234,6 +234,7 @@ $xsed 's#Used in Chat, Plan, Agent mode#在对话、规划、智能体模式下�
 $xsed 's#Learn more#更多#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
 $xsed 's#displayName="Autocomplete"#displayName="自动补全"#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
 $xsed 's#Used in inline code completions as you type#在你输入时，用于行内代码自动补全#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
+$xsed 's#https://docs.continue.dev#https://roweb.cn#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
 
 $xsed 's#displayName="Edit"#displayName="编辑"#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
 $xsed 's#displayName="Apply"#displayName="应用"#g' ${baseDir}/../gui/src/pages/config/sections/ModelsSection.tsx
@@ -262,7 +263,7 @@ $xsed 's#title="Format Markdown"#title="格式化 Markdown"#g' ${baseDir}/../gui
 $xsed 's#If off, shows responses as raw text.#如果关闭，显示响应为原始文本。#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Telemetry"#title="遥测"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Allow Anonymous Telemetry"#title="允许匿名遥测"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
-$xsed 's#Allows Continue to send anonymous telemetry.#允许 Continue 发送匿名遥测。#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
+$xsed 's#Allows Continue to send anonymous telemetry.#允许发送匿名遥测。#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Appearance"#title="外观"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Font Size"#title="字体大小"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#Specifies base font size for UI elements.#指定 UI 元素的基准字体大小。#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
@@ -286,7 +287,7 @@ $xsed 's# the currently open file is added as context in every new conversation.
 $xsed 's#title="Enable experimental tools"#title="启用实验性工具"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's# enables access to experimental tools that are still in development.#启用对仍在开发中的实验性工具的访问。#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Only use system message tools"#title="仅使用系统消息工具"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
-$xsed 's# Continue will not attempt to use native tool calling and will only use system message tools.#Continue 将不会尝试使用原生工具调用，而只会使用系统消息工具。#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
+$xsed 's# Continue will not attempt to use native tool calling and will only use system message tools.#将不会尝试使用原生工具调用，而只会使用系统消息工具。#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="@Codebase: use tool calling only"#title="@代码库：仅使用工具调用"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's# @codebase context provider will only use tool calling for code retrieval.#@代码库上下文提供程序将仅使用工具调用进行代码检索。#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Stream after tool rejection"#title="工具拒绝后流式传输"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
@@ -492,12 +493,12 @@ find ${baseDir}/../ -type f -name "*.json" -o -name "*.xml" -o -name "*.ts" | gr
 echo "########## custom gui translation ########## "
 
 # 翻译 InputScreen.tsx 文件
-$xsed 's/"Generate Rule"/"生成规则"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
-$xsed 's/"This will generate a new rule using the content of your chat history"/"这将使用您的聊天历史内容生成新规则"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
+$xsed 's/Generate Rule/生成规则/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
+$xsed 's/This will generate a new rule using the content of your chat history/这将使用您的聊天历史内容生成新规则/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
 $xsed 's/"Describe your rule..."/"描述您的规则..."/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
-$xsed 's/>Cancel</>取消</g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
-$xsed 's/>Generate</>生成</g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
-$xsed 's/"Or, write a rule from scratch"/"或者，从头编写规则"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
+$xsed 's/  Cancel/  取消/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
+$xsed 's/  Generate/  生成/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
+$xsed 's/Or, write a rule from scratch/或者，从头编写规则/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/InputScreen.tsx
 
 # 翻译 ruleTemplates.ts 文件
 $xsed 's/"Always Applied"/"始终应用"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
@@ -561,6 +562,153 @@ $xsed 's/Collapse to compact view/收起为紧凑视图/g' ${baseDir}/../gui/src
 # 翻译 index.tsx 文件
 $xsed 's/Could not resolve filepath to apply changes/无法解析文件路径以应用更改/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/index.tsx
 $xsed 's/line pending/行待处理/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/index.tsx
+
+# 翻译 ConversationSummary.tsx 文件
+$xsed 's/Generating conversation summary/正在生成对话摘要/g' ${baseDir}/../gui/src/components/StepContainer/ConversationSummary.tsx
+$xsed 's/>Conversation Summary</>对话摘要</g' ${baseDir}/../gui/src/components/StepContainer/ConversationSummary.tsx
+$xsed 's/Delete summary/删除摘要/g' ${baseDir}/../gui/src/components/StepContainer/ConversationSummary.tsx
+
+# 翻译 Context Providers 文件
+# FolderContextProvider
+$xsed 's/displayTitle: "Folder"/displayTitle: "文件夹"/g' ${baseDir}/../core/context/providers/FolderContextProvider.ts
+$xsed 's/description: "Type to search"/description: "输入以搜索"/g' ${baseDir}/../core/context/providers/FolderContextProvider.ts
+
+# CodeContextProvider
+$xsed 's/displayTitle: "Code"/displayTitle: "代码"/g' ${baseDir}/../core/context/providers/CodeContextProvider.ts
+$xsed 's/description: "Type to search"/description: "输入以搜索"/g' ${baseDir}/../core/context/providers/CodeContextProvider.ts
+
+# FileContextProvider
+$xsed 's/displayTitle: "Files"/displayTitle: "文件"/g' ${baseDir}/../core/context/providers/FileContextProvider.ts
+$xsed 's/description: "Type to search"/description: "输入以搜索"/g' ${baseDir}/../core/context/providers/FileContextProvider.ts
+
+# FileTreeContextProvider
+$xsed 's/displayTitle: "File Tree"/displayTitle: "文件树"/g' ${baseDir}/../core/context/providers/FileTreeContextProvider.ts
+$xsed 's/description: "Attach a representation of the file tree"/description: "附加文件树的表示"/g' ${baseDir}/../core/context/providers/FileTreeContextProvider.ts
+$xsed 's/description: "File Tree"/description: "文件树"/g' ${baseDir}/../core/context/providers/FileTreeContextProvider.ts
+
+# DebugLocalsProvider
+$xsed 's/displayTitle: "Debugger"/displayTitle: "调试器"/g' ${baseDir}/../core/context/providers/DebugLocalsProvider.ts
+$xsed 's/description: "Local variables"/description: "本地变量"/g' ${baseDir}/../core/context/providers/DebugLocalsProvider.ts
+$xsed 's/description: "The value, name and possibly type of the local variables"/description: "本地变量的值、名称和可能的类型"/g' ${baseDir}/../core/context/providers/DebugLocalsProvider.ts
+
+# DiffContextProvider
+$xsed 's/displayTitle: "Git Diff"/displayTitle: "Git 差异"/g' ${baseDir}/../core/context/providers/DiffContextProvider.ts
+$xsed 's/description: "Reference the current git diff"/description: "引用当前 git 差异"/g' ${baseDir}/../core/context/providers/DiffContextProvider.ts
+$xsed 's/description: "The current git diff"/description: "当前 git 差异"/g' ${baseDir}/../core/context/providers/DiffContextProvider.ts
+
+# SearchContextProvider
+$xsed 's/displayTitle: "Search"/displayTitle: "搜索"/g' ${baseDir}/../core/context/providers/SearchContextProvider.ts
+$xsed 's/description: "Use ripgrep to exact search the workspace"/description: "使用 ripgrep 精确搜索工作区"/g' ${baseDir}/../core/context/providers/SearchContextProvider.ts
+$xsed 's/description: "Search results"/description: "搜索结果"/g' ${baseDir}/../core/context/providers/SearchContextProvider.ts
+
+# HttpContextProvider
+$xsed 's/description: "Retrieve a context item from a custom server"/description: "从自定义服务器检索上下文项"/g' ${baseDir}/../core/context/providers/HttpContextProvider.ts
+$xsed 's/description: item.description ?? "HTTP Context Item"/description: item.description ?? "HTTP 上下文项"/g' ${baseDir}/../core/context/providers/HttpContextProvider.ts
+
+# DatabaseContextProvider
+$xsed 's/displayTitle: "Database"/displayTitle: "数据库"/g' ${baseDir}/../core/context/providers/DatabaseContextProvider.ts
+$xsed 's/description: "Table schemas"/description: "表结构"/g' ${baseDir}/../core/context/providers/DatabaseContextProvider.ts
+$xsed 's/description: "Schema for all tables."/description: "所有表的结构"/g' ${baseDir}/../core/context/providers/DatabaseContextProvider.ts
+
+# CurrentFileContextProvider
+$xsed 's/displayTitle: "Current File"/displayTitle: "当前文件"/g' ${baseDir}/../core/context/providers/CurrentFileContextProvider.ts
+$xsed 's/description: "Reference the currently open file"/description: "引用当前打开的文件"/g' ${baseDir}/../core/context/providers/CurrentFileContextProvider.ts
+
+# RulesContextProvider
+$xsed 's/displayTitle: "Rules"/displayTitle: "规则"/g' ${baseDir}/../core/context/providers/RulesContextProvider.ts
+$xsed 's/description: "Mention rules files"/description: "提及规则文件"/g' ${baseDir}/../core/context/providers/RulesContextProvider.ts
+
+# WebContextProvider
+$xsed 's/displayTitle: "Web"/displayTitle: "网络"/g' ${baseDir}/../core/context/providers/WebContextProvider.ts
+$xsed 's/description: "Search the web"/description: "搜索网络"/g' ${baseDir}/../core/context/providers/WebContextProvider.ts
+
+# ClipboardContextProvider
+$xsed 's/displayTitle: "Clipboard"/displayTitle: "剪贴板"/g' ${baseDir}/../core/context/providers/ClipboardContextProvider.ts
+$xsed 's/description: "Recent copies"/description: "最近的复制"/g' ${baseDir}/../core/context/providers/ClipboardContextProvider.ts
+
+# CodebaseContextProvider
+$xsed 's/displayTitle: "Codebase"/displayTitle: "代码库"/g' ${baseDir}/../core/context/providers/CodebaseContextProvider.ts
+$xsed 's/description: "Automatically find relevant files"/description: "自动查找相关文件"/g' ${baseDir}/../core/context/providers/CodebaseContextProvider.ts
+
+# RepoMapContextProvider
+$xsed 's/displayTitle: "Repository Map"/displayTitle: "代码库地图"/g' ${baseDir}/../core/context/providers/RepoMapContextProvider.ts
+$xsed 's/description: "Search the entire codebase"/description: "搜索整个代码库"/g' ${baseDir}/../core/context/providers/RepoMapContextProvider.ts
+$xsed 's/description: "Select a folder"/description: "选择一个文件夹"/g' ${baseDir}/../core/context/providers/RepoMapContextProvider.ts
+$xsed 's/description: "Overview of the repository structure"/description: "仓库结构概览"/g' ${baseDir}/../core/context/providers/RepoMapContextProvider.ts
+
+# PostgresContextProvider
+$xsed 's/description: "Retrieve PostgreSQL table schema and sample rows"/description: "检索 PostgreSQL 表结构和示例行"/g' ${baseDir}/../core/context/providers/PostgresContextProvider.ts
+$xsed 's/description: `Schema and sample rows for table ${tableName}`/description: `表 ${tableName} 的结构和示例行`/g' ${baseDir}/../core/context/providers/PostgresContextProvider.ts
+$xsed 's/description: `Schema from ${tableName} and ${this.options.sampleRows} sample rows.`/description: `表 ${tableName} 的结构及 ${this.options.sampleRows} 行示例`/g' ${baseDir}/../core/context/providers/PostgresContextProvider.ts
+$xsed 's/description: `Schema from all tables and ${this.options.sampleRows} sample rows each.`/description: `所有表的结构，每个表 ${this.options.sampleRows} 行示例`/g' ${baseDir}/../core/context/providers/PostgresContextProvider.ts
+
+# MCPContextProvider
+$xsed 's/description: "MCP Resources"/description: "MCP 资源"/g' ${baseDir}/../core/context/providers/MCPContextProvider.ts
+
+# OSContextProvider
+$xsed 's/displayTitle: "Operating System"/displayTitle: "操作系统"/g' ${baseDir}/../core/context/providers/OSContextProvider.ts
+$xsed 's/description: "Operating system and CPU Information."/description: "操作系统和 CPU 信息"/g' ${baseDir}/../core/context/providers/OSContextProvider.ts
+$xsed 's/description: "Your operating system and CPU"/description: "您的操作系统和 CPU"/g' ${baseDir}/../core/context/providers/OSContextProvider.ts
+
+# GoogleContextProvider
+$xsed 's/displayTitle: "Google"/displayTitle: "谷歌"/g' ${baseDir}/../core/context/providers/GoogleContextProvider.ts
+$xsed 's/description: "Attach the results of a Google search"/description: "附加 Google 搜索结果"/g' ${baseDir}/../core/context/providers/GoogleContextProvider.ts
+$xsed 's/description: "Google Search"/description: "Google 搜索"/g' ${baseDir}/../core/context/providers/GoogleContextProvider.ts
+
+# GitLabMergeRequestContextProvider
+$xsed 's/displayTitle: "GitLab Merge Request"/displayTitle: "GitLab 合并请求"/g' ${baseDir}/../core/context/providers/GitLabMergeRequestContextProvider.ts
+$xsed 's/description: "Reference comments in a GitLab Merge Request"/description: "引用 GitLab 合并请求中的评论"/g' ${baseDir}/../core/context/providers/GitLabMergeRequestContextProvider.ts
+$xsed 's/description: "Comments from the Merge Request for this branch."/description: "来自此分支合并请求的评论"/g' ${baseDir}/../core/context/providers/GitLabMergeRequestContextProvider.ts
+$xsed 's/description: "Error getting the Merge Request for this branch."/description: "获取此分支的合并请求时出错"/g' ${baseDir}/../core/context/providers/GitLabMergeRequestContextProvider.ts
+
+# URLContextProvider
+$xsed 's/displayTitle: "URL"/displayTitle: "网址"/g' ${baseDir}/../core/context/providers/URLContextProvider.ts
+$xsed 's/description: "Reference a webpage at a given URL"/description: "引用给定 URL 的网页"/g' ${baseDir}/../core/context/providers/URLContextProvider.ts
+
+# GreptileContextProvider
+$xsed 's/description: "Insert query to Greptile"/description: "插入 Greptile 查询"/g' ${baseDir}/../core/context/providers/GreptileContextProvider.ts
+
+# JiraIssuesContextProvider
+$xsed 's/displayTitle: "Jira Issues"/displayTitle: "Jira 问题"/g' ${baseDir}/../core/context/providers/JiraIssuesContextProvider/index.ts
+$xsed 's/description: "Reference Jira issues"/description: "引用 Jira 问题"/g' ${baseDir}/../core/context/providers/JiraIssuesContextProvider/index.ts
+
+# ContinueProxyContextProvider
+$xsed 's/displayTitle: "Continue Proxy"/displayTitle: "Continue 代理"/g' ${baseDir}/../core/context/providers/ContinueProxyContextProvider.ts
+$xsed 's/description: "Retrieve a context item from a Continue for Teams add-on"/description: "从 Continue for Teams 附加组件检索上下文项"/g' ${baseDir}/../core/context/providers/ContinueProxyContextProvider.ts
+
+# OpenFilesContextProvider
+$xsed 's/displayTitle: "Open Files"/displayTitle: "打开的文件"/g' ${baseDir}/../core/context/providers/OpenFilesContextProvider.ts
+$xsed 's/description: "Reference the current open files"/description: "引用当前打开的文件"/g' ${baseDir}/../core/context/providers/OpenFilesContextProvider.ts
+
+# GitHubIssuesContextProvider
+$xsed 's/displayTitle: "GitHub Issues"/displayTitle: "GitHub 问题"/g' ${baseDir}/../core/context/providers/GitHubIssuesContextProvider.ts
+$xsed 's/description: "Reference GitHub issues"/description: "引用 GitHub 问题"/g' ${baseDir}/../core/context/providers/GitHubIssuesContextProvider.ts
+
+# GitCommitContextProvider
+$xsed 's/displayTitle: "Commits"/displayTitle: "提交"/g' ${baseDir}/../core/context/providers/GitCommitContextProvider.ts
+$xsed 's/description: "Type to search"/description: "输入以搜索"/g' ${baseDir}/../core/context/providers/GitCommitContextProvider.ts
+$xsed 's/description: "recent commits"/description: "最近的提交"/g' ${baseDir}/../core/context/providers/GitCommitContextProvider.ts
+
+# ProblemsContextProvider
+$xsed 's/displayTitle: "Problems"/displayTitle: "问题"/g' ${baseDir}/../core/context/providers/ProblemsContextProvider.ts
+$xsed 's/description: "Reference problems in the current file"/description: "引用当前文件中的问题"/g' ${baseDir}/../core/context/providers/ProblemsContextProvider.ts
+$xsed 's/description: "Problems in current file"/description: "当前文件中的问题"/g' ${baseDir}/../core/context/providers/ProblemsContextProvider.ts
+
+# TerminalContextProvider
+$xsed 's/displayTitle: "Terminal"/displayTitle: "终端"/g' ${baseDir}/../core/context/providers/TerminalContextProvider.ts
+$xsed 's/description: "Reference the last terminal command"/description: "引用上一个终端命令"/g' ${baseDir}/../core/context/providers/TerminalContextProvider.ts
+$xsed 's/description: "The contents of the terminal"/description: "终端内容"/g' ${baseDir}/../core/context/providers/TerminalContextProvider.ts
+
+# DiscordContextProvider
+$xsed 's/description: "Select a channel"/description: "选择频道"/g' ${baseDir}/../core/context/providers/DiscordContextProvider.ts
+$xsed 's/description: "Latest messages from the channel"/description: "频道最新消息"/g' ${baseDir}/../core/context/providers/DiscordContextProvider.ts
+
+# DocsContextProvider
+$xsed 's/displayTitle: "Docs"/displayTitle: "文档"/g' ${baseDir}/../core/context/providers/DocsContextProvider.ts
+$xsed 's/description: "Type to search docs"/description: "输入以搜索文档"/g' ${baseDir}/../core/context/providers/DocsContextProvider.ts
+
+# utils.ts
+$xsed 's/description: "Instructions"/description: "说明"/g' ${baseDir}/../core/context/providers/utils.ts
 
 execEndTime=`date +%Y%m%d-%H:%M:%S`
 
