@@ -14,7 +14,7 @@ export const nativeFetch = globalThis.fetch;
 export const nativeResponse = globalThis.Response;
 export const nativeRequest = globalThis.Request;
 // export const nativeHeaders = globalThis.Headers;
-export const nativeHeaders =
+export const nativeHeaders: typeof globalThis.Headers | undefined =
   typeof globalThis.Headers !== "undefined" ? globalThis.Headers : undefined;
 /**
  * Temporarily restores native fetch for the duration of a callback.
@@ -40,7 +40,9 @@ export function withNativeFetch<T>(callback: () => T): T {
     globalThis.fetch = nativeFetch;
     globalThis.Response = nativeResponse;
     globalThis.Request = nativeRequest;
-    globalThis.Headers = nativeHeaders;
+    if (nativeHeaders !== undefined) {
+      globalThis.Headers = nativeHeaders;
+    }
 
     return callback();
   } finally {
@@ -48,6 +50,8 @@ export function withNativeFetch<T>(callback: () => T): T {
     globalThis.fetch = originalFetch;
     globalThis.Response = originalResponse;
     globalThis.Request = originalRequest;
-    globalThis.Headers = originalHeaders;
+    if (nativeHeaders !== undefined) {
+      globalThis.Headers = originalHeaders;
+    }
   }
 }
