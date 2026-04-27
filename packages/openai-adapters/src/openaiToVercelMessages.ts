@@ -75,9 +75,15 @@ export function convertOpenAIMessagesToVercel(
             if (tc.type === "function") {
               let input: unknown;
               try {
-                input = JSON.parse(tc.function.arguments);
-              } catch {
-                input = tc.function.arguments;
+                const args = tc.function.arguments ?? "{}";
+                input = JSON.parse(args);
+              } catch (e) {
+                console.error(
+                  `Failed to parse tool call arguments for ${tc.function.name}:`,
+                  tc.function.arguments,
+                  e,
+                );
+                input = {};
               }
 
               const thoughtSignature = (tc as any)?.extra_content?.google
