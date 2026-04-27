@@ -13,8 +13,9 @@
 export const nativeFetch = globalThis.fetch;
 export const nativeResponse = globalThis.Response;
 export const nativeRequest = globalThis.Request;
-export const nativeHeaders = globalThis.Headers;
-
+// export const nativeHeaders = globalThis.Headers;
+export const nativeHeaders =
+  typeof globalThis.Headers !== "undefined" ? globalThis.Headers : undefined;
 /**
  * Temporarily restores native fetch for the duration of a callback.
  * Use this when you need to ensure native fetch behavior for specific operations.

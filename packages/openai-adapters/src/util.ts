@@ -174,7 +174,7 @@ export function customFetch(
 
     // Remove default auth headers if custom ones are provided
     if (hasCustomAuth || hasCustomXApiKey) {
-      if (init.headers instanceof Headers) {
+      if (typeof Headers !== "undefined" && init.headers instanceof Headers) {
         if (hasCustomAuth) {
           init.headers.delete("Authorization");
         }
