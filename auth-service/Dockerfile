@@ -6,15 +6,11 @@ WORKDIR /app
 ENV UV_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/
 ENV UV_PYPI_INDEX=https://mirrors.aliyun.com/pypi/simple/
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+RUN pip install -i https://mirrors.aliyun.com/pypi/simple/ uv
 
 COPY requirements.txt .
 
-RUN uv pip install --no-cache-dir -r requirements.txt --index-url https://mirrors.aliyun.com/pypi/simple/
+RUN uv pip install --system --no-cache-dir -r requirements.txt --index-url https://mirrors.aliyun.com/pypi/simple/
 
 COPY . .
 
