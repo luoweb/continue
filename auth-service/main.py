@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException, RedirectResponse
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import requests
