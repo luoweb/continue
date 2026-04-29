@@ -527,12 +527,9 @@ export const runTerminalCommandImpl: ToolImpl = async (args, extras) => {
           const spawnOptions: Parameters<typeof childProcess.spawn>[2] = {
             cwd,
             env: getColorEnv(),
+            detached: true,
+            stdio: "ignore",
           };
-
-          if (process.platform !== "win32") {
-            spawnOptions.detached = true;
-            spawnOptions.stdio = "ignore";
-          }
 
           const childProc = childProcess.spawn(
             detachedShell,
@@ -552,9 +549,7 @@ export const runTerminalCommandImpl: ToolImpl = async (args, extras) => {
             }
           });
 
-          if (process.platform !== "win32") {
-            childProc.unref();
-          }
+          childProc.unref();
 
           const status = "Command is running in the background...";
           return [

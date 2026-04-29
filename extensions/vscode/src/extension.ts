@@ -11,6 +11,55 @@ import { SentryLogger } from "core/util/sentry/SentryLogger";
 import { getExtensionVersion } from "./util/util";
 export { default as buildTimestamp } from "./.buildTimestamp";
 
+if (!globalThis.Blob) {
+  const BlobClass = class {
+    readonly size: number;
+    readonly type: string;
+    private _data: Uint8Array;
+
+    constructor(
+      blobParts?: any[],
+      options?: { type?: string; endings?: string },
+    ) {
+      this.type = options?.type || "";
+
+      let data: string = "";
+      if (blobParts && Array.isArray(blobParts)) {
+        for (const part of blobParts) {
+          if (typeof part === "string") {
+            data += part;
+          } else if (part instanceof Uint8Array) {
+            data += new TextDecoder().decode(part);
+          } else if (part instanceof Blob) {
+            data += new TextDecoder().decode((part as any)._data);
+          } else {
+            data += String(part);
+          }
+        }
+      }
+
+      this._data = new TextEncoder().encode(data);
+      this.size = this._data.length;
+    }
+
+    async text(): Promise<string> {
+      return new TextDecoder().decode(this._data);
+    }
+
+    async arrayBuffer(): Promise<ArrayBuffer> {
+      return this._data.buffer.slice(
+        this._data.byteOffset,
+        this._data.byteOffset + this._data.byteLength,
+      ) as ArrayBuffer;
+    }
+
+    get [Symbol.toStringTag](): string {
+      return "Blob";
+    }
+  };
+  globalThis.Blob = BlobClass as any;
+}
+
 if (!globalThis.Headers) {
   const HeadersClass = class {
     private _headers: Map<string, string>;
