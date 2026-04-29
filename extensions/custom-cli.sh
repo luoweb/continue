@@ -22,6 +22,7 @@ $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/auth/workos.t
 $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/session.ts
 $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/hooks/hookConfig.ts
 find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/".continue")/".cowork")/g' {} +
+find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/".continue"/".cowork"/g' {} +
 
 
 echo "readme custom"
