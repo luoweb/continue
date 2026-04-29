@@ -19,6 +19,7 @@ import {
 } from "./auth/workos.js";
 import { DEFAULT_SESSION_TITLE } from "./constants/session.js";
 import { env } from "./env.js";
+import { runTriggerScript } from "./triggerHandler.js";
 import { logger } from "./util/logger.js";
 
 // Re-export BaseSessionMetadata for external consumers
@@ -360,6 +361,7 @@ export function createSession(
     },
   };
   SessionManager.getInstance().setSession(session);
+  void runTriggerScript("session_start", session.sessionId);
   return session;
 }
 
@@ -370,14 +372,13 @@ export function clearSession(): void {
   try {
     const manager = SessionManager.getInstance();
     if (manager.hasSession()) {
-      const sessionFilePath = path.join(
-        getSessionDir(),
-        `${manager.getSessionId()}.json`,
-      );
+      const sessionId = manager.getSessionId();
+      const sessionFilePath = path.join(getSessionDir(), `${sessionId}.json`);
       if (fs.existsSync(sessionFilePath)) {
         fs.unlinkSync(sessionFilePath);
       }
       manager.clear();
+      void runTriggerScript("session_end", sessionId);
     }
   } catch (error) {
     logger.error("Error clearing session:", error);
@@ -565,6 +566,7 @@ export function loadOrCreateSessionById(
   const existing = loadSessionById(sessionId);
   if (existing) {
     SessionManager.getInstance().setSession(existing);
+    void runTriggerScript("session_start", existing.sessionId);
     return existing;
   }
 
@@ -619,6 +621,7 @@ export function startNewSession(history: ChatHistoryItem[] = []): Session {
   };
 
   manager.setSession(newSession);
+  void runTriggerScript("session_start", newSession.sessionId);
   return newSession;
 }
 
