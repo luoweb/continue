@@ -32,8 +32,10 @@ const TelemetryProviders = ({ children }: PropsWithChildren) => {
     // PostHog depends only on allowAnonymousTelemetry
     if (allowAnonymousTelemetry) {
       // Initialize PostHog (existing logic)
+      const telemetryHost =
+        process.env.CONTINUE_TELEMETRY_HOST || "https://app.posthog.com";
       posthog.init("phc_JS6XFROuNbhJtVCEdTSYk6gl5ArRrTNMpCcguAXlSPs", {
-        api_host: "https://app.posthog.com",
+        api_host: telemetryHost,
         disable_session_recording: true,
         autocapture: false,
         // We need to manually track pageviews since we're a SPA
