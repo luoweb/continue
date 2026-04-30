@@ -128,6 +128,10 @@ $xsed 's#return <OnboardingModelsAddOnTab />;#return <OnboardingLocalTab />;#g' 
 
 
 $xsed 's#to toggle config#切换配置#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
+$xsed 's#Screen width too small#屏幕宽度太小#g' ${baseDir}/../gui/src/pages/config/index.tsx
+$xsed 's#To view settings, please expand the sidebar by dragging the left/right border#请通过拖动侧边栏的左/右边界来查看设置。#g' ${baseDir}/../gui/src/pages/config/index.tsx
+$xsed 's# left/right border#左/右边界#g' ${baseDir}/../gui/src/pages/config/index.tsx
+
 # 简化 session 按钮的文本
 $xsed 's#<span className="text-2xs">Log out</span>#<span className="text-2xs"></span>#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
 $xsed 's#<span className="text-2xs">Log in</span>#<span className="text-2xs"></span>#g' ${baseDir}/../gui/src/components/AssistantAndOrgListbox/index.tsx
