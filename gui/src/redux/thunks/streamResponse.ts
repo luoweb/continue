@@ -26,6 +26,14 @@ export const streamResponseThunk = createAsyncThunk<
 >(
   "chat/streamResponse",
   async ({ editorState, modifiers, index }, { dispatch, extra, getState }) => {
+    const messageId = uuidv4();
+    const sendTimestamp = Date.now();
+
+    extra.ideMessenger.post("message/send", {
+      messageId,
+      timestamp: sendTimestamp,
+    });
+
     await dispatch(
       streamThunkWrapper(async () => {
         const state = getState();
@@ -69,6 +77,7 @@ export const streamResponseThunk = createAsyncThunk<
         ];
         void dispatch(updateFileSymbolsFromFiles(filesForSymbols));
 
+        const userMessageId = uuidv4();
         dispatch(
           updateHistoryItemAtIndex({
             index: inputIndex,
@@ -76,7 +85,7 @@ export const streamResponseThunk = createAsyncThunk<
               message: {
                 role: "user",
                 content,
-                id: uuidv4(),
+                id: userMessageId,
               },
               contextItems: selectedContextItems,
             },
@@ -96,21 +105,31 @@ export const streamResponseThunk = createAsyncThunk<
           });
         }
 
-        unwrapResult(
-          await dispatch(
-            streamNormalInput({
-              legacySlashCommandData: legacyCommandWithInput
-                ? {
-                    command: legacyCommandWithInput.command,
-                    contextItems: selectedContextItems,
-                    historyIndex: inputIndex,
-                    input: legacyCommandWithInput.input,
-                    selectedCode,
-                  }
-                : undefined,
-            }),
-          ),
-        );
+        try {
+          unwrapResult(
+            await dispatch(
+              streamNormalInput({
+                legacySlashCommandData: legacyCommandWithInput
+                  ? {
+                      command: legacyCommandWithInput.command,
+                      contextItems: selectedContextItems,
+                      historyIndex: inputIndex,
+                      input: legacyCommandWithInput.input,
+                      selectedCode,
+                    }
+                  : undefined,
+              }),
+            ),
+          );
+        } finally {
+          const endTimestamp = Date.now();
+          const duration = endTimestamp - sendTimestamp;
+          extra.ideMessenger.post("message/end", {
+            messageId,
+            timestamp: endTimestamp,
+            duration,
+          });
+        }
       }),
     );
   },

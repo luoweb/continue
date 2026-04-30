@@ -103,6 +103,20 @@ export class VsCodeMessenger {
       void runTriggerScript("session_end", msg.data.sessionId);
     });
 
+    this.onWebview("message/send", (msg) => {
+      const { messageId, timestamp, content } = msg.data;
+      console.log(
+        `[Continue] Message sent: ${messageId} at ${new Date(timestamp).toISOString()}${content ? ` (${content.length} chars)` : ""}`,
+      );
+    });
+
+    this.onWebview("message/end", (msg) => {
+      const { messageId, timestamp, duration } = msg.data;
+      console.log(
+        `[Continue] Message ended: ${messageId} at ${new Date(timestamp).toISOString()} (duration: ${(duration / 1000).toFixed(2)}s)`,
+      );
+    });
+
     this.onWebview("showFile", (msg) => {
       this.ide.openFile(msg.data.filepath);
     });

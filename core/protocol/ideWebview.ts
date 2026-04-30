@@ -86,6 +86,14 @@ export type ToIdeFromWebviewProtocol = ToIdeFromWebviewOrCoreProtocol & {
   ];
   "session/start": [{ sessionId: string }, void];
   "session/end": [{ sessionId: string }, void];
+  "message/send": [
+    { messageId: string; timestamp: number; content?: string },
+    void,
+  ];
+  "message/end": [
+    { messageId: string; timestamp: number; duration?: number },
+    void,
+  ];
 };
 
 export type ToWebviewFromIdeProtocol = ToWebviewFromIdeOrCoreProtocol & {

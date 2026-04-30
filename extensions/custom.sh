@@ -544,6 +544,16 @@ $xsed 's/File pattern matches/文件模式匹配/g' ${baseDir}/../gui/src/compon
 $xsed 's/Rule Content/规则内容/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
 $xsed 's/  Back/  返回/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
 $xsed 's/  Continue/  继续/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
+$xsed 's/Always included in model context/始终包含在模型上下文中的/g' ${baseDir}/../packages/config-yaml/src/markdown/getRuleType.ts
+$xsed 's/Included when files matching a glob pattern are referenced/当文件匹配 glob 模式时包含/g' ${baseDir}/../packages/config-yaml/src/markdown/getRuleType.ts
+$xsed 's/Available to AI, which decides whether to include it. Must provide a description/仅当 AI 决定是否包含时提供描述/g' ${baseDir}/../packages/config-yaml/src/markdown/getRuleType.ts
+$xsed 's/Only included when explicitly mentioned using @ruleName/仅当明确提及时包含/g' ${baseDir}/../packages/config-yaml/src/markdown/getRuleType.ts
+$xsed 's/Add global rule/添加全局规则/g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
+$xsed 's#Choose a name for the new rule file.#为新规则文件选择一个名称#g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
+$xsed 's#<span>Rule name</span>#<span>规则名称</span>#g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
+$xsed 's#  Create#  创建#g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
+$xsed 's#  Cancel#  取消#g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
+
 
 
 # 翻译 ToolCallStatusMessage.tsx 文件
