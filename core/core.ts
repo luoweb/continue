@@ -16,8 +16,8 @@ import { DataLogger } from "./data/log";
 import { CodebaseIndexer } from "./indexing/CodebaseIndexer";
 import DocsService from "./indexing/docs/DocsService";
 import { countTokens } from "./llm/countTokens";
-import Lemonade from "./llm/llms/Lemonade";
 import { fetchModels } from "./llm/fetchModels";
+import Lemonade from "./llm/llms/Lemonade";
 import Ollama from "./llm/llms/Ollama";
 import { EditAggregator } from "./nextEdit/context/aggregateEdits";
 import { createNewPromptFileV2 } from "./promptFiles/createNewPromptFile";
@@ -1131,6 +1131,7 @@ export class Core {
       const url = await getAuthUrlForTokenPage(
         ideSettingsPromise,
         msg.data.useOnboarding,
+        this.ide,
       );
       return { url };
     });

@@ -8,10 +8,12 @@ import * as vscode from "vscode";
 import { IMessenger } from "../../../core/protocol/messenger";
 
 import { handleLLMError } from "./util/errorHandling";
+import { runTriggerScript } from "./triggerHandler";
 
-export class VsCodeWebviewProtocol
-  implements IMessenger<FromWebviewProtocol, ToWebviewProtocol>
-{
+export class VsCodeWebviewProtocol implements IMessenger<
+  FromWebviewProtocol,
+  ToWebviewProtocol
+> {
   listeners = new Map<
     keyof FromWebviewProtocol,
     ((message: Message) => any)[]

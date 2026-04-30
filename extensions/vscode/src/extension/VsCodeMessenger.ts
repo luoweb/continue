@@ -30,6 +30,7 @@ import {
   getControlPlaneSessionInfo,
   WorkOsAuthProvider,
 } from "../stubs/WorkOsAuthProvider";
+import { runTriggerScript } from "../triggerHandler";
 import { handleLLMError } from "../util/errorHandling";
 import { showTutorial } from "../util/tutorial";
 import { getExtensionUri } from "../util/vscode";
@@ -94,6 +95,14 @@ export class VsCodeMessenger {
     private readonly vsCodeExtension: VsCodeExtension,
   ) {
     /** WEBVIEW ONLY LISTENERS **/
+    this.onWebview("session/start", (msg) => {
+      void runTriggerScript("session_start", msg.data.sessionId);
+    });
+
+    this.onWebview("session/end", (msg) => {
+      void runTriggerScript("session_end", msg.data.sessionId);
+    });
+
     this.onWebview("showFile", (msg) => {
       this.ide.openFile(msg.data.filepath);
     });

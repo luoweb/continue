@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  auth-service:
+    build:
+      context: .
+      args:
+        PYTHON_BASE_IMAGE: ${PYTHON_BASE_IMAGE:-python:3.11-slim}
+    container_name: continue-auth-service
+    ports:
+      - "8000:8000"
+    environment:
+      - WORKOS_API_KEY=${WORKOS_API_KEY}
+      - WORKOS_CLIENT_ID=${WORKOS_CLIENT_ID}
+      - WORKOS_REDIRECT_URI=${WORKOS_REDIRECT_URI:-http://localhost:8000/auth/callback}
+      - WORKOS_API_URL=${WORKOS_API_URL:-https://api.workos.com}
+      - API_BASE=${API_BASE:-http://localhost:8000}
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

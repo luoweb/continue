@@ -21,6 +21,7 @@ $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/env.ts
 $xsed 's#".continue"#".cowork"#g' ${baseDir}/../core/util/paths.ts
 $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/hooks/hookConfig.ts
 find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/".continue")/".cowork")/g' {} +
+find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/".continue"/".cowork"/g' {} +
 
 echo "readme custom"
 cp ${baseDir}/../extensions/vscode/README.zh.md ${baseDir}/../extensions/vscode/README.md
@@ -362,8 +363,17 @@ $xsed 's#especially on larger codebases.#尤其是在较大的代码库中。#g'
 $xsed 's#Indexing has been deprecated#索引已被弃用#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#make your agent aware of your codebase and documentation#让您的智能体了解您的代码库和文档#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#title="Documentation"#title="文档"#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
-$xsed 's#No documentation sources configured.#未配置文档源。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
-$xsed 's#Click the + button to add your first docs.#点击 + 按钮添加你的第一个文档。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+$xsed 's#No documentation sources configured.#未配置文档源。#g' ${baseDir}/../gui/src/pages/config/sections/docs/DocsSection.tsx
+$xsed 's#Click the + button to add your first docs.#点击 + 按钮添加你的第一个文档。#g' ${baseDir}/../gui/src/pages/config/sections/docs/DocsSection.tsx
+$xsed 's#Common documentation sites are cached for faster loading#常用文档站点已缓存以供更快加载时间。#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
+
+$xsed 's#<span>Title</span>#<span>文档标题</span>#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
+$xsed 's#Add documentation#"添加文档"#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
+$xsed 's#"Title"#"文档标题"#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
+$xsed 's#The title that will be displayed to users in the `@docs` submenu#在 `@docs` 子菜单中显示的文档标题#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
+$xsed 's#Start URL#开始 URL#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
+$xsed 's#The starting location to begin crawling the documentation site#开始爬取文档站点的起始位置#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
+$xsed 's#  Add#  添加#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
 
 # Fix remaining English phrase in indexing section
 $xsed 's#Learn how to#了解如何#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
@@ -525,6 +535,16 @@ $xsed 's/Previous Conversation Compacted/之前的对话已压缩/g' ${baseDir}/
 # 翻译 FeedbackButtons.tsx 文件
 $xsed 's/text="Helpful"/text="有帮助"/g' ${baseDir}/../gui/src/components/FeedbackButtons.tsx
 $xsed 's/text="Unhelpful"/text="无帮助"/g' ${baseDir}/../gui/src/components/FeedbackButtons.tsx
+
+$xsed 's/Review and edit your generated rule below/查看并编辑生成的规则/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
+$xsed 's/Your rule/您的规则/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
+$xsed 's/Rule Name/规则名称/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
+$xsed 's/Rule Type/规则类型/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
+$xsed 's/File pattern matches/文件模式匹配/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
+$xsed 's/Rule Content/规则内容/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
+$xsed 's/  Back/  返回/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
+$xsed 's/  Continue/  继续/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
+
 
 # 翻译 ToolCallStatusMessage.tsx 文件
 $xsed 's/"Agent tool use"/"代理工具使用"/g' ${baseDir}/../gui/src/pages/gui/ToolCallDiv/ToolCallStatusMessage.tsx

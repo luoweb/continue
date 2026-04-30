@@ -21,18 +21,39 @@ function getDecodedOutput(data: Buffer): string {
   } else {
     return data.toString();
   }
-} // Simple helper function to use login shell on Unix/macOS and PowerShell on Windows
+}
 function getShellCommand(command: string): { shell: string; args: string[] } {
   if (process.platform === "win32") {
-    // Windows: Use PowerShell
     return {
       shell: "powershell.exe",
       args: ["-NoLogo", "-ExecutionPolicy", "Bypass", "-Command", command],
     };
   } else {
-    // Unix/macOS: Use login shell to source .bashrc/.zshrc etc.
     const userShell = process.env.SHELL || "/bin/bash";
     return { shell: userShell, args: ["-l", "-c", command] };
+  }
+}
+
+function getBackgroundShellCommand(command: string): {
+  shell: string;
+  args: string[];
+} {
+  if (process.platform === "win32") {
+    return {
+      shell: "powershell.exe",
+      args: [
+        "-NoLogo",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-WindowStyle",
+        "Hidden",
+        "-Command",
+        `Start-Process -NoNewWindow powershell.exe -ArgumentList '-NoLogo -ExecutionPolicy Bypass -Command "${command.replace(/"/g, '\\"')}"'`,
+      ],
+    };
+  } else {
+    const userShell = process.env.SHELL || "/bin/bash";
+    return { shell: userShell, args: ["-l", "-c", `${command} &`] };
   }
 }
 
@@ -499,22 +520,23 @@ export const runTerminalCommandImpl: ToolImpl = async (args, extras) => {
           ];
         }
       } else {
-        // For non-streaming but also not waiting for completion, use spawn
-        // but don't attach any listeners other than error
         try {
-          // Use spawn with color environment
           const { shell: detachedShell, args: detachedArgs } =
-            getShellCommand(command);
-          const childProc = childProcess.spawn(detachedShell, detachedArgs, {
-            cwd,
-            env: getColorEnv(), // Add color environment
-            // Detach the process so it's not tied to the parent
-            detached: true,
-            // Redirect to /dev/null equivalent (works cross-platform)
-            stdio: "ignore",
-          });
+            getBackgroundShellCommand(command);
 
-          // Even for detached processes, add event handlers to clean up the background process map
+          const spawnOptions: Parameters<typeof childProcess.spawn>[2] = {
+            cwd,
+            env: getColorEnv(),
+            detached: true,
+            stdio: "ignore",
+          };
+
+          const childProc = childProcess.spawn(
+            detachedShell,
+            detachedArgs,
+            spawnOptions,
+          );
+
           childProc.on("close", () => {
             if (isProcessBackgrounded(toolCallId)) {
               removeBackgroundedProcess(toolCallId);
@@ -527,8 +549,8 @@ export const runTerminalCommandImpl: ToolImpl = async (args, extras) => {
             }
           });
 
-          // Unref the child to allow the Node.js process to exit
           childProc.unref();
+
           const status = "Command is running in the background...";
           return [
             {

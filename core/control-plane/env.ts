@@ -4,7 +4,7 @@ import {
   getLocalEnvironmentDotFilePath,
   getStagingEnvironmentDotFilePath,
 } from "../util/paths";
-import { AuthType, ControlPlaneEnv } from "./AuthTypes";
+import { AuthType, ControlPlaneEnv, HubEnv, KeycloakEnv } from "./AuthTypes";
 import { getLicenseKeyData } from "./mdm/mdm";
 
 export const EXTENSION_NAME = "continue";
@@ -44,6 +44,52 @@ const LOCAL_ENV: ControlPlaneEnv = {
   APP_URL: "http://localhost:3000/",
 };
 
+function getWorkOsEnv(): HubEnv | null {
+  const { WORKOS_CLIENT_ID, WORKOS_URL, CONTROL_PLANE_URL, APP_URL } =
+    process.env;
+
+  if (!WORKOS_CLIENT_ID) {
+    return null;
+  }
+
+  return {
+    DEFAULT_CONTROL_PLANE_PROXY_URL:
+      CONTROL_PLANE_URL || "https://api.continue.dev/",
+    CONTROL_PLANE_URL: CONTROL_PLANE_URL || "https://api.continue.dev/",
+    AUTH_TYPE: WORKOS_URL ? AuthType.WorkOsStaging : AuthType.WorkOsProd,
+    WORKOS_CLIENT_ID,
+    WORKOS_URL: WORKOS_URL || undefined,
+    APP_URL: APP_URL || "https://continue.dev/",
+  };
+}
+
+function getKeycloakEnv(): KeycloakEnv | null {
+  const {
+    KEYCLOAK_CLIENT_ID,
+    KEYCLOAK_CLIENT_SECRET,
+    KEYCLOAK_REALM,
+    KEYCLOAK_URL,
+    CONTROL_PLANE_URL,
+    APP_URL,
+  } = process.env;
+
+  if (!KEYCLOAK_CLIENT_ID || !KEYCLOAK_URL) {
+    return null;
+  }
+
+  return {
+    DEFAULT_CONTROL_PLANE_PROXY_URL:
+      CONTROL_PLANE_URL || "https://api.continue.dev/",
+    CONTROL_PLANE_URL: CONTROL_PLANE_URL || "https://api.continue.dev/",
+    AUTH_TYPE: AuthType.Keycloak,
+    KEYCLOAK_CLIENT_ID,
+    KEYCLOAK_CLIENT_SECRET: KEYCLOAK_CLIENT_SECRET || "",
+    KEYCLOAK_REALM: KEYCLOAK_REALM || "master",
+    KEYCLOAK_URL,
+    APP_URL: APP_URL || "https://continue.dev/",
+  };
+}
+
 export async function enableHubContinueDev() {
   return true;
 }
@@ -68,6 +114,16 @@ export function getControlPlaneEnvSync(
       CONTROL_PLANE_URL: apiUrl,
       APP_URL: "https://continue.dev/",
     };
+  }
+
+  const workosEnv = getWorkOsEnv();
+  if (workosEnv) {
+    return workosEnv;
+  }
+
+  const keycloakEnv = getKeycloakEnv();
+  if (keycloakEnv) {
+    return keycloakEnv;
   }
 
   // Note .local overrides .staging

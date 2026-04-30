@@ -35,6 +35,8 @@ import { setLocalStorage } from "../util/localStorage";
 import { migrateLocalStorage } from "../util/migrateLocalStorage";
 import { useWebviewListener } from "./useWebviewListener";
 
+const PREVIOUS_SESSION_KEY = "continue_previous_session_id";
+
 function ParallelListeners() {
   const dispatch = useAppDispatch();
   const ideMessenger = useContext(IdeMessengerContext);
@@ -162,8 +164,17 @@ function ParallelListeners() {
   useEffect(() => {
     if (sessionId) {
       void dispatch(updateFileSymbolsFromHistory());
+
+      const previousSessionId = localStorage.getItem(PREVIOUS_SESSION_KEY);
+
+      if (previousSessionId && previousSessionId !== sessionId) {
+        ideMessenger.post("session/end", { sessionId: previousSessionId });
+      }
+
+      ideMessenger.post("session/start", { sessionId });
+      localStorage.setItem(PREVIOUS_SESSION_KEY, sessionId);
     }
-  }, [sessionId]);
+  }, [sessionId, ideMessenger]);
 
   // ON LOAD
   useEffect(() => {
