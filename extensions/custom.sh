@@ -191,8 +191,9 @@ $xsed 's#"Send Without Active File"#"不发送当前文件"#g' ${baseDir}/../gui
 $xsed 's#"Active file"#"当前文件"#g' ${baseDir}/../gui/src/components/mainInput/InputToolbar.tsx
 
 
-$xsed 's#to toggle model#切换模型#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
+$xsed 's#to toggle model#切换模型#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx 
 $xsed 's#Add Chat model#添加聊天模型#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
+$xsed 's#No models configured#暂无模型配置#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#Add Chat model#添加聊天模型#g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's#<span className="text-description text-xs font-medium">Models</span>#<span className="text-description text-xs font-medium">模型</span>#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#Last Session#最近会话#g' ${baseDir}/../gui/src/pages/gui/Chat.tsx
@@ -577,6 +578,16 @@ $xsed 's/Previous Conversation Compacted/之前的对话已压缩/g' ${baseDir}/
 # 翻译 FeedbackButtons.tsx 文件
 $xsed 's/text="Helpful"/text="有帮助"/g' ${baseDir}/../gui/src/components/FeedbackButtons.tsx
 $xsed 's/text="Unhelpful"/text="无帮助"/g' ${baseDir}/../gui/src/components/FeedbackButtons.tsx
+
+# 翻译 IndexingProgressTitleText.tsx 文件
+$xsed 's/"Indexing complete"/"索引完成"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressTitleText.tsx
+$xsed 's/"Initializing"/"初始化中"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressTitleText.tsx
+$xsed 's/"Indexing other workspace"/"正在索引其他工作区"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressTitleText.tsx
+$xsed 's/"Indexing in-progress"/"索引进行中"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressTitleText.tsx
+$xsed 's/"Indexing paused"/"索引已暂停"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressTitleText.tsx
+$xsed 's/"Indexing failed"/"索引失败"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressTitleText.tsx
+$xsed 's/"Indexing disabled"/"索引已禁用"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressTitleText.tsx
+$xsed 's/"Indexing cancelled"/"索引已取消"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressTitleText.tsx
 
 $xsed 's/Review and edit your generated rule below/查看并编辑生成的规则/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
 $xsed 's/Your rule/您的规则/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/GenerationScreen.tsx
