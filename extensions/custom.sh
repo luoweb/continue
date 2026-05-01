@@ -192,7 +192,6 @@ $xsed 's#to toggle model#切换模型#g' ${baseDir}/../gui/src/components/modelS
 $xsed 's#Add Chat model#添加聊天模型#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#No models configured#暂无模型配置#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#"Select model"#"选择模型"#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
-$xsed 's#Add Chat model#添加聊天模型#g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's#<span className="text-description text-xs font-medium">Models</span>#<span className="text-description text-xs font-medium">模型</span>#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#Last Session#最近会话#g' ${baseDir}/../gui/src/pages/gui/Chat.tsx
 
@@ -538,21 +537,20 @@ $xsed 's/"Agent Requested"/"代理请求"/g' ${baseDir}/../gui/src/components/Ge
 $xsed 's/"Create an agent requested rule where..."/"创建一个代理请求的规则，其中..."/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
 
 # 翻译 AddModelForm.tsx 文件
-$xsed 's/Add Chat model/添加聊天模型/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
-$xsed 's/Provider/提供商/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's#Add Chat model#添加聊天模型#g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's#Provider</label>"#提供商</label>#g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/"Search providers..."/"搜索提供商..."/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Don'\''t see your provider?/没找到您的提供商？/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Click here/点击此处/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/to view the full list/查看完整列表/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Install provider/安装提供商/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
-$xsed 's/Model/模型/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's#Model</label>"#模型</label>#g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Use entered API key to fetch available models/使用输入的API密钥获取可用模型/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Additional models/其他模型/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Codestral API key/Codestral API密钥/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Note that codestral requires a different API key from other Mistral models/请注意，codestral需要与其他Mistral模型不同的API密钥/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
-$xsed 's/API key/API密钥/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Enter your /输入您的/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
-$xsed 's/ API key/" API密钥"/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/  API key/  API密钥/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/API key usually starts with sk-/API密钥通常以sk-开头/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/to create a /创建/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Connect/连接/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
@@ -602,6 +600,19 @@ $xsed 's/Only included when explicitly mentioned using @ruleName/仅当明确提
 $xsed 's/Add global rule/添加全局规则/g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
 $xsed 's#Choose a name for the new rule file.#为新规则文件选择一个名称#g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
 $xsed 's#<span>Rule name</span>#<span>规则名称</span>#g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
+
+# 翻译 ToolPolicyItem.tsx 文件
+$xsed 's/Duplicate tool name/重复的工具名称/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
+$xsed 's/detected. Permissions will conflict and usage may be unpredictable/检测到。权限将冲突，使用可能不可预测/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
+$xsed 's/"Excluded"/"排除"/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
+$xsed 's/"Automatic"/"自动"/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
+$xsed 's/"Ask First"/"先询问"/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
+$xsed 's/Tool disabled in chat mode/工具在聊天模式下禁用/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
+$xsed 's/Group is turned off/组已关闭/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
+$xsed 's/Tool disabled in plan mode/工具在规划模式下禁用/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
+$xsed 's/Description:/描述：/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
+$xsed 's/Arguments:/参数：/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
+$xsed 's/No description/无描述/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
 $xsed 's#  Create#  创建#g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
 $xsed 's#  Cancel#  取消#g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
 
