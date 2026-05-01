@@ -26,10 +26,7 @@ find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.
 $xsed 's#selectedProfile\?.profileType === "local"#false#g'  ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#<CliInstallBanner permanentDismissal={true} />#{/* <CliInstallBanner permanentDismissal={true} /> */}#g'  ${baseDir}/../gui/src/pages/config/index.tsx
 awk '/permanentDismissal={true}/ {p=1; print; next} p {print $0 " */}"; p=0; next} 1' ${baseDir}/../gui/src/pages/gui/Chat.tsx > /tmp/Chat.tsx.tmp && mv /tmp/Chat.tsx.tmp ${baseDir}/../gui/src/pages/gui/Chat.tsx
-<CliInstallBanner
-
 $xsed 's#<CliInstallBanner#\{/* <CliInstallBanner#g'  ${baseDir}/../gui/src/pages/gui/Chat.tsx
-$xsed 's#<CliInstallBanner#{/* <CliInstallBanner#g'  ../gui/src/pages/gui/Chat.tsx
 
 
 # awk '/permanentDismissal={true}/ {p=1; print; next} p {print $0 " */}"; p=0; next} 1' ../gui/src/pages/gui/Chat.tsx > /tmp/Chat.tsx.tmp && mv /tmp/Chat.tsx.tmp ../gui/src/pages/gui/Chat.tsx
@@ -194,6 +191,7 @@ $xsed 's#"Active file"#"当前文件"#g' ${baseDir}/../gui/src/components/mainIn
 $xsed 's#to toggle model#切换模型#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx 
 $xsed 's#Add Chat model#添加聊天模型#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#No models configured#暂无模型配置#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
+$xsed 's#"Select model"#"选择模型"#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#Add Chat model#添加聊天模型#g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's#<span className="text-description text-xs font-medium">Models</span>#<span className="text-description text-xs font-medium">模型</span>#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#Last Session#最近会话#g' ${baseDir}/../gui/src/pages/gui/Chat.tsx
@@ -495,7 +493,7 @@ $xsed 's#label: "Older"#label: "更早"#g' ${baseDir}/../gui/src/components/Hist
 # $xsed 's#"name": "Continue#"name": "AiCoder#g' ../extensions/vscode/package.json
 
 # Comment out CliInstallBanner in Chat.tsx
-awk '/<CliInstallBanner/ { print "        {/* <CliInstallBanner"; getline; while ($0 !~ /^[ \t]*\/>$/) { print; getline; } print $0 " */}"; next } { print }' ${baseDir}/../gui/src/pages/gui/Chat.tsx > /tmp/Chat.tsx.tmp && mv /tmp/Chat.tsx.tmp ${baseDir}/../gui/src/pages/gui/Chat.tsx
+# awk '/<CliInstallBanner/ { print "        {/* <CliInstallBanner"; getline; while ($0 !~ /^[ \t]*\/>$/) { print; getline; } print $0 " */}"; next } { print }' ${baseDir}/../gui/src/pages/gui/Chat.tsx > /tmp/Chat.tsx.tmp && mv /tmp/Chat.tsx.tmp ${baseDir}/../gui/src/pages/gui/Chat.tsx
 
 echo "########## spec code replace ########## "
 # $xsed 's#EXTENSION_NAME = "continue"#EXTENSION_NAME = "aicoder"#g' ${baseDir}/../core/control-plane/env.ts
