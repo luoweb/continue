@@ -23,9 +23,20 @@ $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/hooks/hookCon
 find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/".continue")/".cowork")/g' {} +
 find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/".continue"/".cowork"/g' {} +
 
+$xsed 's#selectedProfile\?.profileType === "local"#false#g'  ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
+$xsed 's#<CliInstallBanner permanentDismissal={true} />#{/* <CliInstallBanner permanentDismissal={true} /> */}#g'  ${baseDir}/../gui/src/pages/config/index.tsx
+awk '/permanentDismissal={true}/ {p=1; print; next} p {print $0 " */}"; p=0; next} 1' ${baseDir}/../gui/src/pages/gui/Chat.tsx > /tmp/Chat.tsx.tmp && mv /tmp/Chat.tsx.tmp ${baseDir}/../gui/src/pages/gui/Chat.tsx
+<CliInstallBanner
+
+$xsed 's#<CliInstallBanner#\{/* <CliInstallBanner#g'  ${baseDir}/../gui/src/pages/gui/Chat.tsx
+$xsed 's#<CliInstallBanner#{/* <CliInstallBanner#g'  ../gui/src/pages/gui/Chat.tsx
+
+
+# awk '/permanentDismissal={true}/ {p=1; print; next} p {print $0 " */}"; p=0; next} 1' ../gui/src/pages/gui/Chat.tsx > /tmp/Chat.tsx.tmp && mv /tmp/Chat.tsx.tmp ../gui/src/pages/gui/Chat.tsx
+$xsed 's#/.continue#/.cowork'  ${baseDir}/../gui/src/components/History/index.tsx
+
 echo "readme custom"
 cp ${baseDir}/../extensions/vscode/README.zh.md ${baseDir}/../extensions/vscode/README.md
-
 echo "ui custom"
 
 # 目标文件路径（请替换为你的实际文件路径，如 ./src/components/Login.jsx）
@@ -182,6 +193,7 @@ $xsed 's#"Active file"#"当前文件"#g' ${baseDir}/../gui/src/components/mainIn
 
 $xsed 's#to toggle model#切换模型#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#Add Chat model#添加聊天模型#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
+$xsed 's#Add Chat model#添加聊天模型#g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's#<span className="text-description text-xs font-medium">Models</span>#<span className="text-description text-xs font-medium">模型</span>#g' ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#Last Session#最近会话#g' ${baseDir}/../gui/src/pages/gui/Chat.tsx
 
@@ -480,6 +492,10 @@ $xsed 's#label: "Older"#label: "更早"#g' ${baseDir}/../gui/src/components/Hist
 # $xsed 's#"Enable Continue#"Enable AiCoder#g' ../extensions/vscode/package.json
 # $xsed 's#"Pause Continue#"Pause AiCoder#g' ../extensions/vscode/package.json
 # $xsed 's#"name": "Continue#"name": "AiCoder#g' ../extensions/vscode/package.json
+
+# Comment out CliInstallBanner in Chat.tsx
+awk '/<CliInstallBanner/ { print "        {/* <CliInstallBanner"; getline; while ($0 !~ /^[ \t]*\/>$/) { print; getline; } print $0 " */}"; next } { print }' ${baseDir}/../gui/src/pages/gui/Chat.tsx > /tmp/Chat.tsx.tmp && mv /tmp/Chat.tsx.tmp ${baseDir}/../gui/src/pages/gui/Chat.tsx
+
 echo "########## spec code replace ########## "
 # $xsed 's#EXTENSION_NAME = "continue"#EXTENSION_NAME = "aicoder"#g' ${baseDir}/../core/control-plane/env.ts
 # $xsed 's#"Continue.continue"#"Roweb.aicoder"#g' ${baseDir}/../extensions/vscode/src/util/vscode.ts
@@ -521,6 +537,28 @@ $xsed 's/"Auto attached"/"自动附加"/g' ${baseDir}/../gui/src/components/Gene
 $xsed 's/"Create an auto-attached rule where for all {FILE_EXTENSIONS} files..."/"创建一个自动附加的规则，适用于所有 {FILE_EXTENSIONS} 文件..."/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
 $xsed 's/"Agent Requested"/"代理请求"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
 $xsed 's/"Create an agent requested rule where..."/"创建一个代理请求的规则，其中..."/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
+
+# 翻译 AddModelForm.tsx 文件
+$xsed 's/Add Chat model/添加聊天模型/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/Provider/提供商/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/"Search providers..."/"搜索提供商..."/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/Don'\''t see your provider?/没找到您的提供商？/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/Click here/点击此处/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/to view the full list/查看完整列表/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/Install provider/安装提供商/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/Model/模型/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/Use entered API key to fetch available models/使用输入的API密钥获取可用模型/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/Additional models/其他模型/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/Codestral API key/Codestral API密钥/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/Note that codestral requires a different API key from other Mistral models/请注意，codestral需要与其他Mistral模型不同的API密钥/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/API key/API密钥/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/Enter your /输入您的/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/ API key/" API密钥"/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/API key usually starts with sk-/API密钥通常以sk-开头/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/to create a /创建/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/Connect/连接/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/This will update your/这将更新您的/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's/config file/配置文件/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/"Manual"/"手动"/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
 $xsed 's/"Create a manually requested rule where..."/"创建一个手动请求的规则，其中..."/g' ${baseDir}/../gui/src/components/GenerateRuleDialog/ruleTemplates.ts
 
