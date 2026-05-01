@@ -30,7 +30,6 @@ $xsed 's#<CliInstallBanner#\{/* <CliInstallBanner#g'  ${baseDir}/../gui/src/page
 
 
 # awk '/permanentDismissal={true}/ {p=1; print; next} p {print $0 " */}"; p=0; next} 1' ../gui/src/pages/gui/Chat.tsx > /tmp/Chat.tsx.tmp && mv /tmp/Chat.tsx.tmp ../gui/src/pages/gui/Chat.tsx
-$xsed 's#/.continue#/.cowork'  ${baseDir}/../gui/src/components/History/index.tsx
 
 echo "readme custom"
 cp ${baseDir}/../extensions/vscode/README.zh.md ${baseDir}/../extensions/vscode/README.md
@@ -375,8 +374,10 @@ $xsed 's#    understanding.#    理解。#g' ${baseDir}/../gui/src/pages/config/
 $xsed 's#Note that indexing can consume significant system resources,#请注意，索引可能会消耗大量系统资源，#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#especially on larger codebases.#尤其是在较大的代码库中。#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 $xsed 's#Indexing has been deprecated#索引已被弃用#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+
 $xsed 's#make your agent aware of your codebase and documentation#让您的智能体了解您的代码库和文档#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
-$xsed 's#title="Documentation"#title="文档"#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+$xsed 's#title="Documentation"#title="文档"#g' ${baseDir}/../gui/src/pages/config/sections/docs/DocsSection.tsx
+$xsed 's#"Add documentation#"添加文档"#g' ${baseDir}/../gui/src/pages/config/sections/docs/DocsSection.tsx
 $xsed 's#No documentation sources configured.#未配置文档源。#g' ${baseDir}/../gui/src/pages/config/sections/docs/DocsSection.tsx
 $xsed 's#Click the + button to add your first docs.#点击 + 按钮添加你的第一个文档。#g' ${baseDir}/../gui/src/pages/config/sections/docs/DocsSection.tsx
 $xsed 's#Common documentation sites are cached for faster loading#常用文档站点已缓存以供更快加载时间。#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
@@ -479,6 +480,9 @@ $xsed 's#No past sessions found. To start a new session, either click the#"未�
 $xsed 's#button or use the keyboard shortcut#"按钮或使用快捷键"#g' ${baseDir}/../gui/src/components/History/index.tsx
 $xsed 's#Clear chats#"清空聊天记录"#g' ${baseDir}/../gui/src/components/History/index.tsx
 $xsed 's#Chat history is saved to#"聊天记录已保存至"#g' ${baseDir}/../gui/src/components/History/index.tsx
+$xsed 's#/.continue#/.cowork#g'  ${baseDir}/../gui/src/components/History/index.tsx
+$xsed 's#Clear sessions#清理会话#g'  ${baseDir}/../gui/src/components/History/index.tsx
+$xsed 's#Are you sure you want to permanently delete all chat sessions, including the current chat session?#你确定要永久删除所有聊天会话，包括当前这个会话吗？#g'  ${baseDir}/../gui/src/components/History/index.tsx
 
 # 时间分组汉化
 $xsed 's#label: "Today"#label: "今日"#g' ${baseDir}/../gui/src/components/History/util.ts
@@ -538,13 +542,13 @@ $xsed 's/"Create an agent requested rule where..."/"创建一个代理请求的�
 
 # 翻译 AddModelForm.tsx 文件
 $xsed 's#Add Chat model#添加聊天模型#g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
-$xsed 's#Provider</label>"#提供商</label>#g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's#Provider</label>#提供商</label>#g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/"Search providers..."/"搜索提供商..."/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Don'\''t see your provider?/没找到您的提供商？/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Click here/点击此处/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/to view the full list/查看完整列表/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Install provider/安装提供商/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
-$xsed 's#Model</label>"#模型</label>#g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
+$xsed 's#Model</label>#模型</label>#g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Use entered API key to fetch available models/使用输入的API密钥获取可用模型/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Additional models/其他模型/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
 $xsed 's/Codestral API key/Codestral API密钥/g' ${baseDir}/../gui/src/forms/AddModelForm.tsx
@@ -598,8 +602,14 @@ $xsed 's/Included when files matching a glob pattern are referenced/当文件匹
 $xsed 's/Available to AI, which decides whether to include it. Must provide a description/仅当 AI 决定是否包含时提供描述/g' ${baseDir}/../packages/config-yaml/src/markdown/getRuleType.ts
 $xsed 's/Only included when explicitly mentioned using @ruleName/仅当明确提及时包含/g' ${baseDir}/../packages/config-yaml/src/markdown/getRuleType.ts
 $xsed 's/Add global rule/添加全局规则/g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
+$xsed 's/Add workspace rule/添加工作区规则/g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
 $xsed 's#Choose a name for the new rule file.#为新规则文件选择一个名称#g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
 $xsed 's#<span>Rule name</span>#<span>规则名称</span>#g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
+$xsed 's#.continue/rules#.cowork/rules#g' ${baseDir}/../core/promptFiles/index.ts
+$xsed 's#.continue/prompts#.cowork/prompts#g' ${baseDir}/../core/promptFiles/index.ts
+$xsed 's#/.continue#/.cowork#g' ${baseDir}/../core/config/loadLocalAssistants.ts
+# $xsed 's#/.continue#/.cowork#g' ${baseDir}/../core/config/loadLocalAssistants.ts
+$xsed 's#/.continue#/.cowork#g' ${baseDir}/../core/config/createNewAssistantFile.ts
 
 # 翻译 ToolPolicyItem.tsx 文件
 $xsed 's/Duplicate tool name/重复的工具名称/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
@@ -607,6 +617,11 @@ $xsed 's/detected. Permissions will conflict and usage may be unpredictable/检�
 $xsed 's/"Excluded"/"排除"/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
 $xsed 's/"Automatic"/"自动"/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
 $xsed 's/"Ask First"/"先询问"/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
+$xsed 's/"Ask First"/"先询问"/g' ${baseDir}/../extensions/vscode/e2e/actions/GUI.actions.ts
+$xsed 's/"Automatic"/"自动"/g' ${baseDir}/../extensions/vscode/e2e/actions/GUI.actions.ts
+$xsed 's/"Excluded"/"排除"/g' ${baseDir}/../extensions/vscode/e2e/actions/GUI.actions.ts
+
+
 $xsed 's/Tool disabled in chat mode/工具在聊天模式下禁用/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
 $xsed 's/Group is turned off/组已关闭/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
 $xsed 's/Tool disabled in plan mode/工具在规划模式下禁用/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
@@ -617,6 +632,14 @@ $xsed 's#  Create#  创建#g' ${baseDir}/../gui/src/components/dialogs/AddRuleDi
 $xsed 's#  Cancel#  取消#g' ${baseDir}/../gui/src/components/dialogs/AddRuleDialog.tsx
 
 
+
+# 翻译 IndexingProgressSubtext.tsx 文件
+$xsed 's/"Click to re-index"/"点击重新索引"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressSubtext.tsx
+$xsed 's/"Click to pause"/"点击暂停"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressSubtext.tsx
+$xsed 's/"Click to resume"/"点击恢复"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressSubtext.tsx
+$xsed 's/"Click to retry"/"点击重试"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressSubtext.tsx
+$xsed 's/"Click to open configuration"/"点击打开配置"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressSubtext.tsx
+$xsed 's/"Click to restart"/"点击重启"/g' ${baseDir}/../gui/src/pages/config/features/indexing/IndexingProgressSubtext.tsx
 
 # 翻译 ToolCallStatusMessage.tsx 文件
 $xsed 's/"Agent tool use"/"代理工具使用"/g' ${baseDir}/../gui/src/pages/gui/ToolCallDiv/ToolCallStatusMessage.tsx
@@ -687,7 +710,7 @@ $xsed 's/description: "The value, name and possibly type of the local variables"
 $xsed 's/displayTitle: "Git Diff"/displayTitle: "Git 差异"/g' ${baseDir}/../core/context/providers/DiffContextProvider.ts
 $xsed 's/description: "Reference the current git diff"/description: "引用当前 git 差异"/g' ${baseDir}/../core/context/providers/DiffContextProvider.ts
 $xsed 's/description: "The current git diff"/description: "当前 git 差异"/g' ${baseDir}/../core/context/providers/DiffContextProvider.ts
-
+$xsed 's/Add more context providers/添加更多上下文提供程序/g'  ${baseDir}/../gui/src/components/mainInput/TipTapEditor/utils/getSuggestion.ts
 # SearchContextProvider
 $xsed 's/displayTitle: "Search"/displayTitle: "搜索"/g' ${baseDir}/../core/context/providers/SearchContextProvider.ts
 $xsed 's/description: "Use ripgrep to exact search the workspace"/description: "使用 ripgrep 精确搜索工作区"/g' ${baseDir}/../core/context/providers/SearchContextProvider.ts
