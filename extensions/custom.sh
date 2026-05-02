@@ -19,6 +19,7 @@ echo "########## custom replace begin ########## "
 echo ".continue custom"
 $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/env.ts
 $xsed 's#".continue"#".cowork"#g' ${baseDir}/../core/util/paths.ts
+$xsed 's#".continue/"#".cowork/"#g' ${baseDir}/../core/config/workspace/workspaceBlocks.ts
 $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/hooks/hookConfig.ts
 find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/".continue")/".cowork")/g' {} +
 find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/".continue"/".cowork"/g' {} +
@@ -439,6 +440,7 @@ $xsed 's#<h3 className="mb-3 text-base font-medium">Resources</h3>#<h3 className
 $xsed 's#<h3 className="mb-3 text-base font-medium">Tools</h3>#<h3 className="mb-3 text-base font-medium">工具</h3>#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#<h3 className="mb-3 text-base font-medium">Keyboard Shortcuts</h3>#<h3 className="mb-3 text-base font-medium">键盘快捷键</h3>#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#title="Documentation"#title="文档"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
+$xsed 's#title="Documentation"#title="文档"#g' ${baseDir}/../gui/src/pages/config/sections/DocsSection.tsx
 $xsed 's#title="Have an issue\?"#title="遇到问题？"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#title="Join the community!"#title="加入社区！"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
 $xsed 's#title="Token usage"#title="令牌使用"#g' ${baseDir}/../gui/src/pages/config/sections/HelpSection.tsx
@@ -469,6 +471,11 @@ $xsed 's#Next Edit is enabled#NextEdit 已启用#g' ${baseDir}/vscode/src/autoco
 $xsed 's#Enable autocomplete#启用自动补全#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
 $xsed 's#Disable autocomplete#禁用自动补全#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
 $xsed 's#Pause autocomplete#暂停自动补全#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#Click to enable tab autocomplete#点击启用Tab自动补全#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#Continue (config error)#分布式编码助手 (配置错误)#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#Current autocomplete model#当前自动补全模型#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#(Missing API key)#(缺少API密钥)#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
+$xsed 's#Unnamed Model#未命名模型#g' ${baseDir}/vscode/src/autocomplete/statusBar.ts
 
 $xsed 's# Open settings# 打开设置#g' ${baseDir}/vscode/src/commands.ts
 $xsed 's# Open chat# 打开对话#g' ${baseDir}/vscode/src/commands.ts
