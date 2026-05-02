@@ -376,14 +376,17 @@ $xsed 's#especially on larger codebases.#尤其是在较大的代码库中。#g'
 $xsed 's#Indexing has been deprecated#索引已被弃用#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
 
 $xsed 's#make your agent aware of your codebase and documentation#让您的智能体了解您的代码库和文档#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
-$xsed 's#title="Documentation"#title="文档"#g' ${baseDir}/../gui/src/pages/config/sections/docs/DocsSection.tsx
+$xsed 's#https://docs.continue.dev/#https://roweb.cn//#g' ${baseDir}/../gui/src/pages/config/sections/IndexingSettingsSection.tsx
+
+
+$xsed 's#"Built-in Tools"#"内置工具"#g' ${baseDir}/../gui/src/pages/config/sections/ToolsSection.tsx
 $xsed 's#"Add documentation#"添加文档"#g' ${baseDir}/../gui/src/pages/config/sections/docs/DocsSection.tsx
 $xsed 's#No documentation sources configured.#未配置文档源。#g' ${baseDir}/../gui/src/pages/config/sections/docs/DocsSection.tsx
 $xsed 's#Click the + button to add your first docs.#点击 + 按钮添加你的第一个文档。#g' ${baseDir}/../gui/src/pages/config/sections/docs/DocsSection.tsx
 $xsed 's#Common documentation sites are cached for faster loading#常用文档站点已缓存以供更快加载时间。#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
 
 $xsed 's#<span>Title</span>#<span>文档标题</span>#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
-$xsed 's#Add documentation#"添加文档"#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
+$xsed 's#Add documentation#添加文档#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
 $xsed 's#"Title"#"文档标题"#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
 $xsed 's#The title that will be displayed to users in the `@docs` submenu#在 `@docs` 子菜单中显示的文档标题#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
 $xsed 's#Start URL#开始 URL#g' ${baseDir}/../gui/src/components/dialogs/AddDocsDialog.tsx
@@ -506,6 +509,7 @@ $xsed 's#Continue#分布式编码助手#g' ${baseDir}/../*.md
 echo "########## spec code batch replace ########## "
 
 find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mdx" | grep -v node_modules | grep -v ".bak" | grep -v Start | xargs $xsed 's#https://hub.continue.dev/#https://hub.roweb.cn/#g'
+find ${baseDir}/../ -type f -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.mdx" | grep -v node_modules | grep -v ".bak" | grep -v Start | xargs $xsed 's#continue.dev/#roweb.cn/#g'
 find ${baseDir}/../ -type f -name "*.json" -o -name "*.xml" -o -name "*.ts" | grep -v node_modules | grep -v ".bak" | grep -v Start | grep -v run | xargs $xsed 's#"continue-#"aicoder-#g'
 # find ${baseDir}/../ -type f -name "*.json" -o -name "*.xml" -o -name "*.ts" | grep -v node_modules | grep -v ".bak" |  grep -v Start | grep -v run | xargs $xsed 's#"continue\.#"aicoder.#g'
 # find ${baseDir}/../ -type f -name "*.md" -o -name "*.json" -o -name "*.mdx" -o -name "*.ts" -o -name "oneper" | grep -v node_modules |grep -v ".bak" |  grep -v Start | grep -v run | xargs $xsed 's#Continue.continue#Roweb.aicoder#g'
