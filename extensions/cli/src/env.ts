@@ -12,4 +12,7 @@ export const env = {
   appUrl: process.env.HUB_URL || "https://continue.dev",
   continueHome:
     process.env.CONTINUE_GLOBAL_DIR || path.join(os.homedir(), ".continue"),
+  authServerUrl:
+    process.env.CONTINUE_AUTH_SERVER_URL || "https://api.workos.com",
+  useLocalAuth: process.env.CONTINUE_USE_LOCAL_AUTH === "true",
 };

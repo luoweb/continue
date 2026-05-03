@@ -1,15 +1,19 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import RedirectResponse
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import requests
+from pydantic import BaseModel, EmailStr
+from datetime import datetime, timedelta
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+import uuid
 import os
 from dotenv import load_dotenv
-import time
+
+import database
 
 load_dotenv()
 
-app = FastAPI(title="Continue Auth Service", version="1.0")
+app = FastAPI(title="Continue Auth Service", version="2.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,11 +23,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-WORKOS_API_KEY = os.getenv("WORKOS_API_KEY")
-WORKOS_CLIENT_ID = os.getenv("WORKOS_CLIENT_ID")
-WORKOS_REDIRECT_URI = os.getenv("WORKOS_REDIRECT_URI", "http://localhost:8000/auth/callback")
-WORKOS_API_URL = os.getenv("WORKOS_API_URL", "https://api.workos.com")
+SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-here-must-be-at-least-32-chars")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
+REFRESH_TOKEN_EXPIRE_DAYS = 7
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 API_BASE = os.getenv("API_BASE", "http://localhost:8000")
+CLIENT_ID = os.getenv("CLIENT_ID", "continue-cli")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET", "")
+REDIRECT_URI = os.getenv("REDIRECT_URI", "http://localhost:8000/auth/callback")
 
 class TokenResponse(BaseModel):
     access_token: str
@@ -50,194 +60,585 @@ class UserInfo(BaseModel):
 class TokenRefreshRequest(BaseModel):
     refreshToken: str
 
-@app.get("/auth/authorize")
-async def authorize(redirect_uri: str = None):
-    """重定向到 WorkOS 授权页面 (Authorization Code Flow)"""
-    if not WORKOS_CLIENT_ID:
-        raise HTTPException(status_code=500, detail="WORKOS_CLIENT_ID not configured")
-    
-    redirect = redirect_uri or WORKOS_REDIRECT_URI
-    
-    auth_url = f"{WORKOS_API_URL}/user_management/authorize"
-    params = {
-        "response_type": "code",
-        "client_id": WORKOS_CLIENT_ID,
-        "redirect_uri": redirect,
-        "scope": "openid email profile",
-        "provider": "authkit",
-    }
-    
-    url = requests.Request("GET", auth_url, params=params).prepare().url
-    return RedirectResponse(url=str(url))
+class RegisterRequest(BaseModel):
+    email: EmailStr
+    password: str
+    first_name: str = ""
+    last_name: str = ""
 
-@app.get("/auth/callback")
-async def callback(code: str, redirect_uri: str = None):
-    """处理 WorkOS 回调，交换授权码获取令牌"""
-    if not WORKOS_API_KEY or not WORKOS_CLIENT_ID:
-        raise HTTPException(status_code=500, detail="WorkOS credentials not configured")
-    
-    redirect = redirect_uri or WORKOS_REDIRECT_URI
-    
-    token_url = f"{WORKOS_API_URL}/user_management/authenticate"
-    headers = {
-        "Authorization": f"Bearer {WORKOS_API_KEY}",
-        "Content-Type": "application/x-www-form-urlencoded",
-    }
-    data = {
-        "grant_type": "authorization_code",
-        "client_id": WORKOS_CLIENT_ID,
-        "redirect_uri": redirect,
-        "code": code,
-    }
-    
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt, int(expire.timestamp())
+
+def decode_access_token(token: str):
     try:
-        response = requests.post(token_url, headers=headers, data=data)
-        response.raise_for_status()
-        token_data = response.json()
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        return None
+
+def generate_refresh_token():
+    return str(uuid.uuid4())
+
+def generate_user_code():
+    return ''.join([str(uuid.uuid4()).replace('-', '')[:4].upper() for _ in range(3)]).join('-')
+
+@app.post("/auth/register", response_model=TokenResponse)
+async def register(request: RegisterRequest):
+    user = database.get_user_by_email(request.email)
+    if user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    hashed_password = get_password_hash(request.password)
+    user_id = str(uuid.uuid4())
+    
+    success = database.create_user(
+        user_id=user_id,
+        email=request.email,
+        hashed_password=hashed_password,
+        first_name=request.first_name,
+        last_name=request.last_name
+    )
+    
+    if not success:
+        raise HTTPException(status_code=500, detail="Failed to create user")
+    
+    access_token, expires_at = create_access_token(
+        data={"sub": user_id, "email": request.email},
+        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
+    
+    refresh_token = generate_refresh_token()
+    database.create_refresh_token(
+        token_id=str(uuid.uuid4()),
+        user_id=user_id,
+        token=refresh_token,
+        expires_at=datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    )
+    
+    return TokenResponse(
+        access_token=access_token,
+        refresh_token=refresh_token,
+        expires_at=expires_at,
+        user_id=user_id,
+        user_email=request.email
+    )
+
+@app.post("/auth/login", response_model=TokenResponse)
+async def login(request: LoginRequest):
+    user = database.get_user_by_email(request.email)
+    if not user or not verify_password(request.password, user["hashed_password"]):
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    access_token, expires_at = create_access_token(
+        data={"sub": user["id"], "email": user["email"]},
+        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
+    
+    refresh_token = generate_refresh_token()
+    database.create_refresh_token(
+        token_id=str(uuid.uuid4()),
+        user_id=user["id"],
+        token=refresh_token,
+        expires_at=datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    )
+    
+    return TokenResponse(
+        access_token=access_token,
+        refresh_token=refresh_token,
+        expires_at=expires_at,
+        user_id=user["id"],
+        user_email=user["email"]
+    )
+
+@app.get("/auth/authorize")
+async def authorize(client_id: str, redirect_uri: str = None, state: str = None):
+    if client_id != CLIENT_ID:
+        raise HTTPException(status_code=400, detail="Invalid client_id")
+    
+    redirect = redirect_uri or REDIRECT_URI
+    
+    login_page = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Continue Login</title>
+        <style>
+            body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 400px; margin: 0 auto; padding: 20px; }}
+            .form-group {{ margin-bottom: 15px; }}
+            label {{ display: block; margin-bottom: 5px; }}
+            input {{ width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }}
+            button {{ width: 100%; padding: 12px; background: #6366f1; color: white; border: none; border-radius: 4px; cursor: pointer; }}
+            button:hover {{ background: #4f46e5; }}
+            .error {{ color: red; margin-top: 10px; }}
+        </style>
+    </head>
+    <body>
+        <h1>Continue Login</h1>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <div class="error" id="error"></div>
+        <script>
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {{
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const errorDiv = document.getElementById('error');
+                
+                try {{
+                    const response = await fetch('{API_BASE}/auth/token', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{ email, password, grant_type: 'password', client_id: '{client_id}' }})
+                    }});
+                    
+                    if (!response.ok) {{
+                        const data = await response.json();
+                        errorDiv.textContent = data.detail || 'Login failed';
+                        return;
+                    }}
+                    
+                    const data = await response.json();
+                    const redirectUrl = new URL('{redirect}');
+                    redirectUrl.searchParams.set('code', data.authorization_code);
+                    if ('{state}') redirectUrl.searchParams.set('state', '{state}');
+                    window.location.href = redirectUrl.toString();
+                }} catch (err) {{
+                    errorDiv.textContent = 'An error occurred';
+                }}
+            }});
+        </script>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=login_page)
+
+@app.post("/auth/token")
+async def token_endpoint(
+    grant_type: str,
+    email: str = None,
+    password: str = None,
+    code: str = None,
+    redirect_uri: str = None,
+    refresh_token: str = None,
+    device_code: str = None,
+    client_id: str = None
+):
+    if client_id != CLIENT_ID:
+        raise HTTPException(status_code=400, detail="Invalid client_id")
+    
+    if grant_type == "password":
+        if not email or not password:
+            raise HTTPException(status_code=400, detail="email and password are required")
         
-        user_info = await get_user_info(token_data["access_token"])
+        user = database.get_user_by_email(email)
+        if not user or not verify_password(password, user["hashed_password"]):
+            raise HTTPException(status_code=401, detail="Invalid email or password")
         
-        return TokenResponse(
-            access_token=token_data["access_token"],
-            refresh_token=token_data.get("refresh_token", ""),
-            expires_at=token_data.get("expires_in", 3600) + int(time.time()),
-            user_id=user_info.id,
-            user_email=user_info.email,
+        auth_code = str(uuid.uuid4())
+        database.create_authorization_code(
+            code_id=str(uuid.uuid4()),
+            code=auth_code,
+            user_id=user["id"],
+            client_id=client_id,
+            redirect_uri=redirect_uri or REDIRECT_URI,
+            state=None,
+            expires_at=datetime.utcnow() + timedelta(minutes=5)
         )
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=400, detail=f"Failed to exchange token: {str(e)}")
+        
+        return {"authorization_code": auth_code}
+    
+    elif grant_type == "authorization_code":
+        if not code:
+            raise HTTPException(status_code=400, detail="code is required")
+        
+        auth_code_data = database.get_authorization_code(code)
+        if not auth_code_data:
+            raise HTTPException(status_code=400, detail="Invalid authorization code")
+        
+        if datetime.fromisoformat(auth_code_data["expires_at"]) < datetime.utcnow():
+            raise HTTPException(status_code=400, detail="Authorization code expired")
+        
+        user = database.get_user_by_id(auth_code_data["user_id"])
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        database.delete_authorization_code(code)
+        
+        access_token, expires_at = create_access_token(
+            data={"sub": user["id"], "email": user["email"]},
+            expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        )
+        
+        refresh_token_val = generate_refresh_token()
+        database.create_refresh_token(
+            token_id=str(uuid.uuid4()),
+            user_id=user["id"],
+            token=refresh_token_val,
+            expires_at=datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+        )
+        
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token_val,
+            "user": {"id": user["id"], "email": user["email"]},
+            "expires_in": ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+            "issued_at": int(datetime.utcnow().timestamp())
+        }
+    
+    elif grant_type == "refresh_token":
+        if not refresh_token:
+            raise HTTPException(status_code=400, detail="refresh_token is required")
+        
+        token_data = database.get_refresh_token(refresh_token)
+        if not token_data:
+            raise HTTPException(status_code=401, detail="Invalid refresh token")
+        
+        if datetime.fromisoformat(token_data["expires_at"]) < datetime.utcnow():
+            database.delete_refresh_token(refresh_token)
+            raise HTTPException(status_code=401, detail="Refresh token expired")
+        
+        user = database.get_user_by_id(token_data["user_id"])
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        database.delete_refresh_token(refresh_token)
+        
+        access_token, expires_at = create_access_token(
+            data={"sub": user["id"], "email": user["email"]},
+            expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        )
+        
+        new_refresh_token = generate_refresh_token()
+        database.create_refresh_token(
+            token_id=str(uuid.uuid4()),
+            user_id=user["id"],
+            token=new_refresh_token,
+            expires_at=datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+        )
+        
+        return {
+            "access_token": access_token,
+            "refresh_token": new_refresh_token,
+            "user": {"id": user["id"], "email": user["email"]},
+            "expires_in": ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+            "issued_at": int(datetime.utcnow().timestamp())
+        }
+    
+    elif grant_type == "urn:ietf:params:oauth:grant-type:device_code":
+        if not device_code:
+            raise HTTPException(status_code=400, detail="device_code is required")
+        
+        device_code_data = database.get_device_code(device_code)
+        if not device_code_data:
+            raise HTTPException(status_code=400, detail="Invalid device code")
+        
+        if datetime.fromisoformat(device_code_data["expires_at"]) < datetime.utcnow():
+            raise HTTPException(status_code=400, detail="Device code expired", headers={"error": "expired_token"})
+        
+        if device_code_data["status"] == "pending":
+            raise HTTPException(status_code=400, detail="Authorization pending", headers={"error": "authorization_pending"})
+        
+        if device_code_data["status"] == "denied":
+            raise HTTPException(status_code=400, detail="Access denied", headers={"error": "access_denied"})
+        
+        if not device_code_data["user_id"]:
+            raise HTTPException(status_code=400, detail="User not assigned")
+        
+        user = database.get_user_by_id(device_code_data["user_id"])
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        access_token, expires_at = create_access_token(
+            data={"sub": user["id"], "email": user["email"]},
+            expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        )
+        
+        refresh_token_val = generate_refresh_token()
+        database.create_refresh_token(
+            token_id=str(uuid.uuid4()),
+            user_id=user["id"],
+            token=refresh_token_val,
+            expires_at=datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+        )
+        
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token_val,
+            "user": {"id": user["id"], "email": user["email"]},
+            "expires_in": ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+            "issued_at": int(datetime.utcnow().timestamp())
+        }
+    
+    else:
+        raise HTTPException(status_code=400, detail=f"Unsupported grant_type: {grant_type}")
 
 @app.post("/auth/refresh", response_model=TokenResponse)
 async def refresh_token(request: TokenRefreshRequest):
-    """使用刷新令牌获取新的访问令牌"""
-    if not WORKOS_API_KEY or not WORKOS_CLIENT_ID:
-        raise HTTPException(status_code=500, detail="WorkOS credentials not configured")
+    token_data = database.get_refresh_token(request.refreshToken)
+    if not token_data:
+        raise HTTPException(status_code=401, detail="Invalid refresh token")
     
-    token_url = f"{WORKOS_API_URL}/user_management/authenticate"
-    headers = {
-        "Authorization": f"Bearer {WORKOS_API_KEY}",
-        "Content-Type": "application/x-www-form-urlencoded",
-    }
-    data = {
-        "grant_type": "refresh_token",
-        "client_id": WORKOS_CLIENT_ID,
-        "refresh_token": request.refreshToken,
-    }
+    if datetime.fromisoformat(token_data["expires_at"]) < datetime.utcnow():
+        database.delete_refresh_token(request.refreshToken)
+        raise HTTPException(status_code=401, detail="Refresh token expired")
     
-    try:
-        response = requests.post(token_url, headers=headers, data=data)
-        response.raise_for_status()
-        token_data = response.json()
-        
-        user_info = await get_user_info(token_data["access_token"])
-        
-        return TokenResponse(
-            access_token=token_data["access_token"],
-            refresh_token=token_data.get("refresh_token", request.refreshToken),
-            expires_at=token_data.get("expires_in", 3600) + int(time.time()),
-            user_id=user_info.id,
-            user_email=user_info.email,
-        )
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=400, detail=f"Failed to refresh token: {str(e)}")
+    user = database.get_user_by_id(token_data["user_id"])
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    database.delete_refresh_token(request.refreshToken)
+    
+    access_token, expires_at = create_access_token(
+        data={"sub": user["id"], "email": user["email"]},
+        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
+    
+    new_refresh_token = generate_refresh_token()
+    database.create_refresh_token(
+        token_id=str(uuid.uuid4()),
+        user_id=user["id"],
+        token=new_refresh_token,
+        expires_at=datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    )
+    
+    return TokenResponse(
+        access_token=access_token,
+        refresh_token=new_refresh_token,
+        expires_at=expires_at,
+        user_id=user["id"],
+        user_email=user["email"]
+    )
 
 @app.post("/user_management/authorize/device", response_model=DeviceAuthorizationResponse)
-async def device_authorization():
-    """请求设备授权 (Device Authorization Flow)"""
-    if not WORKOS_API_KEY or not WORKOS_CLIENT_ID:
-        raise HTTPException(status_code=500, detail="WorkOS credentials not configured")
+async def device_authorization(client_id: str = None):
+    if not client_id or client_id != CLIENT_ID:
+        raise HTTPException(status_code=400, detail="Invalid client_id")
     
-    device_auth_url = f"{WORKOS_API_URL}/user_management/authorize/device"
-    headers = {
-        "Authorization": f"Bearer {WORKOS_API_KEY}",
-        "Content-Type": "application/x-www-form-urlencoded",
-    }
-    data = {
-        "client_id": WORKOS_CLIENT_ID,
-        "screen_hint": "sign-up",
-    }
+    device_code = str(uuid.uuid4())
+    user_code = generate_user_code()
+    expires_at = datetime.utcnow() + timedelta(minutes=10)
     
-    try:
-        response = requests.post(device_auth_url, headers=headers, data=data)
-        response.raise_for_status()
-        device_data = response.json()
-        
-        return DeviceAuthorizationResponse(
-            device_code=device_data["device_code"],
-            user_code=device_data["user_code"],
-            verification_uri=device_data["verification_uri"],
-            verification_uri_complete=device_data["verification_uri_complete"],
-            expires_in=device_data["expires_in"],
-            interval=device_data["interval"],
-        )
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=400, detail=f"Device authorization error: {str(e)}")
+    database.create_device_code(
+        device_code_id=str(uuid.uuid4()),
+        user_code=user_code,
+        device_code=device_code,
+        client_id=client_id,
+        expires_at=expires_at,
+        interval=5
+    )
+    
+    verification_uri = f"{API_BASE}/auth/device"
+    verification_uri_complete = f"{verification_uri}?user_code={user_code}"
+    
+    return DeviceAuthorizationResponse(
+        device_code=device_code,
+        user_code=user_code,
+        verification_uri=verification_uri,
+        verification_uri_complete=verification_uri_complete,
+        expires_in=600,
+        interval=5
+    )
+
+@app.get("/auth/device")
+async def device_login_page(user_code: str = None):
+    if not user_code:
+        return HTMLResponse(content="""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Device Authorization</title>
+        </head>
+        <body>
+            <h1>Device Authorization</h1>
+            <p>Please provide a user code</p>
+        </body>
+        </html>
+        """)
+    
+    device_code_data = database.get_device_code_by_user_code(user_code)
+    if not device_code_data:
+        return HTMLResponse(content="""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Device Authorization</title>
+            <style>
+                body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 400px; margin: 0 auto; padding: 20px; }
+                .form-group { margin-bottom: 15px; }
+                label { display: block; margin-bottom: 5px; }
+                input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+                button { width: 100%; padding: 12px; background: #6366f1; color: white; border: none; border-radius: 4px; cursor: pointer; }
+                button:hover { background: #4f46e5; }
+                .error { color: red; margin-top: 10px; }
+            </style>
+        </head>
+        <body>
+            <h1>Device Authorization</h1>
+            <p>Invalid user code</p>
+        </body>
+        </html>
+        """)
+    
+    login_page = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Device Authorization - Continue</title>
+        <style>
+            body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 400px; margin: 0 auto; padding: 20px; }}
+            .code {{ font-family: monospace; font-size: 24px; letter-spacing: 4px; margin-bottom: 20px; }}
+            .form-group {{ margin-bottom: 15px; }}
+            label {{ display: block; margin-bottom: 5px; }}
+            input {{ width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }}
+            button {{ width: 100%; padding: 12px; background: #6366f1; color: white; border: none; border-radius: 4px; cursor: pointer; }}
+            button:hover {{ background: #4f46e5; }}
+            .error {{ color: red; margin-top: 10px; }}
+            .success {{ color: green; margin-top: 10px; }}
+        </style>
+    </head>
+    <body>
+        <h1>Continue Device Login</h1>
+        <p>Enter the code displayed on your device:</p>
+        <div class="code">{user_code}</div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Authorize Device</button>
+        </form>
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+        <script>
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {{
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const errorDiv = document.getElementById('error');
+                const successDiv = document.getElementById('success');
+                
+                errorDiv.textContent = '';
+                successDiv.textContent = '';
+                
+                try {{
+                    const response = await fetch('{API_BASE}/auth/device/authorize', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{ user_code: '{user_code}', email, password }})
+                    }});
+                    
+                    if (!response.ok) {{
+                        const data = await response.json();
+                        errorDiv.textContent = data.detail || 'Authorization failed';
+                        return;
+                    }}
+                    
+                    successDiv.textContent = 'Device authorized successfully! You can close this page.';
+                    document.getElementById('loginForm').style.display = 'none';
+                }} catch (err) {{
+                    errorDiv.textContent = 'An error occurred';
+                }}
+            }});
+        </script>
+    </body>
+    </html>
+    """
+    return HTMLResponse(content=login_page)
+
+class DeviceAuthorizeRequest(BaseModel):
+    user_code: str
+    email: EmailStr
+    password: str
+
+@app.post("/auth/device/authorize")
+async def authorize_device(request: DeviceAuthorizeRequest):
+    device_code_data = database.get_device_code_by_user_code(request.user_code)
+    if not device_code_data:
+        raise HTTPException(status_code=400, detail="Invalid user code")
+    
+    if datetime.fromisoformat(device_code_data["expires_at"]) < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="User code expired")
+    
+    user = database.get_user_by_email(request.email)
+    if not user or not verify_password(request.password, user["hashed_password"]):
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    database.update_device_code_status(
+        device_code=device_code_data["device_code"],
+        user_id=user["id"],
+        status="authorized"
+    )
+    
+    return {"message": "Device authorized successfully"}
 
 @app.post("/user_management/authenticate")
-async def authenticate(grant_type: str, device_code: str = None, client_id: str = None, 
-                      refresh_token: str = None, code: str = None, redirect_uri: str = None):
-    """认证端点，支持多种 grant_type"""
-    if not WORKOS_API_KEY:
-        raise HTTPException(status_code=500, detail="WorkOS API key not configured")
-    
-    token_url = f"{WORKOS_API_URL}/user_management/authenticate"
-    headers = {
-        "Authorization": f"Bearer {WORKOS_API_KEY}",
-        "Content-Type": "application/x-www-form-urlencoded",
-    }
-    
-    data = {"grant_type": grant_type}
-    
-    if grant_type == "urn:ietf:params:oauth:grant-type:device_code":
-        if not device_code or not client_id:
-            raise HTTPException(status_code=400, detail="device_code and client_id are required")
-        data["device_code"] = device_code
-        data["client_id"] = client_id
-    elif grant_type == "refresh_token":
-        if not refresh_token or not client_id:
-            raise HTTPException(status_code=400, detail="refresh_token and client_id are required")
-        data["refresh_token"] = refresh_token
-        data["client_id"] = client_id
-    elif grant_type == "authorization_code":
-        if not code or not client_id or not redirect_uri:
-            raise HTTPException(status_code=400, detail="code, client_id and redirect_uri are required")
-        data["code"] = code
-        data["client_id"] = client_id
-        data["redirect_uri"] = redirect_uri
-    else:
-        raise HTTPException(status_code=400, detail=f"Unsupported grant_type: {grant_type}")
-    
-    try:
-        response = requests.post(token_url, headers=headers, data=data)
-        
-        if not response.ok:
-            error_data = response.json() if response.content else {}
-            return {"error": error_data.get("error", "unknown_error"), "error_description": error_data.get("error_description", "")}
-        
-        token_data = response.json()
-        user_info = await get_user_info(token_data["access_token"])
-        
-        return {
-            "access_token": token_data["access_token"],
-            "refresh_token": token_data.get("refresh_token", ""),
-            "user": {
-                "id": user_info.id,
-                "email": user_info.email,
-            },
-            "expires_in": token_data.get("expires_in", 3600),
-            "issued_at": int(time.time()),
-        }
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=400, detail=f"Authentication error: {str(e)}")
+async def authenticate(
+    grant_type: str,
+    device_code: str = None,
+    client_id: str = None,
+    refresh_token: str = None,
+    code: str = None,
+    redirect_uri: str = None
+):
+    return await token_endpoint(
+        grant_type=grant_type,
+        device_code=device_code,
+        client_id=client_id,
+        refresh_token=refresh_token,
+        code=code,
+        redirect_uri=redirect_uri
+    )
 
 @app.get("/auth/userinfo", response_model=UserInfo)
 async def userinfo(access_token: str):
-    """获取用户信息"""
-    return await get_user_info(access_token)
+    payload = decode_access_token(access_token)
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid access token")
+    
+    user = database.get_user_by_id(payload["sub"])
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return UserInfo(
+        id=user["id"],
+        email=user["email"],
+        first_name=user["first_name"] or "",
+        last_name=user["last_name"] or "",
+        organization_id=user["organization_id"]
+    )
 
 @app.get("/user_management/users/me", response_model=UserInfo)
 async def user_me(access_token: str = None, authorization: str = None):
-    """获取当前用户信息 (WorkOS 兼容接口)"""
     token = access_token
     if authorization and authorization.startswith("Bearer "):
         token = authorization[7:]
@@ -245,45 +646,73 @@ async def user_me(access_token: str = None, authorization: str = None):
     if not token:
         raise HTTPException(status_code=400, detail="access_token is required")
     
-    return await get_user_info(token)
-
-async def get_user_info(access_token: str) -> UserInfo:
-    """从 WorkOS 获取用户信息"""
-    user_url = f"{WORKOS_API_URL}/user_management/users/me"
-    headers = {"Authorization": f"Bearer {access_token}"}
+    payload = decode_access_token(token)
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid access token")
     
-    try:
-        response = requests.get(user_url, headers=headers)
-        response.raise_for_status()
-        user_data = response.json()
-        
-        return UserInfo(
-            id=user_data["id"],
-            email=user_data["email"],
-            first_name=user_data.get("first_name", ""),
-            last_name=user_data.get("last_name", ""),
-            organization_id=user_data.get("organization_id"),
-        )
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=400, detail=f"Failed to get user info: {str(e)}")
+    user = database.get_user_by_id(payload["sub"])
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return UserInfo(
+        id=user["id"],
+        email=user["email"],
+        first_name=user["first_name"] or "",
+        last_name=user["last_name"] or "",
+        organization_id=user["organization_id"]
+    )
 
 @app.get("/auth/scope")
 async def auth_scope(authorization: str = None):
-    """获取认证范围信息"""
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=400, detail="Authorization header required")
     
     access_token = authorization[7:]
+    payload = decode_access_token(access_token)
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid access token")
     
-    try:
-        user_info = await get_user_info(access_token)
-        return {"organizationId": user_info.organization_id}
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Failed to get scope: {str(e)}")
+    user = database.get_user_by_id(payload["sub"])
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return {"organizationId": user["organization_id"]}
+
+@app.get("/auth/callback")
+async def callback(code: str, redirect_uri: str = None, state: str = None):
+    auth_code_data = database.get_authorization_code(code)
+    if not auth_code_data:
+        raise HTTPException(status_code=400, detail="Invalid authorization code")
+    
+    user = database.get_user_by_id(auth_code_data["user_id"])
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    access_token, expires_at = create_access_token(
+        data={"sub": user["id"], "email": user["email"]},
+        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
+    
+    refresh_token_val = generate_refresh_token()
+    database.create_refresh_token(
+        token_id=str(uuid.uuid4()),
+        user_id=user["id"],
+        token=refresh_token_val,
+        expires_at=datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    )
+    
+    database.delete_authorization_code(code)
+    
+    return TokenResponse(
+        access_token=access_token,
+        refresh_token=refresh_token_val,
+        expires_at=expires_at,
+        user_id=user["id"],
+        user_email=user["email"]
+    )
 
 @app.get("/health")
 async def health():
-    """健康检查"""
     return {"status": "healthy", "service": "Continue Auth Service"}
 
 if __name__ == "__main__":

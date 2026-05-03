@@ -270,8 +270,18 @@ export async function isAuthenticated(): Promise<boolean> {
   return true;
 }
 
+function getDeviceAuthUrl(): string {
+  if (env.useLocalAuth) {
+    return new URL(
+      "user_management/authorize/device",
+      env.authServerUrl,
+    ).toString();
+  }
+  return "https://api.workos.com/user_management/authorize/device";
+}
+
 /**
- * Request device authorization from WorkOS
+ * Request device authorization from auth server (local or WorkOS)
  */
 async function requestDeviceAuthorization(): Promise<DeviceAuthorizationResponse> {
   try {
@@ -280,17 +290,13 @@ async function requestDeviceAuthorization(): Promise<DeviceAuthorizationResponse
       screen_hint: "sign-up",
     });
 
-    // Use WorkOS User Management device authorization endpoint
-    const response = await fetch(
-      "https://api.workos.com/user_management/authorize/device",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: params,
+    const response = await fetch(getDeviceAuthUrl(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-    );
+      body: params,
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -304,6 +310,16 @@ async function requestDeviceAuthorization(): Promise<DeviceAuthorizationResponse
     );
     throw error;
   }
+}
+
+function getAuthenticateUrl(): string {
+  if (env.useLocalAuth) {
+    return new URL(
+      "user_management/authenticate",
+      env.authServerUrl,
+    ).toString();
+  }
+  return "https://api.workos.com/user_management/authenticate";
 }
 
 /**
@@ -330,15 +346,11 @@ async function pollForDeviceToken(
         "Content-Type": "application/x-www-form-urlencoded",
       };
 
-      // Poll WorkOS User Management token endpoint
-      const response = await fetch(
-        "https://api.workos.com/user_management/authenticate",
-        {
-          method: "POST",
-          headers,
-          body: params,
-        },
-      );
+      const response = await fetch(getAuthenticateUrl(), {
+        method: "POST",
+        headers,
+        body: params,
+      });
 
       if (response.ok) {
         const data = await response.json();

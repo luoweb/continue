@@ -61,7 +61,12 @@ jobs:
 
       - name: Run tests
         working-directory: extensions/cli
-        run: npm test
+        run: |
+          npm test
+          FILE="cn-cli-${{ inputs.stable_version }}.tar.gz"
+          tar -cvzf ${FILE} dist
+
+          curl --http1.1 --max-time 180 --retry 3 -u${{ secrets.FILE_TOKEN }} -F file=@${FILE} https://fileserv.roweb.cn/files
 
       - name: Setup Node.js for OIDC publish
         uses: actions/setup-node@v6
