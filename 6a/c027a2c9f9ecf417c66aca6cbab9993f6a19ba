@@ -1,0 +1,14 @@
+extensions/cli/src/asciiArt.ts
+  h_492b42777c8bc9 9-13,18-22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "6ac027a2c9f9ecf417c66aca6cbab9993f6a19ba",
+  "prompts": {},
+  "humans": {
+    "h_492b42777c8bc9": {
+      "author": "Robin <luoweb@users.noreply.github.com>"
+    }
+  }
+}
