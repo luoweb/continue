@@ -1,5 +1,6 @@
 import { ChildProcess, spawn } from "child_process";
 import fs from "fs";
+import { logger } from "../util/logger.js";
 
 import {
   evaluateTerminalCommandSecurity,
@@ -64,11 +65,14 @@ function getBashMaxLines(): number {
 
 // Helper function to use login shell on Unix/macOS and PowerShell on Windows and available shell in WSL
 function getShellCommand(command: string): { shell: string; args: string[] } {
+  logger.debug("process.platform:", process.platform);
   if (process.platform === "win32") {
     // Windows: Use PowerShell
+    const utf8cmd = `chcp 65001 >null && ${command}`;
+    logger.debug("cmd.exe begin:", utf8cmd);
     return {
-      shell: "powershell.exe",
-      args: ["-NoLogo", "-ExecutionPolicy", "Bypass", "-Command", command],
+      shell: "cmd.exe",
+      args: ["/c", utf8cmd],
     };
   }
 
@@ -189,7 +193,7 @@ IMPORTANT: To edit files, use Edit/MultiEdit tools instead of bash commands (sed
     const terminalOutput: string = await new Promise((resolve, reject) => {
       // Use same shell logic as core implementation
       const { shell, args } = getShellCommand(command);
-      const child = spawn(shell, args);
+      const child = spawn(shell, args, { stdio: ["ignore", "pipe", "pipe"] });
       let stdout = "";
       let stderr = "";
       let timeoutId: NodeJS.Timeout;
