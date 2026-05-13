@@ -401,7 +401,9 @@ $xsed 's#"more sessions above..."#"更多会话在上方..."#g' ${baseDir}/cli/s
 $xsed 's#"more sessions below..."#"更多会话在下方..."#g' ${baseDir}/cli/src/ui/SessionSelector.tsx
 $xsed 's#"yesterday"#"昨天"#g' ${baseDir}/cli/src/ui/SessionSelector.tsx
 $xsed 's#"(no messages)"#"(无消息)"#g' ${baseDir}/cli/src/ui/SessionSelector.tsx
-$xsed 's#↑/↓ to navigate, Enter to select, Esc to exit#↑/↓ 导航，Enter 选择，Esc 退出#g' ${baseDir}/cli/src/ui/SessionSelector.tsx
+$xsed 's# to navigate, Enter to select, Esc to exit# 导航，Enter 选择，Esc 退出#g' ${baseDir}/cli/src/ui/SessionSelector.tsx
+$xsed 's# to navigate, Enter to select, Esc to go back# 导航，Enter 选择，Esc 返回#g' ${baseDir}/cli/src/ui/MCPSelector.tsx
+$xsed 's# to navigate, Enter to select, Esc to cancel# 导航，Enter 选择，Esc 取消#g' ${baseDir}/cli/src/ui/Selector.tsx
 $xsed 's#" (remote)"#" (远程)"#g' ${baseDir}/cli/src/ui/SessionSelector.tsx
 $xsed 's#" (local)"#" (本地)"#g' ${baseDir}/cli/src/ui/SessionSelector.tsx
 
@@ -409,25 +411,25 @@ $xsed 's#" (local)"#" (本地)"#g' ${baseDir}/cli/src/ui/SessionSelector.tsx
 echo "Translating infoScreen.ts..."
 
 $xsed 's#"CLI Information:"#"CLI 信息："#g' ${baseDir}/cli/src/infoScreen.ts
-$xsed 's#"Version:"#"版本："#g' ${baseDir}/cli/src/infoScreen.ts
-$xsed 's#"Working Directory:"#"工作目录："#g' ${baseDir}/cli/src/infoScreen.ts
+$xsed 's#Version:#版本：#g' ${baseDir}/cli/src/infoScreen.ts
+$xsed 's#Working Directory:#工作目录：#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Authentication:"#"认证："#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Email:"#"邮箱："#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Org ID:"#"组织 ID："#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Authenticated via environment variable"#"通过环境变量认证"#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Not logged in"#"未登录"#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Configuration:"#"配置："#g' ${baseDir}/cli/src/infoScreen.ts
-$xsed 's#Using ${configState\.config\?\.name}#使用 ${configState.config?.name}#g' ${baseDir}/cli/src/infoScreen.ts
+$xsed 's#Using #使用 #g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Config not found"#"未找到配置"#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Path:"#"路径："#g' ${baseDir}/cli/src/infoScreen.ts
-$xsed 's#"Model:"#"模型："#g' ${baseDir}/cli/src/infoScreen.ts
+$xsed 's#Model: ##模型：#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Not available"#"不可用"#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Error retrieving model info"#"获取模型信息失败"#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Configuration service not available"#"配置服务不可用"#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Session:"#"会话："#g' ${baseDir}/cli/src/infoScreen.ts
-$xsed 's#"Title:"#"标题："#g' ${baseDir}/cli/src/infoScreen.ts
-$xsed 's#"ID:"#"ID："#g' ${baseDir}/cli/src/infoScreen.ts
-$xsed 's#"File:"#"文件："#g' ${baseDir}/cli/src/infoScreen.ts
+$xsed 's#Title: #标题：#g' ${baseDir}/cli/src/infoScreen.ts
+$xsed 's#ID: #ID: #g' ${baseDir}/cli/src/infoScreen.ts
+$xsed 's#File: #文件：#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Session not available"#"会话不可用"#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Usage:"#"使用情况："#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Total Cost:"#"总费用："#g' ${baseDir}/cli/src/infoScreen.ts
@@ -439,8 +441,8 @@ $xsed 's#"Total Tokens:"#"总令牌数："#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"No usage data yet"#"暂无使用数据"#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Usage data not available"#"使用数据不可用"#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Diagnostic Info"#"诊断信息"#g' ${baseDir}/cli/src/infoScreen.ts
-$xsed 's#"Currently running:"#"当前运行："#g' ${baseDir}/cli/src/infoScreen.ts
-$xsed 's#"Invoked:"#"调用路径："#g' ${baseDir}/cli/src/infoScreen.ts
+$xsed 's#Currently running:#当前运行：#g' ${baseDir}/cli/src/infoScreen.ts
+$xsed 's#Invoked:#调用路径：#g' ${baseDir}/cli/src/infoScreen.ts
 
 # 翻译 workos.ts 文件
 echo "Translating workos.ts..."

@@ -686,6 +686,11 @@ $xsed 's/⌫ Cancel/⌫ 取消/g' ${baseDir}/../gui/src/components/mainInput/Lum
 $xsed 's#<span>Accept</span>#<span>接受</span>#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/PendingToolCallToolbar.tsx
 $xsed 's#<span>Reject</span>#<span>拒绝</span>#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/PendingToolCallToolbar.tsx
 $xsed 's#displayText = "Stop"#displayText = "停止"#g' ${baseDir}/../gui/src/components/mainInput/Lump/LumpToolbar/StreamingToolbar.tsx
+$xsed 's#Accept All#接受全部#g' ${baseDir}/../gui/src/components/AcceptRejectDiffButtons.tsx
+$xsed 's#Accept</span>#接受</span>#g' ${baseDir}/../gui/src/components/AcceptRejectDiffButtons.tsx
+$xsed 's#Reject All#拒绝全部#g' ${baseDir}/../gui/src/components/AcceptRejectDiffButtons.tsx
+$xsed 's#Reject</span>#拒绝</span>#g' ${baseDir}/../gui/src/components/AcceptRejectDiffButtons.tsx
+
 
 $xsed 's/Tool disabled in chat mode/工具在聊天模式下禁用/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
 $xsed 's/Group is turned off/组已关闭/g' ${baseDir}/../gui/src/pages/config/components/ToolPolicyItem.tsx
