@@ -48,8 +48,8 @@ $xsed 's#".continue"#".cowork"#g' ${baseDir}/../core/util/paths.ts
 $xsed 's#".continue/"#".cowork/"#g' ${baseDir}/../core/config/workspace/workspaceBlocks.ts
 $xsed 's#.continue/#.cowork/#g' ${baseDir}/../core/config/workspace/workspaceBlocks.ts
 $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/hooks/hookConfig.ts
-find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/".continue")/".cowork")/g' {} +
-find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/".continue"/".cowork"/g' {} +
+find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \) -not -path "*/node_modules/*" -exec ${xsed} 's/".continue")/".cowork")/g' {} +
+find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \) -not -path "*/node_modules/*" -exec ${xsed} 's/".continue"/".cowork"/g' {} +
 
 $xsed 's#selectedProfile\?.profileType === "local"#false#g'  ${baseDir}/../gui/src/components/modelSelection/ModelSelect.tsx
 $xsed 's#<CliInstallBanner permanentDismissal={true} />#{/* <CliInstallBanner permanentDismissal={true} /> */}#g'  ${baseDir}/../gui/src/pages/config/index.tsx
@@ -77,8 +77,8 @@ cp -pv ${baseDir}/../extensions/vscode/media/sidebar-icon-custom.png ${baseDir}/
 
 
 echo "########## custom plugin ########## "
-find ../ -type f -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" | xargs -I@ bash -c "${xsed} -i.bak 's#Continue.continue#Roweb.aicoder#g' @"
-find ../ -type f -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" | xargs -I@ bash -c "${xsed} -i.bak 's#https://github.com/continuedev/continue#https://roweb.cn/roweb/aicoder#g' @"
+find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \) -not -path "*/node_modules/*" | xargs -I@ bash -c "${xsed} -i.bak 's#Continue.continue#Roweb.aicoder#g' @"
+find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \) -not -path "*/node_modules/*" | xargs -I@ bash -c "${xsed} -i.bak 's#https://github.com/continuedev/continue#https://roweb.cn/roweb/aicoder#g' @"
 $xsed 's#"name": "continue",#"name": "aicoder",#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#"publisher": "Continue",#"publisher": "Roweb",#g' ${baseDir}/../extensions/vscode/package.json
 $xsed 's#Continue Dev#Roweb Dev#g' ${baseDir}/../extensions/vscode/package.json
@@ -306,7 +306,6 @@ $xsed 's#title="Show Chat Scrollbar"#title="显示对话滚动条"#g' ${baseDir}
 $xsed 's#Enables a scrollbar in the chat window.#在对话窗口中启用滚动条。#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Show CLI Banner"#title="显示 CLI 提示"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed "s#description=\"Displays the 'Try out the Continue CLI' banner.\"#description=\"显示 CLI 提示。\"#g" ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
-$xsed 's#description="Displays the '\''Try out the Continue CLI'\'' banner."#description="显示 CLI 提示。"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Text-to-Speech Output"#title="文本到语音输出"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#Reads LLM responses aloud with TTS.#使用 TTS 大声朗读 LLM 响应。#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
 $xsed 's#title="Enable Session Titles"#title="启用会话标题"#g' ${baseDir}/../gui/src/pages/config/sections/UserSettingsSection.tsx
@@ -716,7 +715,7 @@ $xsed 's/"Agent tool use"/"代理工具使用"/g' ${baseDir}/../gui/src/pages/gu
 $xsed 's/`use the \${defaultToolDescription}`/`使用 \${defaultToolDescription}`/g' ${baseDir}/../gui/src/pages/gui/ToolCallDiv/ToolCallStatusMessage.tsx
 $xsed 's/`used the \${defaultToolDescription}`/`已使用 \${defaultToolDescription}`/g' ${baseDir}/../gui/src/pages/gui/ToolCallDiv/ToolCallStatusMessage.tsx
 $xsed 's/`calling the \${defaultToolDescription}`/`正在调用 \${defaultToolDescription}`/g' ${baseDir}/../gui/src/pages/gui/ToolCallDiv/ToolCallStatusMessage.tsx
-$xsed 's/`Continue \${intro} \${message}`/`继续 \${intro} \${message}`/g' ${baseDir}/../gui/src/pages/gui/ToolCallDiv/ToolCallStatusMessage.tsx
+$xsed 's/`Continue \${intro} \${message}`/`Tool \${intro} \${message}`/g' ${baseDir}/../gui/src/pages/gui/ToolCallDiv/ToolCallStatusMessage.tsx
 
 # 翻译 InsertButton.tsx 文件
 $xsed 's/content="Insert Code"/content="插入代码"/g' ${baseDir}/../gui/src/components/StyledMarkdownPreview/StepContainerPreToolbar/InsertButton.tsx

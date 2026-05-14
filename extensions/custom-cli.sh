@@ -422,7 +422,7 @@ $xsed 's#"Configuration:"#"配置："#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#Using #使用 #g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Config not found"#"未找到配置"#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Path:"#"路径："#g' ${baseDir}/cli/src/infoScreen.ts
-$xsed 's#Model: ##模型：#g' ${baseDir}/cli/src/infoScreen.ts
+$xsed 's#Model: #模型：#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Not available"#"不可用"#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Error retrieving model info"#"获取模型信息失败"#g' ${baseDir}/cli/src/infoScreen.ts
 $xsed 's#"Configuration service not available"#"配置服务不可用"#g' ${baseDir}/cli/src/infoScreen.ts
@@ -472,7 +472,6 @@ $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/env.ts
 $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/auth/workos.ts
 $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/session.ts
 $xsed 's#".continue"#".cowork"#g' ${baseDir}/../extensions/cli/src/hooks/hookConfig.ts
-find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/Continue CLI/AICoder CLI/g' {} +
-find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's/".continue"/".cowork"/g' {} +
-find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \)  -exec ${xsed} 's#.continue/#.cowork/#g' {} +
-
+find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \) -not -path "*/node_modules/*" -exec ${xsed} 's/Continue CLI/AICoder CLI/g' {} +
+find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \) -not -path "*/node_modules/*" -exec ${xsed} 's/".continue"/".cowork"/g' {} +
+find ../ -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.json" -o -name "*.mdx" \) -not -path "*/node_modules/*" -exec ${xsed} 's#.continue/#.cowork#g' {} +
