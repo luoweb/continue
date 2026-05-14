@@ -22,6 +22,7 @@ $xsed 's#AUTH_NAME = "Continue"#AUTH_NAME = "用户认证"#g' ${baseDir}/../exte
 
 $xsed 's#<title>Continue</title>#<title>分布式编码助手</title>#g' ${baseDir}/../extensions/vscode/src/ContinueGUIWebviewViewProvider.ts
 $xsed 's#Continue#分布式编码助手#g' ${baseDir}/../extensions/vscode/src/activation/localServer.ts
+$xsed 's#"CONTINUE.md"#"COWORK.md"#g' ${baseDir}/../core/promptFiles/initPrompt.ts
 $xsed 's#欢迎使用 Continue#欢迎使用 分布式编码助手#g' ${baseDir}/../gui/src/pages/Login/index.tsx
 $xsed 's#Continue 是您的开源 AI 编程助手。#分布式编码助手是您的开源 AI 编程助手。#g' ${baseDir}/../gui/src/pages/Login/index.tsx
 $xsed 's#vscode://continue.continue/login#vscode://roweb.aicoder/login#g' ${baseDir}/../extensions/vscode/src/activation/localServer.ts
