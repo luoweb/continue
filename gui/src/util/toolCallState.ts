@@ -58,6 +58,10 @@ export function addToolCallDeltaToState(
   // 【Qwen3.5 中英文空格修复】清洗参数中的空格
   const cleanedParsedArgs = cleanArgs(parsedArgs);
 
+  // 【Qwen3.5 中英文空格修复】同时清洗 toolCall.function.arguments 中的参数
+  // 确保发送给后端的参数也是清洗后的
+  const cleanedArgsJson = JSON.stringify(cleanedParsedArgs);
+
   return {
     status: "generating",
     toolCall: {
@@ -65,7 +69,7 @@ export function addToolCallDeltaToState(
       type: callType,
       function: {
         name: mergedName,
-        arguments: mergedArgs,
+        arguments: cleanedArgsJson,
       },
     },
     toolCallId: callId,
