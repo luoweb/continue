@@ -1,4 +1,5 @@
 import { ToolCallDelta } from "..";
+import { cleanCJKSpaces } from "../util/text";
 
 export function safeParseToolCallArgs(
   toolCall: ToolCallDelta,
@@ -99,10 +100,7 @@ export function getStringArg(
   }
 
   // 【Qwen3.5 中英文空格修复】移除中文与英文/数字之间的空格
-  // 解决模型在 CJK↔Latin 之间自动加空格的问题（盘古之白）
-  value = value
-    .replace(/([\u4e00-\u9fff])\s+([A-Za-z0-9])/g, "$1$2")
-    .replace(/([A-Za-z0-9])\s+([\u4e00-\u9fff])/g, "$1$2");
+  value = cleanCJKSpaces(value);
 
   return value;
 }
