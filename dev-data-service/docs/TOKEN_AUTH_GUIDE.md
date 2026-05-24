@@ -292,9 +292,9 @@ curl -s $BASE_URL/api/v1/stats \
   -H "Authorization: Bearer invalid_token" | python3 -m json.tool
 ```
 
-## 与 Continue 集成
+## 与 Cowork 集成
 
-在 Continue 的 `config.yaml` 中配置：
+在 Cowork 的 `config.yaml` 中配置：
 
 ```yaml
 data:

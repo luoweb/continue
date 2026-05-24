@@ -1,6 +1,6 @@
 """
-Continue Dev Data Service
-A backend service for collecting and managing development data from Continue
+Cowork Dev Data Service
+A backend service for collecting and managing development data from Cowork
 """
 from fastapi import FastAPI, HTTPException, Depends, Header, Query, Path, Security
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,8 +20,8 @@ import database
 load_dotenv()
 
 app = FastAPI(
-    title="Continue Dev Data Service",
-    description="Backend service for collecting and managing Continue development data",
+    title="Cowork Dev Data Service",
+    description="Backend service for collecting and managing Cowork development data",
     version="1.0.0"
 )
 
@@ -262,7 +262,7 @@ async def health():
     """Health check endpoint"""
     return {
         "status": "healthy",
-        "service": "Continue Dev Data Service",
+        "service": "Cowork Dev Data Service",
         "timestamp": datetime.utcnow().isoformat(),
         "auth_enabled": REQUIRE_AUTH
     }
@@ -351,7 +351,7 @@ async def submit_dev_data(
     """
     Submit development data
 
-    This endpoint accepts dev data events from Continue clients and stores them.
+    This endpoint accepts dev data events from Cowork clients and stores them.
     """
     try:
         event_data_str = json.dumps(request.data)
@@ -465,7 +465,7 @@ async def get_event_types(
     """
     Get list of supported event types
 
-    Based on Continue's dev data schema.
+    Based on Cowork's dev data schema.
     """
     event_types = [
         "tokensGenerated",

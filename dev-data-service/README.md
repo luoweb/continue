@@ -1,6 +1,6 @@
-# Continue Dev Data Service
+# Cowork Dev Data Service
 
-一个用于收集和管理 Continue 开发数据的后端服务。
+一个用于收集和管理 Cowork 开发数据的后端服务。
 
 ## 快速开始
 
@@ -21,7 +21,7 @@ open http://localhost:8001/docs
 
 ## 主要功能
 
-- 📊 收集 Continue dev_data 事件
+- 📊 收集 Cowork dev_data 事件
 - 🗄️ 支持 SQLite 和 MySQL
 - 🔐 Token 认证机制
 - 🐳 Docker 部署支持

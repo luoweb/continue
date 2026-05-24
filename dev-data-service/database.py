@@ -208,7 +208,7 @@ class MySQLAdapter(DatabaseAdapter):
         self.port = int(os.getenv("DB_PORT", "3306"))
         self.user = os.getenv("DB_USER", "root")
         self.password = os.getenv("DB_PASSWORD", "")
-        self.database = os.getenv("DB_NAME", "continue_dev_data")
+        self.database = os.getenv("DB_NAME", "cowork_dev_data")
         self.charset = os.getenv("DB_CHARSET", "utf8mb4")
 
     def get_connection(self):

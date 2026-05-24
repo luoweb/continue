@@ -1,10 +1,10 @@
-# Continue Dev Data Service
+# Cowork Dev Data Service
 
-一个用于收集和管理 Continue 开发数据的后端服务。
+一个用于收集和管理 Cowork 开发数据的后端服务。
 
 ## 功能特性
 
-- 接收并存储 Continue 的 dev_data 事件
+- 接收并存储 Cowork 的 dev_data 事件
 - 支持多种数据库：SQLite、MySQL、PostgreSQL
 - 支持查询和过滤数据
 - 提供统计信息
@@ -157,9 +157,9 @@ CREATE DATABASE continue_dev_data;
 | REQUIRE_AUTH  | 是否启用 API Key 认证                | false             |
 | API_KEY       | 认证用的 API Key                     | -                 |
 
-### Continue 配置
+### Cowork 配置
 
-在您的 Continue `config.yaml` 中添加：
+在您的 Cowork `config.yaml` 中添加：
 
 ```yaml
 data:
