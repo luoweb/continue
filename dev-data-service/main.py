@@ -2,7 +2,7 @@
 Continue Dev Data Service
 A backend service for collecting and managing development data from Continue
 """
-from fastapi import FastAPI, HTTPException, Depends, Header, Query
+from fastapi import FastAPI, HTTPException, Depends, Header, Query, Path
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
@@ -39,14 +39,14 @@ async def verify_api_key(authorization: Optional[str] = Header(None)):
     """Verify API key if authentication is required"""
     if not REQUIRE_AUTH:
         return True
-    
+
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid authorization header")
-    
+
     token = authorization[7:]
     if token != API_KEY:
         raise HTTPException(status_code=401, detail="Invalid API key")
-    
+
     return True
 
 
@@ -54,9 +54,12 @@ class DevDataRequest(BaseModel):
     """Request model for submitting dev data"""
     name: str = Field(..., description="Event name")
     data: Dict[str, Any] = Field(..., description="Event data payload")
-    schema: str = Field(..., description="Schema version")
-    level: Optional[str] = Field(default="all", description="Data level (all/noCode)")
-    profileId: Optional[str] = Field(default=None, description="Profile ID")
+    schema_version: str = Field(..., alias="schema", description="Schema version")
+    level: Optional[str] = Field(default="all", alias="level", description="Data level (all/noCode)")
+    profile_id: Optional[str] = Field(default=None, alias="profileId", description="Profile ID")
+
+    class Config:
+        populate_by_name = True
 
 
 class DevDataResponse(BaseModel):
@@ -115,21 +118,21 @@ async def submit_dev_data(
 ):
     """
     Submit development data
-    
+
     This endpoint accepts dev data events from Continue clients and stores them
     """
     try:
         event_data_str = json.dumps(request.data)
-        
+
         record_id = database.insert_dev_data(
             event_name=request.name,
-            schema_version=request.schema,
+            schema_version=request.schema_version,
             data_level=request.level,
             event_data=event_data_str,
             user_id=None,
-            profile_id=request.profileId
+            profile_id=request.profile_id
         )
-        
+
         return DevDataResponse(
             success=True,
             id=record_id,
@@ -151,7 +154,7 @@ async def query_dev_data(
 ):
     """
     Query development data with filters
-    
+
     Supports filtering by event name, user ID, and date ranges
     """
     try:
@@ -163,7 +166,7 @@ async def query_dev_data(
             limit=limit,
             offset=offset
         )
-        
+
         record_models = [
             DevDataRecord(
                 id=r["id"],
@@ -177,7 +180,7 @@ async def query_dev_data(
             )
             for r in records
         ]
-        
+
         return QueryResponse(
             records=record_models,
             total=len(record_models)
@@ -192,7 +195,7 @@ async def get_statistics(
 ):
     """
     Get statistics about collected dev data
-    
+
     Returns total records, breakdown by event type, and last 7 days activity
     """
     try:
@@ -204,12 +207,12 @@ async def get_statistics(
 
 @app.delete("/api/v1/data/old/{days}")
 async def delete_old_data(
-    days: int = Query(90, ge=1, description="Delete records older than this many days"),
+    days: int = Path(..., ge=1, description="Delete records older than this many days"),
     _: bool = Depends(verify_api_key)
 ):
     """
     Delete old development data
-    
+
     Use this to clean up old records and manage database size
     """
     try:
@@ -229,7 +232,7 @@ async def get_event_types(
 ):
     """
     Get list of supported event types
-    
+
     Based on Continue's dev data schema
     """
     event_types = [
@@ -244,7 +247,7 @@ async def get_event_types(
         "chatFeedback",
         "quickEdit"
     ]
-    
+
     return {
         "event_types": event_types,
         "schema_versions": ["0.1.0", "0.2.0"]
