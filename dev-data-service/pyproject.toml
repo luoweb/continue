@@ -1,5 +1,5 @@
 [project]
-name = "continue-dev-data-service"
+name = "cowork-dev-data-service"
 version = "1.0.0"
 description = "Backend service for collecting and managing Continue development data"
 requires-python = ">=3.13"

@@ -179,7 +179,7 @@ class SQLiteAdapter(DatabaseAdapter):
             GROUP BY DATE(created_at)
             ORDER BY date
         ''')
-        stats["last_7_days"] = {row["date"]: row["count"] for row in cursor.fetchall()}
+        stats["last_7_days"] = {str(row["date"]): row["count"] for row in cursor.fetchall()}
 
         conn.close()
         return stats
@@ -306,6 +306,11 @@ class MySQLAdapter(DatabaseAdapter):
         records = cursor.fetchall()
         conn.close()
 
+        # Convert datetime objects to strings for MySQL
+        for record in records:
+            if 'created_at' in record and hasattr(record['created_at'], 'isoformat'):
+                record['created_at'] = record['created_at'].isoformat()
+
         return records
 
     def get_stats(self) -> Dict[str, Any]:
@@ -331,7 +336,7 @@ class MySQLAdapter(DatabaseAdapter):
             GROUP BY DATE(created_at)
             ORDER BY date
         ''')
-        stats["last_7_days"] = {row["date"]: row["count"] for row in cursor.fetchall()}
+        stats["last_7_days"] = {str(row["date"]): row["count"] for row in cursor.fetchall()}
 
         conn.close()
         return stats

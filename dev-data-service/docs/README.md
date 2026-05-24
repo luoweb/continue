@@ -103,14 +103,14 @@ DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=your_password
-DB_NAME=continue_dev_data
+DB_NAME=cowork_dev_data
 DB_CHARSET=utf8mb4
 ```
 
 3. 创建数据库：
 
 ```sql
-CREATE DATABASE continue_dev_data CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE cowork_dev_data CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 ### PostgreSQL
@@ -129,33 +129,33 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=your_password
-DB_NAME=continue_dev_data
+DB_NAME=cowork_dev_data
 ```
 
 3. 创建数据库：
 
 ```sql
-CREATE DATABASE continue_dev_data;
+CREATE DATABASE cowork_dev_data;
 ```
 
 ## 配置
 
 ### 环境变量
 
-| 变量          | 描述                                 | 默认值            |
-| ------------- | ------------------------------------ | ----------------- |
-| HOST          | 服务监听地址                         | 0.0.0.0           |
-| PORT          | 服务端口                             | 8001              |
-| DB_TYPE       | 数据库类型 (sqlite/mysql/postgresql) | sqlite            |
-| DATABASE_PATH | SQLite 数据库路径                    | ./dev_data.db     |
-| DB_HOST       | 数据库主机                           | localhost         |
-| DB_PORT       | 数据库端口                           | 3306/5432         |
-| DB_USER       | 数据库用户名                         | root/postgres     |
-| DB_PASSWORD   | 数据库密码                           | -                 |
-| DB_NAME       | 数据库名称                           | continue_dev_data |
-| DB_CHARSET    | 数据库字符集 (MySQL)                 | utf8mb4           |
-| REQUIRE_AUTH  | 是否启用 API Key 认证                | false             |
-| API_KEY       | 认证用的 API Key                     | -                 |
+| 变量          | 描述                                 | 默认值          |
+| ------------- | ------------------------------------ | --------------- |
+| HOST          | 服务监听地址                         | 0.0.0.0         |
+| PORT          | 服务端口                             | 8001            |
+| DB_TYPE       | 数据库类型 (sqlite/mysql/postgresql) | sqlite          |
+| DATABASE_PATH | SQLite 数据库路径                    | ./dev_data.db   |
+| DB_HOST       | 数据库主机                           | localhost       |
+| DB_PORT       | 数据库端口                           | 3306/5432       |
+| DB_USER       | 数据库用户名                         | root/postgres   |
+| DB_PASSWORD   | 数据库密码                           | -               |
+| DB_NAME       | 数据库名称                           | cowork_dev_data |
+| DB_CHARSET    | 数据库字符集 (MySQL)                 | utf8mb4         |
+| REQUIRE_AUTH  | 是否启用 API Key 认证                | false           |
+| API_KEY       | 认证用的 API Key                     | -               |
 
 ### Cowork 配置
 
