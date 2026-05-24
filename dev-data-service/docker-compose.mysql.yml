@@ -1,14 +1,14 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mysql:
     image: registry.cn-hangzhou.aliyuncs.com/roweb/mysql:8.0
-    container_name: continue_dev_data_mysql
+    container_name: cowork_dev_data_mysql
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: continue_dev_data
-      MYSQL_USER: continue
-      MYSQL_PASSWORD: continue_password
+      MYSQL_DATABASE: cowork_dev_data
+      MYSQL_USER: cowork
+      MYSQL_PASSWORD: cowork_password
     ports:
       - "3306:3306"
     volumes:
@@ -19,7 +19,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: continue_dev_data_service
+    container_name: cowork_dev_data_service
     ports:
       - "8001:8001"
     environment:
@@ -28,9 +28,9 @@ services:
       - DB_TYPE=mysql
       - DB_HOST=mysql
       - DB_PORT=3306
-      - DB_USER=continue
-      - DB_PASSWORD=continue_password
-      - DB_NAME=continue_dev_data
+      - DB_USER=cowork
+      - DB_PASSWORD=cowork_password
+      - DB_NAME=cowork_dev_data
       - DB_CHARSET=utf8mb4
       - REQUIRE_AUTH=false
     depends_on:
