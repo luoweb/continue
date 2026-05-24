@@ -2,15 +2,17 @@
 Continue Dev Data Service
 A backend service for collecting and managing development data from Continue
 """
-from fastapi import FastAPI, HTTPException, Depends, Header, Query, Path
+from fastapi import FastAPI, HTTPException, Depends, Header, Query, Path, Security
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
-from datetime import datetime
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os
 import json
+import hashlib
+import secrets
 import uvicorn
 
 import database
@@ -31,8 +33,129 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-API_KEY = os.getenv("API_KEY", "")
 REQUIRE_AUTH = os.getenv("REQUIRE_AUTH", "false").lower() == "true"
+
+# Token storage (in production, use a database)
+_tokens_db: Dict[str, Dict[str, Any]] = {}
+
+
+class TokenManager:
+    """Token management system"""
+
+    @staticmethod
+    def generate_token(
+        name: str,
+        expires_days: int = 30,
+        max_requests: Optional[int] = None
+    ) -> Dict[str, Any]:
+        """Generate a new API token"""
+        token = secrets.token_urlsafe(32)
+        token_hash = hashlib.sha256(token.encode()).hexdigest()
+
+        token_data = {
+            "name": name,
+            "token_hash": token_hash,
+            "created_at": datetime.utcnow().isoformat(),
+            "expires_at": (datetime.utcnow() + timedelta(days=expires_days)).isoformat(),
+            "max_requests": max_requests,
+            "request_count": 0,
+            "is_active": True
+        }
+
+        _tokens_db[token_hash] = token_data
+
+        return {
+            "token": token,
+            "name": name,
+            "expires_at": token_data["expires_at"],
+            "max_requests": max_requests,
+            "message": "Save this token securely. It will not be shown again."
+        }
+
+    @staticmethod
+    def verify_token(token: str) -> Dict[str, Any]:
+        """Verify token and return token info"""
+        token_hash = hashlib.sha256(token.encode()).hexdigest()
+
+        if token_hash not in _tokens_db:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid token"
+            )
+
+        token_data = _tokens_db[token_hash]
+
+        if not token_data["is_active"]:
+            raise HTTPException(
+                status_code=401,
+                detail="Token has been revoked"
+            )
+
+        expires_at = datetime.fromisoformat(token_data["expires_at"])
+        if datetime.utcnow() > expires_at:
+            raise HTTPException(
+                status_code=401,
+                detail="Token has expired"
+            )
+
+        if token_data["max_requests"]:
+            if token_data["request_count"] >= token_data["max_requests"]:
+                raise HTTPException(
+                    status_code=401,
+                    detail="Token request limit exceeded"
+                )
+
+        token_data["request_count"] += 1
+
+        return token_data
+
+    @staticmethod
+    def revoke_token(token: str) -> bool:
+        """Revoke a token"""
+        token_hash = hashlib.sha256(token.encode()).hexdigest()
+
+        if token_hash not in _tokens_db:
+            raise HTTPException(
+                status_code=404,
+                detail="Token not found"
+            )
+
+        _tokens_db[token_hash]["is_active"] = False
+        return True
+
+    @staticmethod
+    def list_tokens() -> List[Dict[str, Any]]:
+        """List all tokens (without exposing the actual tokens)"""
+        return [
+            {
+                "name": data["name"],
+                "created_at": data["created_at"],
+                "expires_at": data["expires_at"],
+                "max_requests": data["max_requests"],
+                "request_count": data["request_count"],
+                "is_active": data["is_active"]
+            }
+            for data in _tokens_db.values()
+        ]
+
+    @staticmethod
+    def delete_expired_tokens():
+        """Delete expired tokens"""
+        now = datetime.utcnow()
+        expired_hashes = []
+
+        for token_hash, data in _tokens_db.items():
+            expires_at = datetime.fromisoformat(data["expires_at"])
+            if now > expires_at:
+                expired_hashes.append(token_hash)
+
+        for token_hash in expired_hashes:
+            del _tokens_db[token_hash]
+
+        return len(expired_hashes)
+
+
+token_manager = TokenManager()
 
 
 async def verify_api_key(authorization: Optional[str] = Header(None)):
@@ -40,14 +163,30 @@ async def verify_api_key(authorization: Optional[str] = Header(None)):
     if not REQUIRE_AUTH:
         return True
 
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Missing or invalid authorization header")
+    if not authorization:
+        raise HTTPException(
+            status_code=401,
+            detail="Authorization header is required"
+        )
+
+    if not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid authorization header format. Use: Bearer <token>"
+        )
 
     token = authorization[7:]
-    if token != API_KEY:
-        raise HTTPException(status_code=401, detail="Invalid API key")
 
-    return True
+    try:
+        token_data = token_manager.verify_token(token)
+        return token_data
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=401,
+            detail=f"Token verification failed: {str(e)}"
+        )
 
 
 class DevDataRequest(BaseModel):
@@ -94,11 +233,28 @@ class QueryResponse(BaseModel):
     total: int
 
 
+class TokenCreateRequest(BaseModel):
+    """Request model for creating a new token"""
+    name: str = Field(..., description="Token name (e.g., 'production', 'development')")
+    expires_days: int = Field(default=30, ge=1, le=365, description="Token expiration in days")
+    max_requests: Optional[int] = Field(default=None, ge=1, description="Maximum number of requests (unlimited if None)")
+
+
+class TokenResponse(BaseModel):
+    """Response model for token creation"""
+    token: str
+    name: str
+    expires_at: str
+    max_requests: Optional[int]
+    message: str
+
+
 @app.on_event("startup")
 async def startup_event():
     """Initialize database on startup"""
     database.init_db()
-    print("Dev Data Service started successfully")
+    deleted_count = token_manager.delete_expired_tokens()
+    print(f"Dev Data Service started successfully. Cleaned up {deleted_count} expired tokens.")
 
 
 @app.get("/health")
@@ -107,19 +263,95 @@ async def health():
     return {
         "status": "healthy",
         "service": "Continue Dev Data Service",
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.utcnow().isoformat(),
+        "auth_enabled": REQUIRE_AUTH
     }
+
+
+@app.post("/api/v1/tokens", response_model=TokenResponse)
+async def create_token(request: TokenCreateRequest):
+    """
+    Create a new API token
+
+    Save the returned token securely. It will not be shown again.
+    """
+    if not REQUIRE_AUTH:
+        raise HTTPException(
+            status_code=403,
+            detail="Authentication is disabled. Set REQUIRE_AUTH=true to enable token management."
+        )
+
+    token_info = token_manager.generate_token(
+        name=request.name,
+        expires_days=request.expires_days,
+        max_requests=request.max_requests
+    )
+
+    return TokenResponse(**token_info)
+
+
+@app.get("/api/v1/tokens")
+async def list_tokens(_: Dict[str, Any] = Depends(verify_api_key)):
+    """
+    List all API tokens
+
+    Returns token metadata without exposing actual tokens.
+    """
+    if not REQUIRE_AUTH:
+        raise HTTPException(
+            status_code=403,
+            detail="Authentication is disabled"
+        )
+
+    return {
+        "tokens": token_manager.list_tokens(),
+        "total": len(_tokens_db)
+    }
+
+
+@app.delete("/api/v1/tokens/{token_name}")
+async def revoke_token(
+    token_name: str,
+    authorization: str = Header(..., description="Current API token")
+):
+    """
+    Revoke a token by name
+
+    Requires a valid active token to perform this action.
+    """
+    if not REQUIRE_AUTH:
+        raise HTTPException(
+            status_code=403,
+            detail="Authentication is disabled"
+        )
+
+    token_manager.verify_token(authorization[7:])
+
+    for token_hash, data in _tokens_db.items():
+        if data["name"] == token_name:
+            token_manager.revoke_token(
+                list(_tokens_db.keys())[list(_tokens_db.keys()).index(token_hash)]
+            )
+            return {
+                "success": True,
+                "message": f"Token '{token_name}' has been revoked"
+            }
+
+    raise HTTPException(
+        status_code=404,
+        detail=f"Token '{token_name}' not found"
+    )
 
 
 @app.post("/api/v1/data", response_model=DevDataResponse)
 async def submit_dev_data(
     request: DevDataRequest,
-    _: bool = Depends(verify_api_key)
+    _: Dict[str, Any] = Depends(verify_api_key)
 ):
     """
     Submit development data
 
-    This endpoint accepts dev data events from Continue clients and stores them
+    This endpoint accepts dev data events from Continue clients and stores them.
     """
     try:
         event_data_str = json.dumps(request.data)
@@ -150,12 +382,12 @@ async def query_dev_data(
     end_date: Optional[datetime] = Query(None, description="Filter by end date"),
     limit: int = Query(100, ge=1, le=1000, description="Number of records to return"),
     offset: int = Query(0, ge=0, description="Offset for pagination"),
-    _: bool = Depends(verify_api_key)
+    _: Dict[str, Any] = Depends(verify_api_key)
 ):
     """
     Query development data with filters
 
-    Supports filtering by event name, user ID, and date ranges
+    Supports filtering by event name, user ID, and date ranges.
     """
     try:
         records = database.get_dev_data(
@@ -191,12 +423,12 @@ async def query_dev_data(
 
 @app.get("/api/v1/stats", response_model=StatsResponse)
 async def get_statistics(
-    _: bool = Depends(verify_api_key)
+    _: Dict[str, Any] = Depends(verify_api_key)
 ):
     """
     Get statistics about collected dev data
 
-    Returns total records, breakdown by event type, and last 7 days activity
+    Returns total records, breakdown by event type, and last 7 days activity.
     """
     try:
         stats = database.get_stats()
@@ -208,12 +440,12 @@ async def get_statistics(
 @app.delete("/api/v1/data/old/{days}")
 async def delete_old_data(
     days: int = Path(..., ge=1, description="Delete records older than this many days"),
-    _: bool = Depends(verify_api_key)
+    _: Dict[str, Any] = Depends(verify_api_key)
 ):
     """
     Delete old development data
 
-    Use this to clean up old records and manage database size
+    Use this to clean up old records and manage database size.
     """
     try:
         deleted_count = database.delete_old_records(days=days)
@@ -228,12 +460,12 @@ async def delete_old_data(
 
 @app.get("/api/v1/events")
 async def get_event_types(
-    _: bool = Depends(verify_api_key)
+    _: Dict[str, Any] = Depends(verify_api_key)
 ):
     """
     Get list of supported event types
 
-    Based on Continue's dev data schema
+    Based on Continue's dev data schema.
     """
     event_types = [
         "tokensGenerated",
