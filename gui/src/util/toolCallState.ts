@@ -53,17 +53,14 @@ export function addToolCallDeltaToState(
     // Because no apis do this and difficult to detect reliably
   }
 
-  const [isJsonComplete, parsedArgs] = incrementalParseJson(mergedArgs || "{}");
+  const [_, parsedArgs] = incrementalParseJson(mergedArgs || "{}");
 
   // 【Qwen3.5 中英文空格修复】清洗参数中的空格
   const cleanedParsedArgs = cleanArgs(parsedArgs);
 
-  // 【Qwen3.5 中英文空格修复】当JSON完整时，清洗后的参数同时用于前端展示和后端发送
-  // 当JSON不完整时（流式传输中），继续使用原始的mergedArgs避免覆盖正在传输的数据
-  const finalArguments =
-    isJsonComplete && Object.keys(cleanedParsedArgs).length > 0
-      ? JSON.stringify(cleanedParsedArgs)
-      : mergedArgs;
+  // 【Qwen3.5 中英文空格修复】同时清洗 toolCall.function.arguments 中的参数
+  // 确保发送给后端的参数也是清洗后的
+  const cleanedArgsJson = JSON.stringify(cleanedParsedArgs);
 
   return {
     status: "generating",
@@ -72,7 +69,7 @@ export function addToolCallDeltaToState(
       type: callType,
       function: {
         name: mergedName,
-        arguments: finalArguments,
+        arguments: cleanedArgsJson,
       },
     },
     toolCallId: callId,
