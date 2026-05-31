@@ -212,35 +212,6 @@ export function convertMcpToolToContinueTool(mcpTool: MCPTool): Tool {
   };
 }
 
-// 【Qwen3.5 中英文空格修复】移除中文与英文/数字之间的空格
-// 解决模型在 CJK↔Latin 之间自动加空格的问题（盘古之白）
-function cleanCJKSpaces(value: string): string {
-  return value
-    .replace(/([\u4e00-\u9fff])\s+([A-Za-z0-9])/g, "$1$2")
-    .replace(/([A-Za-z0-9])\s+([\u4e00-\u9fff])/g, "$1$2");
-}
-
-// 递归清洗对象中的所有字符串参数
-function cleanArgs(args: any): any {
-  if (args === null || args === undefined) {
-    return args;
-  }
-  if (typeof args === "string") {
-    return cleanCJKSpaces(args);
-  }
-  if (Array.isArray(args)) {
-    return args.map(cleanArgs);
-  }
-  if (typeof args === "object") {
-    const cleaned: Record<string, any> = {};
-    for (const [key, value] of Object.entries(args)) {
-      cleaned[key] = cleanArgs(value);
-    }
-    return cleaned;
-  }
-  return args;
-}
-
 export async function executeToolCall(
   toolCall: PreprocessedToolCall,
   options: { parallelToolCallCount: number } = { parallelToolCallCount: 1 },
@@ -264,11 +235,10 @@ export async function executeToolCall(
 
     // IMPORTANT: if preprocessed args are present, uses preprocessed args instead of original args
     // Preprocessed arg names may be different
-    // 【Qwen3.5 中英文空格修复】在执行工具调用前清洗参数中的空格
-    const args = cleanArgs(
+    const result = await toolCall.tool.run(
       toolCall.preprocessResult?.args ?? toolCall.arguments,
+      context,
     );
-    const result = await toolCall.tool.run(args, context);
     const duration = Date.now() - startTime;
 
     // Track edits if Git AI is enabled (no-op if not enabled)
