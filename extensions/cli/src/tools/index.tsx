@@ -1,6 +1,5 @@
 // @ts-ignore
 import { ContinueError, ContinueErrorReason } from "core/util/errors.js";
-import { cleanArgs } from "core/util/text.js";
 import { ChatCompletionTool } from "openai/resources.mjs";
 
 import { posthogService } from "src/telemetry/posthogService.js";
@@ -211,6 +210,35 @@ export function convertMcpToolToContinueTool(mcpTool: MCPTool): Tool {
       return JSON.stringify(result?.content) ?? "";
     },
   };
+}
+
+// 【Qwen3.5 中英文空格修复】移除中文与英文/数字之间的空格
+// 解决模型在 CJK↔Latin 之间自动加空格的问题（盘古之白）
+function cleanCJKSpaces(value: string): string {
+  return value
+    .replace(/([\u4e00-\u9fff])\s+([A-Za-z0-9])/g, "$1$2")
+    .replace(/([A-Za-z0-9])\s+([\u4e00-\u9fff])/g, "$1$2");
+}
+
+// 递归清洗对象中的所有字符串参数
+function cleanArgs(args: any): any {
+  if (args === null || args === undefined) {
+    return args;
+  }
+  if (typeof args === "string") {
+    return cleanCJKSpaces(args);
+  }
+  if (Array.isArray(args)) {
+    return args.map(cleanArgs);
+  }
+  if (typeof args === "object") {
+    const cleaned: Record<string, any> = {};
+    for (const [key, value] of Object.entries(args)) {
+      cleaned[key] = cleanArgs(value);
+    }
+    return cleaned;
+  }
+  return args;
 }
 
 export async function executeToolCall(

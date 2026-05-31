@@ -1,7 +1,6 @@
 import { ToolCallDelta, ToolCallState } from "core";
 import { BuiltInToolNames } from "core/tools/builtIn";
 import { incrementalParseJson } from "core/util/incrementalParseJson";
-import { cleanArgs } from "core/util/text";
 
 // Merge streamed tool calls
 // See example of data coming in here:
@@ -55,9 +54,6 @@ export function addToolCallDeltaToState(
 
   const [_, parsedArgs] = incrementalParseJson(mergedArgs || "{}");
 
-  // 【Qwen3.5 中英文空格修复】清洗参数中的空格
-  const cleanedParsedArgs = cleanArgs(parsedArgs);
-
   return {
     status: "generating",
     toolCall: {
@@ -69,7 +65,7 @@ export function addToolCallDeltaToState(
       },
     },
     toolCallId: callId,
-    parsedArgs: cleanedParsedArgs,
+    parsedArgs,
   };
 }
 
