@@ -328,7 +328,8 @@ $xsed 's#"Failed to load config from \"#"加载配置失败，来自 \"#g' ${bas
 echo "Translating ModelCapabilityWarning.tsx..."
 
 $xsed 's#Model Capability Warning#模型能力警告#g' ${baseDir}/cli/src/ui/ModelCapabilityWarning.tsx
-$xsed 's#The model "{modelName}" is not recommended for use with cn due to limited reasoning and tool calling capabilities#模型 "{modelName}" 由于推理和工具调用能力有限，不建议与分布式编码助手一起使用#g' ${baseDir}/cli/src/ui/ModelCapabilityWarning.tsx
+$xsed 's#The model #模型 #g' ${baseDir}/cli/src/ui/ModelCapabilityWarning.tsx
+$xsed 's#is not recommended for use with cn due to limited reasoning and tool calling capabilities#由于推理和工具调用能力有限，不建议与分布式编码助手一起使用#g' ${baseDir}/cli/src/ui/ModelCapabilityWarning.tsx
 
 # 翻译 UpdateNotification.tsx 文件
 echo "Translating UpdateNotification.tsx..."
