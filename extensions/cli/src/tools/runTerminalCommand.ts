@@ -1,12 +1,12 @@
 import { ChildProcess, spawn } from "child_process";
 import fs from "fs";
 import os from "os";
+import { logger } from "../util/logger.js";
 
 import {
   evaluateTerminalCommandSecurity,
   type ToolPolicy,
 } from "@continuedev/terminal-security";
-import { cleanArgs } from "core/util/text.js";
 
 import { backgroundJobService } from "../services/BackgroundJobService.js";
 import { services } from "../services/index.js";
@@ -17,7 +17,6 @@ import {
 } from "../telemetry/utils.js";
 import { backgroundSignalManager } from "../util/backgroundSignalManager.js";
 import { emitBashToolEnded, emitBashToolStarted } from "../util/cli.js";
-import { logger } from "../util/logger.js";
 import {
   parseEnvNumber,
   truncateOutputFromStart,
@@ -217,7 +216,7 @@ IMPORTANT: To edit files, use Edit/MultiEdit tools instead of bash commands (sed
     const truncatedCmd =
       command.length > 60 ? command.substring(0, 60) + "..." : command;
     return {
-      args: cleanArgs(args),
+      args,
       preview: [
         {
           type: "text",

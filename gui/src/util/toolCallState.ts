@@ -1,7 +1,6 @@
 import { ToolCallDelta, ToolCallState } from "core";
 import { BuiltInToolNames } from "core/tools/builtIn";
 import { incrementalParseJson } from "core/util/incrementalParseJson";
-import { cleanArgs } from "core/util/text";
 
 // Merge streamed tool calls
 // See example of data coming in here:
@@ -53,17 +52,7 @@ export function addToolCallDeltaToState(
     // Because no apis do this and difficult to detect reliably
   }
 
-  const [isJsonComplete, parsedArgs] = incrementalParseJson(mergedArgs || "{}");
-
-  // 【Qwen3.5 中英文空格修复】清洗参数中的空格
-  const cleanedParsedArgs = cleanArgs(parsedArgs);
-
-  // 【Qwen3.5 中英文空格修复】当JSON完整时，清洗后的参数同时用于前端展示和后端发送
-  // 当JSON不完整时（流式传输中），继续使用原始的mergedArgs避免覆盖正在传输的数据
-  const finalArguments =
-    isJsonComplete && Object.keys(cleanedParsedArgs).length > 0
-      ? JSON.stringify(cleanedParsedArgs)
-      : mergedArgs;
+  const [_, parsedArgs] = incrementalParseJson(mergedArgs || "{}");
 
   return {
     status: "generating",
@@ -72,11 +61,11 @@ export function addToolCallDeltaToState(
       type: callType,
       function: {
         name: mergedName,
-        arguments: finalArguments,
+        arguments: mergedArgs,
       },
     },
     toolCallId: callId,
-    parsedArgs: cleanedParsedArgs,
+    parsedArgs,
   };
 }
 

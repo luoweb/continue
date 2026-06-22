@@ -1,6 +1,5 @@
 // @ts-ignore
 import { ContinueError, ContinueErrorReason } from "core/util/errors.js";
-import { cleanArgs } from "core/util/text.js";
 import { ChatCompletionTool } from "openai/resources.mjs";
 
 import { posthogService } from "src/telemetry/posthogService.js";
@@ -236,11 +235,10 @@ export async function executeToolCall(
 
     // IMPORTANT: if preprocessed args are present, uses preprocessed args instead of original args
     // Preprocessed arg names may be different
-    // 【Qwen3.5 中英文空格修复】在执行工具调用前清洗参数中的空格
-    const args = cleanArgs(
+    const result = await toolCall.tool.run(
       toolCall.preprocessResult?.args ?? toolCall.arguments,
+      context,
     );
-    const result = await toolCall.tool.run(args, context);
     const duration = Date.now() - startTime;
 
     // Track edits if Git AI is enabled (no-op if not enabled)

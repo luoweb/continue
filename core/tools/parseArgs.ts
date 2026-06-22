@@ -1,5 +1,4 @@
 import { ToolCallDelta } from "..";
-import { cleanCJKSpaces } from "../util/text";
 
 export function safeParseToolCallArgs(
   toolCall: ToolCallDelta,
@@ -98,9 +97,6 @@ export function getStringArg(
   if (!allowEmpty && !value.trim()) {
     throw new Error(`Argument ${argName} must not be empty or whitespace-only`);
   }
-
-  // 【Qwen3.5 中英文空格修复】移除中文与英文/数字之间的空格
-  value = cleanCJKSpaces(value);
 
   return value;
 }
