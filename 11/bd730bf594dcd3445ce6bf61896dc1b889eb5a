@@ -1,0 +1,19 @@
+.github/workflows/preview.yaml
+  s_b54b91203a5dcc::t_fc93e937660abd 120,139-140,142-156,159-163
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "11bd730bf594dcd3445ce6bf61896dc1b889eb5a",
+  "prompts": {},
+  "sessions": {
+    "s_b54b91203a5dcc": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_11215f0beffeThnhMfwVj4z2rm",
+        "model": "big-pickle"
+      },
+      "human_author": "Robin <luoweb@users.noreply.github.com>"
+    }
+  }
+}
